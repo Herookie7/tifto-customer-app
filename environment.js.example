@@ -1,0 +1,56 @@
+import { useContext } from 'react'
+import ConfigurationContext from './src/context/Configuration'
+
+const ensureTrailingSlash = (value) =>
+  value.endsWith('/') ? value : `${value}/`
+
+const deriveHttpOrigin = (restUrl) =>
+  ensureTrailingSlash(restUrl.replace(/\/api(?:\/v\d+)?\/?$/, '/'))
+
+const REMOTE_REST = 'https://ftifto-backend.onrender.com/api/v1'
+const REMOTE_GRAPHQL = `${deriveHttpOrigin(REMOTE_REST)}graphql`
+const REMOTE_WS_GRAPHQL = `${deriveHttpOrigin(REMOTE_REST).replace(/^https/, 'wss')}graphql`
+
+const LOCAL_GRAPHQL = 'https://ftifto-backend.onrender.com/graphql'
+const LOCAL_WS_GRAPHQL = 'wss://ftifto-backend.onrender.com/graphql'
+const LOCAL_REST = 'https://ftifto-backend.onrender.com/api/v1'
+
+/**
+ * Rename this file to `environment.js` to override the defaults.
+ * Set `USE_LOCAL_BACKEND=true` inside the configuration query if you want to target a local server in development.
+ */
+const useEnvVars = () => {
+  const configuration = useContext(ConfigurationContext)
+  const useLocalBackend =
+    __DEV__ && (configuration?.useLocalBackend === true || configuration?.backendMode === 'local')
+
+  const shared = {
+    IOS_CLIENT_ID_GOOGLE: configuration?.iOSClientID,
+    ANDROID_CLIENT_ID_GOOGLE: configuration?.androidClientID,
+    GOOGLE_MAPS_KEY: configuration?.googleApiKey,
+    EXPO_CLIENT_ID: configuration?.expoClientID,
+    TERMS_AND_CONDITIONS: configuration?.termsAndConditions,
+    PRIVACY_POLICY: configuration?.privacyPolicy,
+    TEST_OTP: configuration?.testOtp
+  }
+
+  if (useLocalBackend) {
+    return {
+      GRAPHQL_URL: LOCAL_GRAPHQL,
+      WS_GRAPHQL_URL: LOCAL_WS_GRAPHQL,
+      SERVER_URL: LOCAL_GRAPHQL,
+      SERVER_REST_URL: LOCAL_REST,
+      ...shared
+    }
+  }
+
+  return {
+    GRAPHQL_URL: REMOTE_GRAPHQL,
+    WS_GRAPHQL_URL: REMOTE_WS_GRAPHQL,
+    SERVER_URL: REMOTE_GRAPHQL,
+    SERVER_REST_URL: REMOTE_REST,
+    ...shared
+  }
+}
+
+export default useEnvVars
