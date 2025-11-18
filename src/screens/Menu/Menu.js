@@ -122,6 +122,8 @@ function Menu({ route, props }) {
 
   const { onScroll /* Event handler */, containerPaddingTop /* number */, scrollIndicatorInsetTop /* number */ } = useCollapsibleSubHeader()
 
+  const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
+
   const emptyViewDesc = selectedType === 'restaurant' ? t('noRestaurant') : t('noGrocery')
 
   useFocusEffect(() => {
@@ -415,10 +417,13 @@ function Menu({ route, props }) {
     )
   }
 
-  const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
-  if (!connect) return <ErrorView refetchFunctions={[refetch]} />
+  if (!connect) {
+    return <ErrorView refetchFunctions={[refetch]} />
+  }
 
-  if (loading || mutationLoading || loadingOrders) return loadingScreen()
+  if (loading || mutationLoading || loadingOrders) {
+    return loadingScreen()
+  }
 
   // const searchRestaurants = (searchText) => {
   //   const data = []

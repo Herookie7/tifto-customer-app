@@ -14,8 +14,7 @@ import analytics from '../../utils/analytics'
 import AuthContext from '../../context/Auth'
 import { useNavigation } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
-import { signInWithEmailAndPassword } from 'firebase/auth'
-import { firebaseAuth } from '../../services/firebase'
+import { signInWithEmail } from '../../services/authService'
 
 const LOGIN = gql`
   ${login}
@@ -138,9 +137,12 @@ export const useLogin = () => {
         })
         try {
           const normalizedEmail = (emailRef.current || '').trim().toLowerCase()
-          const credentials = await signInWithEmailAndPassword(firebaseAuth, normalizedEmail, password)
-          const idToken = await credentials.user.getIdToken()
-          await setFirebaseTokenAsync(idToken)
+          const result = await signInWithEmail(normalizedEmail, password)
+          if (result.success && result.idToken) {
+            await setFirebaseTokenAsync(result.idToken)
+          } else {
+            console.log('Firebase sign-in error', result.error)
+          }
         } catch (firebaseError) {
           console.log('Firebase sign-in error', firebaseError)
         }
@@ -176,7 +178,7 @@ export const useLogin = () => {
             } = await Notifications.getPermissionsAsync()
             if (existingStatus === 'granted') {
               notificationToken = (await Notifications.getExpoPushTokenAsync({
-                projectId: Constants.expoConfig.extra.eas.projectId
+                projectId: Constants.expoConfig?.extra?.eas?.projectId
               })).data
             }
           }

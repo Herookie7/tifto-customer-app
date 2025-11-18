@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "765681810225",
-    "project_id": "tifto-customer",
-    "storage_bucket": "tifto-customer.firebasestorage.app"
+    "project_number": "253211113708",
+    "project_id": "tifto-prod",
+    "storage_bucket": "tifto-prod.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:765681810225:android:732b542a55d15b900d8e10",
+        "mobilesdk_app_id": "1:253211113708:android:8ae3bc83527d52b4698dc9",
         "android_client_info": {
           "package_name": "com.tifto.customer"
         }
       },
       "oauth_client": [
         {
-          "client_id": "765681810225-5rlp10thvjr7q4s62ktnlrkphseljqie.apps.googleusercontent.com",
+          "client_id": "253211113708-2cu4ru93vr8aslbs2ut114bkgg1cfmfk.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDuDf1GxFyl9NdVgSaQIi3AbIGdWKgsOZ4"
+          "current_key": "AIzaSyCmiC7sAVx5DjMPACwci-L74qww3uNxna4"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "765681810225-5rlp10thvjr7q4s62ktnlrkphseljqie.apps.googleusercontent.com",
+              "client_id": "253211113708-2cu4ru93vr8aslbs2ut114bkgg1cfmfk.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

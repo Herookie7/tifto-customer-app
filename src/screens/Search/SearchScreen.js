@@ -121,6 +121,8 @@ const SearchScreen = () => {
     skip: !location.latitude || !location.longitude
   })
 
+  const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
+
   useEffect(() => {
     navigation.setOptions({
       title: t('searchTitle'),
@@ -196,8 +198,9 @@ const SearchScreen = () => {
 
   const uniqueTags = getUniqueTags(restaurants)
 
-  const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
-  if (!connect) return <ErrorView />
+  if (!connect) {
+    return <ErrorView />
+  }
 
   const emptyView = () => {
     return (

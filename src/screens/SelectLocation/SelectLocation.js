@@ -95,6 +95,13 @@ export default function SelectLocation(props) {
       setLoading(false)
       return
     }
+    if (!coords || !coords.latitude || !coords.longitude) {
+      FlashMessage({
+        message: 'LocationUnavailable'
+      })
+      setLoading(false)
+      return
+    }
     setLoading(false)
     navigation.navigate('AddNewAddress', {
       latitude: coords.latitude,

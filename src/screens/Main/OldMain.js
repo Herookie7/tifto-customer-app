@@ -122,6 +122,12 @@ function Main(props) {
     setBusy(true)
     const { error, coords } = await getCurrentLocation()
 
+    if (!coords || !coords.latitude || !coords.longitude) {
+      console.error('Invalid coordinates:', coords)
+      setBusy(false)
+      return
+    }
+
     const apiUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${coords.latitude}&lon=${coords.longitude}`
     fetch(apiUrl)
       .then((response) => response.json())
@@ -225,9 +231,13 @@ function Main(props) {
     )
   }
 
-  if (error) return <TextError text={t('networkError')} />
+  if (error) {
+    return <TextError text={t('networkError')} />
+  }
 
-  if (loading || mutationLoading || loadingOrders) return loadingScreen()
+  if (loading || mutationLoading || loadingOrders) {
+    return loadingScreen()
+  }
 
   const { restaurants, sections } = data.nearByRestaurants
 

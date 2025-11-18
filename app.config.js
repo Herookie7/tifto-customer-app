@@ -1,0 +1,157 @@
+export default {
+  expo: {
+    name: 'Tifto Customer',
+    scheme: 'tifto-customer',
+    version: '1.0.97',
+    description: 'Tifto is a starter kit food ordering app built in React Native using Expo for IOS and Android. It\'s made keeping good aesthetics in mind as well keeping the best coding practices in mind. Its fully customisable to easily help you in your next food delivery project. https://market.nativebase.io/view/react-native-food-delivery-backend-app',
+    slug: 'tifto',
+    owner: 'herookie7',
+    experiments: {
+      buildCacheProvider: 'eas'
+    },
+    androidStatusBar: {
+      backgroundColor: '#000000'
+    },
+    splash: {
+      image: './assets/splash.png',
+      resizeMode: 'cover',
+      backgroundColor: '#ffffff'
+    },
+    platforms: ['ios', 'android'],
+    orientation: 'portrait',
+    icon: './assets/icon.png',
+    assetBundlePatterns: ['**/*'],
+    userInterfaceStyle: 'automatic',
+    ios: {
+      splash: {
+        image: './assets/splash.png',
+        resizeMode: 'cover',
+        backgroundColor: '#ffffff'
+      },
+      entitlements: {
+        'com.apple.developer.networking.wifi-info': true
+      },
+      supportsTablet: true,
+      userInterfaceStyle: 'automatic',
+      bundleIdentifier: 'com.tifto.customer',
+      icon: './assets/icon.png',
+      config: {
+        googleMapsApiKey: 'AIzaSyDfxps4qzL3Hp7Y1_mF6uGuj-Z2ScUHNmk'
+      },
+      usesAppleSignIn: true,
+      infoPlist: {
+        NSLocationWhenInUseUsageDescription: 'Allow $(PRODUCT_NAME) to use location to determine the delivery address for your orders.',
+        UIBackgroundModes: ['remote-notification', 'remote-notification'],
+        NSUserTrackingUsageDescription: 'Allow this app to collect app-related data that can be used for tracking you or your device.',
+        CFBundleURLTypes: [
+          {
+            CFBundleURLSchemes: [
+              'com.googleusercontent.apps.650001300965-dkji7jutv8gc5m4n7cdg3nft87sauhn7'
+            ]
+          }
+        ],
+        ITSAppUsesNonExemptEncryption: false
+      }
+    },
+    notification: {
+      iosDisplayInForeground: true,
+      color: '#90E36D',
+      icon: './assets/not-icon.png',
+      androidMode: 'default',
+      androidCollapsedTitle: 'Tifto Customer'
+    },
+    android: {
+      versionCode: 97,
+      package: 'com.tifto.customer',
+      userInterfaceStyle: 'automatic',
+      googleServicesFile: './google-services.json',
+      splash: {
+        image: './assets/splash.png',
+        resizeMode: 'cover',
+        backgroundColor: '#ffffff'
+      },
+      config: {
+        googleMaps: {
+          apiKey: 'AIzaSyDfxps4qzL3Hp7Y1_mF6uGuj-Z2ScUHNmk'
+        }
+      },
+      permissions: [
+        'android.permission.ACCESS_FINE_LOCATION',
+        'android.permission.ACCESS_COARSE_LOCATION',
+        'android.permission.FOREGROUND_SERVICE',
+        'com.google.android.gms.permission.AD_ID'
+      ],
+      queries: {
+        packages: ['com.whatsapp', 'com.whatsapp.w4b']
+      },
+      intentFilters: [
+        {
+          action: 'android.intent.action.VIEW',
+          data: [
+            {
+              scheme: 'whatsapp'
+            }
+          ],
+          category: ['BROWSABLE', 'DEFAULT']
+        }
+      ],
+      adaptiveIcon: {
+        foregroundImage: './assets/icon.png',
+        backgroundColor: '#000000'
+      }
+    },
+    plugins: [
+      [
+        'expo-tracking-transparency',
+        {
+          userTrackingPermission: 'Allow this app to collect app-related data that can be used for tracking you or your device.'
+        }
+      ],
+      [
+        'expo-updates',
+        {
+          username: 'herookie7'
+        }
+      ],
+      [
+        'expo-location',
+        {
+          locationAlwaysAndWhenInUsePermission: 'Allow $Tifto to use your location.'
+        }
+      ],
+      'expo-font',
+      'expo-localization',
+      'expo-web-browser',
+      'expo-video',
+      'expo-apple-authentication',
+      [
+        'expo-tracking-transparency',
+        {
+          userTrackingPermission: 'Allow this app to collect app-related data that can be used for tracking you or your device.'
+        }
+      ]
+    ],
+    runtimeVersion: {
+      policy: 'sdkVersion'
+    },
+    updates: {
+      url: null
+    },
+    extra: {
+      eas: {
+        projectId: 'c200e77c-656c-4d34-bf15-38baab1fdaef'
+      },
+      // Firebase config from environment variables
+      FIREBASE_API_KEY: process.env.FIREBASE_API_KEY || 'AIzaSyCmiC7sAVx5DjMPACwci-L74qww3uNxna4',
+      FIREBASE_AUTH_DOMAIN: process.env.FIREBASE_AUTH_DOMAIN || 'tifto-prod.firebaseapp.com',
+      FIREBASE_PROJECT_ID: process.env.FIREBASE_PROJECT_ID || 'tifto-prod',
+      FIREBASE_STORAGE_BUCKET: process.env.FIREBASE_STORAGE_BUCKET || 'tifto-prod.firebasestorage.app',
+      FIREBASE_MESSAGING_SENDER_ID: process.env.FIREBASE_MESSAGING_SENDER_ID || '253211113708',
+      FIREBASE_APP_ID: process.env.FIREBASE_APP_ID || '1:253211113708:android:8ae3bc83527d52b4698dc9',
+      FIREBASE_MEASUREMENT_ID: process.env.FIREBASE_MEASUREMENT_ID || '',
+      FIREBASE_WEB_CLIENT_ID: process.env.FIREBASE_WEB_CLIENT_ID || '253211113708-2cu4ru93vr8aslbs2ut114bkgg1cfmfk.apps.googleusercontent.com',
+      FIREBASE_ANDROID_CLIENT_ID: process.env.FIREBASE_ANDROID_CLIENT_ID || '253211113708-2cu4ru93vr8aslbs2ut114bkgg1cfmfk.apps.googleusercontent.com'
+    }
+  }
+}
+

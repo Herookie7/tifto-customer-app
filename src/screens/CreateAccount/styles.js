@@ -49,6 +49,11 @@ const styles = (props = null) =>
       textAlign: 'center'
     },
 
+    // Content Section
+    contentSection: {
+      paddingBottom: getResponsiveSize(scale(20))
+    },
+
     // Buttons Container
     buttonsContainer: {
       paddingHorizontal: scale(20),

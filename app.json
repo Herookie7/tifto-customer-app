@@ -41,7 +41,7 @@
       "bundleIdentifier": "com.tifto.customer",
       "icon": "./assets/icon.png",
       "config": {
-        "googleMapsApiKey": "AIzaSyCcm7_Wd7uvmC9YnYLu2JHGWPt6z1MaL1E"
+        "googleMapsApiKey": "AIzaSyDfxps4qzL3Hp7Y1_mF6uGuj-Z2ScUHNmk"
       },
       "usesAppleSignIn": true,
       "infoPlist": {
@@ -80,7 +80,7 @@
       },
       "config": {
         "googleMaps": {
-          "apiKey": "AIzaSyCcm7_Wd7uvmC9YnYLu2JHGWPt6z1MaL1E"
+          "apiKey": "AIzaSyDfxps4qzL3Hp7Y1_mF6uGuj-Z2ScUHNmk"
         }
       },
       "permissions": [
@@ -124,7 +124,7 @@
       [
         "expo-updates",
         {
-          "username": "ninjas_code"
+          "username": "herookie7"
         }
       ],
       [
@@ -154,7 +154,16 @@
     "extra": {
       "eas": {
         "projectId": "c200e77c-656c-4d34-bf15-38baab1fdaef"
-      }
+      },
+      "FIREBASE_API_KEY": "AIzaSyCmiC7sAVx5DjMPACwci-L74qww3uNxna4",
+      "FIREBASE_AUTH_DOMAIN": "tifto-prod.firebaseapp.com",
+      "FIREBASE_PROJECT_ID": "tifto-prod",
+      "FIREBASE_STORAGE_BUCKET": "tifto-prod.firebasestorage.app",
+      "FIREBASE_MESSAGING_SENDER_ID": "253211113708",
+      "FIREBASE_APP_ID": "1:253211113708:android:8ae3bc83527d52b4698dc9",
+      "FIREBASE_MEASUREMENT_ID": "",
+      "FIREBASE_WEB_CLIENT_ID": "253211113708-2cu4ru93vr8aslbs2ut114bkgg1cfmfk.apps.googleusercontent.com",
+      "FIREBASE_ANDROID_CLIENT_ID": "253211113708-2cu4ru93vr8aslbs2ut114bkgg1cfmfk.apps.googleusercontent.com"
     }
   }
 }

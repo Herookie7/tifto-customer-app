@@ -94,6 +94,8 @@ function Settings(props) {
     refetchQueries: [{ query: PROFILE }]
   })
 
+  const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
+
   useEffect(() => {
     async function Track() {
       await Analytics.track(Analytics.events.NAVIGATE_TO_SETTINGS)
@@ -284,8 +286,9 @@ function Settings(props) {
     )
   }
 
-  const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
-  if (!connect) return <ErrorView refetchFunctions={[]} />
+  if (!connect) {
+    return <ErrorView refetchFunctions={[]} />
+  }
   return (
     <SafeAreaView
       edges={['bottom', 'left', 'right']}

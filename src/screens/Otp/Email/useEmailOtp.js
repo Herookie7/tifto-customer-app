@@ -15,8 +15,7 @@ import AuthContext from '../../../context/Auth'
 import { useTranslation } from 'react-i18next'
 import ConfigurationContext from '../../../context/Configuration'
 import useEnvVars from '../../../../environment'
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
-import { firebaseAuth } from '../../../services/firebase'
+import { signUpWithEmail, signInWithEmail } from '../../../services/authService'
 
 const SEND_OTP_TO_EMAIL = gql`
   ${sendOtpToEmail}
@@ -93,18 +92,22 @@ const useEmailOtp = (isPhoneExists) => {
         const userPassword = user?.password || ''
         if (normalizedEmail && userPassword) {
           try {
-            await createUserWithEmailAndPassword(firebaseAuth, normalizedEmail, userPassword)
-          } catch (firebaseError) {
-            if (firebaseError?.code === 'auth/email-already-in-use') {
-              await signInWithEmailAndPassword(firebaseAuth, normalizedEmail, userPassword)
-            } else {
-              throw firebaseError
+            const result = await signUpWithEmail(normalizedEmail, userPassword)
+            if (!result.success) {
+              // If sign-up fails due to email already in use, try sign-in
+              if (result.error?.includes('already exists') || result.error?.includes('email-already-in-use')) {
+                const signInResult = await signInWithEmail(normalizedEmail, userPassword)
+                if (signInResult.success && signInResult.idToken) {
+                  await setFirebaseTokenAsync(signInResult.idToken)
+                }
+              } else {
+                console.log('Firebase sign-up error', result.error)
+              }
+            } else if (result.success && result.idToken) {
+              await setFirebaseTokenAsync(result.idToken)
             }
-          }
-          const currentUser = firebaseAuth.currentUser
-          if (currentUser) {
-            const idToken = await currentUser.getIdToken()
-            await setFirebaseTokenAsync(idToken)
+          } catch (firebaseError) {
+            console.log('Firebase user creation error', firebaseError)
           }
         }
       } catch (firebaseError) {
@@ -140,7 +143,7 @@ const useEmailOtp = (isPhoneExists) => {
         try {
           const { status } = await Notifications.requestPermissionsAsync()
           if (status === 'granted') {
-            notificationToken = (await Notifications.getExpoPushTokenAsync({ projectId: Constants.expoConfig.extra.eas.projectId })).data
+            notificationToken = (await Notifications.getExpoPushTokenAsync({ projectId: Constants.expoConfig?.extra?.eas?.projectId })).data
           }
         } catch (error) {
           console.log('Error catched in notificationToken:', error)

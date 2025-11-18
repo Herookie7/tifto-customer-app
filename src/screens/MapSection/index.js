@@ -73,17 +73,19 @@ export default function MapSection() {
         initialRegion={{
           latitude: restaurants?.length
             ? parseFloat(restaurants[0].location?.coordinates[1])
-            : location.latitude,
+            : (location?.latitude || 0),
           longitude: restaurants?.length
             ? parseFloat(restaurants[0].location?.coordinates[0])
-            : location.longitude,
+            : (location?.longitude || 0),
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421
         }}
       >
-        <Marker coordinate={location} title='Current Address'>
-          <Image source={require('../../assets/images/user.png')} style={styles().userMarkerImage} />
-        </Marker>
+        {location && location.latitude && location.longitude && (
+          <Marker coordinate={location} title='Current Address'>
+            <Image source={require('../../assets/images/user.png')} style={styles().userMarkerImage} />
+          </Marker>
+        )}
         {restaurants &&
           restaurants?.map((rest, index) => {
             const coord = {

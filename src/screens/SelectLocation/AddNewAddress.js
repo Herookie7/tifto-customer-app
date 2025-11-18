@@ -71,6 +71,14 @@ export default function AddNewAddress(props) {
     try {
       const { coords, error } = await getCurrentLocation()
       if (!error && coords) {
+        if (!coords || !coords.latitude || !coords.longitude) {
+          Alert.alert(
+            t('locationError'),
+            'LocationUnavailable',
+            [{ text: t('ok') }]
+          )
+          return
+        }
         // Update initial location and map view
         const newLocation = {
           latitude: coords.latitude,

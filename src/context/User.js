@@ -6,8 +6,7 @@ import { v5 as uuidv5, v1 as uuidv1 } from 'uuid'
 import { profile } from '../apollo/queries'
 import { LocationContext } from './Location'
 import AuthContext from './Auth'
-import { signOut } from 'firebase/auth'
-import { firebaseAuth } from '../services/firebase'
+import { signOutUser } from '../services/authService'
 
 import analytics from '../utils/analytics'
 
@@ -89,7 +88,10 @@ export const UserProvider = (props) => {
     try {
       await clearAuthState()
       try {
-        await signOut(firebaseAuth)
+        const result = await signOutUser()
+        if (!result.success) {
+          console.log('Firebase sign-out error', result.error)
+        }
       } catch (firebaseError) {
         console.log('Firebase sign-out error', firebaseError)
       }

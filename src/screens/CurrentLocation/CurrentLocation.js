@@ -40,6 +40,7 @@ export default function CurrentLocation() {
   const [citiesModalVisible, setCitiesModalVisible] = useState(false)
   const [currentLocation, setCurrentLocation] = useState(null)
   const [isInitialLoading, setIsInitialLoading] = useState(true)
+  const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
 
   const { getAddress } = useGeocoding()
 
@@ -81,6 +82,9 @@ export default function CurrentLocation() {
 
   const handleMarkerPress = async(coordinates) => {
     setCitiesModalVisible(false)
+    if (!coordinates || !coordinates.latitude || !coordinates.longitude) {
+      return
+    }
     setIsCheckingZone(true)
     const response = await getAddress(coordinates.latitude, coordinates.longitude)
     setLocation({
@@ -108,6 +112,10 @@ export default function CurrentLocation() {
     const matchingCity = checkLocationInCities(cl_p, filterCities())
     if (matchingCity) {
       try {
+        if (!cl_p || !cl_p.latitude || !cl_p.longitude) {
+          setIsCheckingZone(false)
+          return
+        }
         const response = await getAddress(cl_p.latitude, cl_p.longitude)
         // console.log("Fetched Address Data:", response);
         const locationData = {
@@ -150,6 +158,11 @@ export default function CurrentLocation() {
 
     if (error) {
       // console.log("Location error:",message, error)
+      setLoading(false)
+      return
+    }
+
+    if (!coords || !coords.latitude || !coords.longitude) {
       setLoading(false)
       return
     }
@@ -220,20 +233,23 @@ export default function CurrentLocation() {
     longitudeDelta: 130
   }
 
-  const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
-  if (!connect) return <ErrorView refetchFunctions={[]} />
+  if (!connect) {
+    return <ErrorView refetchFunctions={[]} />
+  }
 
-  return !currentLocation && !isInitialLoading
-    ? (
-    <View style={[allowedLocationStyles.container, { backgroundColor: currentTheme.themeBackground }]}>
-      <Text style={allowedLocationStyles.title}>Enable Location Services</Text>
-      <Text style={allowedLocationStyles.description}>We need access to your location to show nearby restaurants and provide accurate delivery services.</Text>
-      <TouchableOpacity style={allowedLocationStyles.button} onPress={onRequestPermissionHandler}>
-        <Text style={allowedLocationStyles.buttonText}>Allow Location Access</Text>
-      </TouchableOpacity>
-    </View>
-      )
-    : (
+  if (!currentLocation && !isInitialLoading) {
+    return (
+      <View style={[allowedLocationStyles.container, { backgroundColor: currentTheme.themeBackground }]}>
+        <Text style={allowedLocationStyles.title}>Enable Location Services</Text>
+        <Text style={allowedLocationStyles.description}>We need access to your location to show nearby restaurants and provide accurate delivery services.</Text>
+        <TouchableOpacity style={allowedLocationStyles.button} onPress={onRequestPermissionHandler}>
+          <Text style={allowedLocationStyles.buttonText}>Allow Location Access</Text>
+        </TouchableOpacity>
+      </View>
+    )
+  }
+
+  return (
     <View
       style={[
         styles().flex,
@@ -320,7 +336,7 @@ export default function CurrentLocation() {
 
       <ModalDropdown theme={currentTheme} visible={citiesModalVisible} onItemPress={handleMarkerPress} onClose={() => setCitiesModalVisible(false)} />
     </View>
-      )
+  )
 }
 
 const allowedLocationStyles = StyleSheet.create({

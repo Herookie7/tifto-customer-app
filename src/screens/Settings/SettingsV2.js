@@ -307,7 +307,9 @@ function Settings(props) {
       message: t('errorInProfile')
     })
   }
-  if (loadingProfile) return <Spinner />
+  if (loadingProfile) {
+    return <Spinner />
+  }
   return (
     <SafeAreaView
       edges={['bottom', 'left', 'right']}

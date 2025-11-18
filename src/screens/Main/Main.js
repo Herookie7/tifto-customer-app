@@ -176,15 +176,16 @@ function Main(props) {
 
     const { error, coords } = await getCurrentLocation()
     console.log('getCurrentLocation result:', { error, coords })
-    console.log('coords', coords)
-    console.log('coords', coords.latitude)
-    console.log('coords', coords.longitude)
-
+    
     if (!coords || !coords.latitude || !coords.longitude) {
       console.error('Invalid coordinates:', coords)
       setBusy(false)
       return
     }
+    
+    console.log('coords', coords)
+    console.log('coords', coords.latitude)
+    console.log('coords', coords.longitude)
 
     try {
       // Fetch the address using the geocoding hook
@@ -219,6 +220,9 @@ function Main(props) {
   const handleMarkerPress = async(coordinates) => {
     setCitiesModalVisible(false)
     // setIsCheckingZone(true)
+    if (!coordinates || !coordinates.latitude || !coordinates.longitude) {
+      return
+    }
     const response = await getAddress(coordinates.latitude, coordinates.longitude)
     setLocation({
       label: 'Location',
@@ -299,7 +303,9 @@ function Main(props) {
     </View>
   )
 
-  if (error) return <ErrorView />
+  if (error) {
+    return <ErrorView />
+  }
 
   const groceryorders = data?.nearByRestaurantsPreview?.restaurants?.filter((restaurant) => restaurant.shopType === 'grocery')
 
