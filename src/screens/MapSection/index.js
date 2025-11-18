@@ -82,9 +82,9 @@ export default function MapSection() {
         }}
       >
         {location && location.latitude && location.longitude && (
-          <Marker coordinate={location} title='Current Address'>
-            <Image source={require('../../assets/images/user.png')} style={styles().userMarkerImage} />
-          </Marker>
+        <Marker coordinate={location} title='Current Address'>
+          <Image source={require('../../assets/images/user.png')} style={styles().userMarkerImage} />
+        </Marker>
         )}
         {restaurants &&
           restaurants?.map((rest, index) => {

@@ -176,7 +176,7 @@ function Main(props) {
 
     const { error, coords } = await getCurrentLocation()
     console.log('getCurrentLocation result:', { error, coords })
-    
+
     if (!coords || !coords.latitude || !coords.longitude) {
       console.error('Invalid coordinates:', coords)
       setBusy(false)

@@ -100,9 +100,9 @@ const useEmailOtp = (isPhoneExists) => {
                 if (signInResult.success && signInResult.idToken) {
                   await setFirebaseTokenAsync(signInResult.idToken)
                 }
-              } else {
+            } else {
                 console.log('Firebase sign-up error', result.error)
-              }
+            }
             } else if (result.success && result.idToken) {
               await setFirebaseTokenAsync(result.idToken)
             }
