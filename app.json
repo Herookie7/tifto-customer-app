@@ -155,6 +155,7 @@
       "eas": {
         "projectId": "c200e77c-656c-4d34-bf15-38baab1fdaef"
       },
+      "googleWebClientId": "253211113708-2cu4ru93vr8aslbs2ut114bkgg1cfmfk.apps.googleusercontent.com",
       "FIREBASE_API_KEY": "AIzaSyCmiC7sAVx5DjMPACwci-L74qww3uNxna4",
       "FIREBASE_AUTH_DOMAIN": "tifto-prod.firebaseapp.com",
       "FIREBASE_PROJECT_ID": "tifto-prod",

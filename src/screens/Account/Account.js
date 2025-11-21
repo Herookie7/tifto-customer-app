@@ -351,9 +351,13 @@ function Account(props) {
     })
   }
 
-  if (loadingProfile || spinnerLoading) return <Spinner backColor={currentTheme.CustomLoadingBG} spinnerColor={currentTheme.main} />
+  if (loadingProfile || spinnerLoading) {
+    return (<Spinner backColor={currentTheme.CustomLoadingBG} spinnerColor={currentTheme.main} />);
+  }
 
-  if (!connect) return <ErrorView refetchFunctions={[]} />
+  if (!connect) {
+    return (<ErrorView refetchFunctions={[]} />);
+  }
 
   return (
     <>

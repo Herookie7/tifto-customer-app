@@ -54,7 +54,9 @@ function ForgotPassword(props) {
   }, [props?.navigation])
 
   const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
-  if (!connect) return <ErrorView refetchFunctions={[]} />
+  if (!connect) {
+    return (<ErrorView refetchFunctions={[]} />);
+  }
 
   return (
     <SafeAreaView style={styles(currentTheme).safeAreaViewStyles}>

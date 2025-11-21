@@ -304,7 +304,7 @@ function Main(props) {
   )
 
   if (error) {
-    return <ErrorView />
+    return (<ErrorView />);
   }
 
   const groceryorders = data?.nearByRestaurantsPreview?.restaurants?.filter((restaurant) => restaurant.shopType === 'grocery')

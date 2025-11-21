@@ -70,7 +70,9 @@ function About(props) {
   const typeName = restaurantObject.__typename
   console.log(RestAbout)
 
-  if (!connect) return <ErrorView refetchFunctions={[]} />
+  if (!connect) {
+    return (<ErrorView refetchFunctions={[]} />);
+  }
   return (
     <SafeAreaView style={styles(currentTheme).safeAreaViewStyles}>
       <StatusBar backgroundColor={currentTheme.themeBackground} barStyle={themeContext.ThemeValue === 'Dark' ? 'light-content' : 'dark-content'} />

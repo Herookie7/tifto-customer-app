@@ -52,8 +52,12 @@ function TopBrands(props) {
     </TouchableOpacity>
   )
 
-  if (loading) return <TopBrandsLoadingUI />
-  if (error) return <Text style={styles().margin}>Error: {error.message}</Text>
+  if (loading) {
+    return (<TopBrandsLoadingUI />);
+  }
+  if (error) {
+    return (<Text style={styles().margin}>Error: {error.message}</Text>);
+  }
 
   const restaurantBrands = data?.topRatedVendorsPreview?.filter((item) => item.shopType === 'restaurant')
 

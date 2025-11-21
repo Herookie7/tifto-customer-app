@@ -244,7 +244,9 @@ function Cart(props) {
   }
 
   const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
-  if (!connect) return <ErrorView refetchFunctions={[]} />
+  if (!connect) {
+    return (<ErrorView refetchFunctions={[]} />);
+  }
 
   function emptyCart() {
     return (

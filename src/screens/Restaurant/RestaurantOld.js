@@ -373,7 +373,9 @@ function Restaurant(props) {
       </View>
     )
   }
-  if (error) return <TextError text={JSON.stringify(error)} />
+  if (error) {
+    return (<TextError text={JSON.stringify(error)} />);
+  }
   const restaurant = data.restaurant
   const allDeals = restaurant.categories.filter((cat) => cat.foods.length)
   const deals = allDeals.map((c, index) => ({

@@ -269,7 +269,9 @@ function Main(props) {
     )
   }
 
-  if (error) return <TextError text={t('networkError')} />
+  if (error) {
+    return (<TextError text={t('networkError')} />);
+  }
 
   if (loading || mutationLoading || loadingOrders) return loadingScreen()
 
@@ -318,7 +320,9 @@ function Main(props) {
   }))
 
   const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
-  if (!connect) return <ErrorView refetchFunctions={[refetch]} />
+  if (!connect) {
+    return (<ErrorView refetchFunctions={[refetch]} />);
+  }
   return (
     <>
       <SafeAreaView edges={['bottom', 'left', 'right']} style={[styles().flex, { backgroundColor: 'black' }]}>

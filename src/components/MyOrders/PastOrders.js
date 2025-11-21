@@ -32,7 +32,9 @@ function emptyViewPastOrders() {
       />
     )
   }
-  if (errorOrders) return <TextError text={errorOrders.message} />
+  if (errorOrders) {
+    return (<TextError text={errorOrders.message} />);
+  }
   else {
     const hasActiveOrders =
       orders.filter((o) => orderStatusActive.includes(o.orderStatus)).length > 0
@@ -81,7 +83,9 @@ const PastOrders = ({
   if (loading) {
     return <></>
   }
-  if (error) return <TextError text={error.message} />
+  if (error) {
+    return (<TextError text={error.message} />);
+  }
 
   return (
     <FlatList

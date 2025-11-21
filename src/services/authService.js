@@ -1,5 +1,6 @@
 import * as Google from 'expo-auth-session/providers/google'
 import * as WebBrowser from 'expo-web-browser'
+import { makeRedirectUri } from 'expo-auth-session'
 import { GoogleAuthProvider, signInWithCredential, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInAnonymously, signOut as firebaseSignOut } from 'firebase/auth'
 import { firebaseAuth } from './firebase'
 import Constants from 'expo-constants'
@@ -8,11 +9,17 @@ import Constants from 'expo-constants'
 WebBrowser.maybeCompleteAuthSession()
 
 /**
- * Get Firebase Web Client ID from app config
+ * Get Firebase config from app config
  */
-const getFirebaseWebClientId = () => {
+const getFirebaseConfig = () => {
   const extra = Constants.expoConfig?.extra || {}
-  return extra.FIREBASE_WEB_CLIENT_ID || '253211113708-2cu4ru93vr8aslbs2ut114bkgg1cfmfk.apps.googleusercontent.com'
+  const firebase = extra.firebase || {}
+  return {
+    webClientId: firebase.webClientId || '253211113708-2cu4ru93vr8aslbs2ut114bkgg1cfmfk.apps.googleusercontent.com',
+    androidClientId: firebase.androidClientId || '253211113708-n9lr31biog65897o28s295e7mngdhd8a.apps.googleusercontent.com',
+    expoRedirectUri: firebase.expoRedirectUri || 'https://auth.expo.io/@herookie7/tifto',
+    redirectUri: firebase.redirectUri || 'com.tifto.customer:/oauthredirect'
+  }
 }
 
 /**
@@ -20,10 +27,10 @@ const getFirebaseWebClientId = () => {
  * This must be called at the component level, not inside a function
  */
 export const useGoogleAuthRequest = () => {
-  const webClientId = getFirebaseWebClientId()
   return Google.useAuthRequest({
-    clientId: webClientId,
-    scopes: ['profile', 'email', 'openid']
+    clientId: Constants.expoConfig.extra.googleWebClientId,
+    redirectUri: makeRedirectUri({ native: 'com.tifto.customer:/oauthredirect' }),
+    scopes: ['profile', 'email']
   })
 }
 
@@ -35,14 +42,14 @@ export const useGoogleAuthRequest = () => {
 export const processGoogleSignIn = async(response) => {
   try {
     if (response?.type === 'success') {
-      const { id_token } = response.params
+      const idToken = response.authentication?.idToken
       
-      if (!id_token) {
+      if (!idToken) {
         throw new Error('No ID token received from Google')
       }
 
       // Create Firebase credential from Google ID token
-      const credential = GoogleAuthProvider.credential(id_token)
+      const credential = GoogleAuthProvider.credential(idToken)
       
       // Sign in to Firebase with Google credential
       const userCredential = await signInWithCredential(firebaseAuth, credential)

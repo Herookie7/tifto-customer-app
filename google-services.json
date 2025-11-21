@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "253211113708-n9lr31biog65897o28s295e7mngdhd8a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tifto.customer",
+            "certificate_hash": "de0899706a7793a6b3baff85d2936a7fc47fd9f9"
+          }
+        },
+        {
           "client_id": "253211113708-2cu4ru93vr8aslbs2ut114bkgg1cfmfk.apps.googleusercontent.com",
           "client_type": 3
         }

@@ -129,7 +129,9 @@ function MyOrders(props) {
   }
 
   const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
-  if (!connect) return <ErrorView refetchFunctions={[reFetchOrders]} />
+  if (!connect) {
+    return (<ErrorView refetchFunctions={[reFetchOrders]} />);
+  }
   return (
     <>
       <View style={styles(currentTheme).container}>

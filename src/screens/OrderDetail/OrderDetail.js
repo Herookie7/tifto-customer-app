@@ -142,7 +142,9 @@ function OrderDetail(props) {
   const isOrderPending = order?.orderStatus === ORDER_STATUS_ENUM.PENDING
   const isOrderCancelable = isOrderPending
 
-  if (!connect) return <ErrorView refetchFunctions={[]} />
+  if (!connect) {
+    return (<ErrorView refetchFunctions={[]} />);
+  }
 
   return (
     <View style={{ flex: 1 }}>

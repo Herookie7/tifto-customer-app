@@ -146,7 +146,9 @@ const Reviews = ({ navigation, route }) => {
   const percentages = calculatePercentages(reviewGroups, total)
 
   const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
-  if (!connect) return <ErrorView refetchFunctions={[refetch]}/>
+  if (!connect) {
+    return (<ErrorView refetchFunctions={[refetch]}/>);
+  }
   return (
     <View style={{ flex: 1, backgroundColor: currentTheme.themeBackground }}>
       <ScrollView style={[styles.container]}>

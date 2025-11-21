@@ -13,8 +13,12 @@ function TopPicks(props) {
   const themeContext = useContext(ThemeContext)
   const currentTheme = theme[themeContext.ThemeValue]
 
-  if (props?.loading) return <MainLoadingUI />
-  if (props?.error) return <Text style={styles().margin}>Error: {props?.error?.message}</Text>
+  if (props?.loading) {
+    return (<MainLoadingUI />);
+  }
+  if (props?.error) {
+    return (<Text style={styles().margin}>Error: {props?.error?.message}</Text>);
+  }
   return (
     <View style={styles().topPicksSec}>
       <TextDefault numberOfLines={1} textColor={currentTheme.fontFourthColor} bolder H4>

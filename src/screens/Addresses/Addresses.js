@@ -237,7 +237,9 @@ function Addresses() {
   }
 
   const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
-  if (!connect) return <ErrorView refetchFunctions={[refetchProfile]} />
+  if (!connect) {
+    return (<ErrorView refetchFunctions={[refetchProfile]} />);
+  }
 
   return (
     <View style={styles(currentTheme).flex}>

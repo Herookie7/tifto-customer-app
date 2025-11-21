@@ -328,7 +328,9 @@ function ItemDetail(props) {
     return !hasError
   }
 
-  if (!connect) return <ErrorView />
+  if (!connect) {
+    return (<ErrorView />);
+  }
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}

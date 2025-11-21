@@ -86,7 +86,9 @@ const ForceUpdate = () => {
     }
   }
 
-  if (loading) return <Text>Loading...</Text>
+  if (loading) {
+    return (<Text>Loading...</Text>);
+  }
 
   return (
     <Modal

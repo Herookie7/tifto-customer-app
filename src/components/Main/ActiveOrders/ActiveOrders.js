@@ -142,9 +142,15 @@ const ActiveOrders = ({ onActiveOrdersChange }) => {
     setCurrentTime(new Date())
   }
 
-  if (loadingOrders) return null
-  if (errorOrders && !orders) return <TextError text={errorOrders.message} />
-  if (!displayOrders.length) return null
+  if (loadingOrders) {
+    return null;
+  }
+  if (errorOrders && !orders) {
+    return (<TextError text={errorOrders.message} />);
+  }
+  if (!displayOrders.length) {
+    return null;
+  }
   const order = displayOrders[0]
 
   // Calculate real-time remaining time

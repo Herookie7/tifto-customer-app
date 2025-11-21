@@ -30,9 +30,15 @@ function MainRestaurantCard(props) {
     ...theme[themeContext.ThemeValue]
   }
 
-  if (props?.loading) return <MainLoadingUI />
-  if (props?.error) return <Text>Error: {props?.error?.message}</Text>
-  if (props?.orders?.length <= 0) return <></>
+  if (props?.loading) {
+    return (<MainLoadingUI />);
+  }
+  if (props?.error) {
+    return (<Text>Error: {props?.error?.message}</Text>);
+  }
+  if (props?.orders?.length <= 0) {
+    return (<></>);
+  }
   return (
     <View style={styles().orderAgainSec}>
       <View style={{ gap: scale(8) }}>

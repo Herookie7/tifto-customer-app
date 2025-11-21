@@ -67,8 +67,12 @@ const ActiveOrders = () => {
 
   const displayOrders = showAll ? activeOrders : activeOrders.slice(0, 2)
 
-  if (loadingOrders) return <Spinner />
-  if (errorOrders && !orders) return <TextError text={errorOrders.message} />
+  if (loadingOrders) {
+    return (<Spinner />);
+  }
+  if (errorOrders && !orders) {
+    return (<TextError text={errorOrders.message} />);
+  }
   return (
     <>
       <FlatList

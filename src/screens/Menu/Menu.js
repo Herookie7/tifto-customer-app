@@ -418,11 +418,11 @@ function Menu({ route, props }) {
   }
 
   if (!connect) {
-    return <ErrorView refetchFunctions={[refetch]} />
+    return (<ErrorView refetchFunctions={[refetch]} />);
   }
 
   if (loading || mutationLoading || loadingOrders) {
-    return loadingScreen()
+    return (loadingScreen());
   }
 
   // const searchRestaurants = (searchText) => {

@@ -55,7 +55,9 @@ const ActiveOrders = ({ navigation, loading, error, activeOrders }) => {
       />
     )
   }
-  if (error) return <TextError text={error.message} />
+  if (error) {
+    return (<TextError text={error.message} />);
+  }
 
   return (
     <FlatList

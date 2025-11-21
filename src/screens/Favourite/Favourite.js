@@ -123,7 +123,9 @@ function Favourite() {
   }, [navigation])
 
   const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
-  if (!connect) return <ErrorView refetchFunctions={[refetch]} />
+  if (!connect) {
+    return (<ErrorView refetchFunctions={[refetch]} />);
+  }
 
   const emptyView = () => {
     return (
@@ -143,7 +145,9 @@ function Favourite() {
       />
     )
   }
-  if (error) return <ErrorView />
+  if (error) {
+    return (<ErrorView />);
+  }
 
   const favouriteRestaurants = data?.userFavourite?.filter(item => item !== null) || []
   console.log('Favourite Restaurants:', favouriteRestaurants)

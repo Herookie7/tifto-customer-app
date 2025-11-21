@@ -131,7 +131,9 @@ function Profile(props) {
   }, [props?.navigation, showPass, toggleView, themeContext.ThemeValue])
 
   const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
-  if (!connect) return <ErrorView refetchFunctions={[refetch]} />
+  if (!connect) {
+    return (<ErrorView refetchFunctions={[refetch]} />);
+  }
   return (
     <SafeAreaView
       style={{ flex: 1, backgroundColor: currentTheme.themeBackground }}

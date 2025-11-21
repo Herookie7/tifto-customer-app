@@ -103,8 +103,12 @@ function OrderDetail(props) {
       </View>
     )
   }
-  if (loadingOrders || !order) return <Spinner />
-  if (errorOrders) return <TextError text={t('error')} />
+  if (loadingOrders || !order) {
+    return (<Spinner />);
+  }
+  if (errorOrders) {
+    return (<TextError text={t('error')} />);
+  }
   // const remainingTime = Math.floor((order.completionTime - Date.now()) / 1000 / 60)
   return (
     <>

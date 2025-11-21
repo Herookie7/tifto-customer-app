@@ -27,7 +27,9 @@ const ActiveOrders = ({
   if (loading) {
     return <></>
   }
-  if (error) return <TextError text={error.message} />
+  if (error) {
+    return (<TextError text={error.message} />);
+  }
 
   return (
     <React.Fragment>
