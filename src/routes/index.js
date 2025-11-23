@@ -66,6 +66,7 @@ import CategoryPage from '../components/SubCategoryPage/SubCategoryPage'
 import NewRestaurantDetailDesign from '../components/NewRestaurantDetailDesign/RestaurantDetailDesign'
 import { SLIDE_RIGHT_WITH_CURVE_ANIM, SLIDE_UP_RIGHT_ANIMATION, AIMATE_FROM_CENTER, SLIDE_UP_RIGHT_ANIMATION_FIXED_HEADER } from '../utils/constants'
 import * as LocationImport from 'expo-location'
+import LoadingScreen from '../components/LoadingScreen/LoadingScreen'
 
 const NavigationStack = createStackNavigator()
 const Location = createStackNavigator()
@@ -298,7 +299,7 @@ function AppContainer() {
         _id
       })
     },
-    [lastNotificationResponse]
+    [client]
   )
 
   // Handlers
@@ -316,19 +317,20 @@ function AppContainer() {
 
   useEffect(() => {
     init()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
     if (lastNotificationResponse && lastNotificationResponse.notification.request.content.data?.type === 'order' && lastNotificationResponse.actionIdentifier === Notifications.DEFAULT_ACTION_IDENTIFIER) {
       handleNotification(lastNotificationResponse)
     }
-  }, [lastNotificationResponse])
+  }, [lastNotificationResponse, handleNotification])
 
   console.log('-------------')
   console.log('-------------')
   console.log({ permissionState, location })
 
-  if (isLoadingPermission) return
+  if (isLoadingPermission) return <LoadingScreen />
 
   return (
     <SafeAreaProvider>

@@ -4,6 +4,10 @@ import { makeRedirectUri } from 'expo-auth-session'
 import { GoogleAuthProvider, signInWithCredential, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInAnonymously, signOut as firebaseSignOut } from 'firebase/auth'
 import { firebaseAuth } from './firebase'
 import Constants from 'expo-constants'
+import { Platform } from 'react-native'
+
+const REST_BASE_URL = process.env.EXPO_PUBLIC_SERVER_REST_URL ?? process.env.SERVER_REST_URL ?? 'https://ftifto-backend.onrender.com/api/v1'
+console.log('REST TEST:', REST_BASE_URL)
 
 // Complete auth session for expo-auth-session
 WebBrowser.maybeCompleteAuthSession()
@@ -27,11 +31,22 @@ const getFirebaseConfig = () => {
  * This must be called at the component level, not inside a function
  */
 export const useGoogleAuthRequest = () => {
-  return Google.useAuthRequest({
-    clientId: Constants.expoConfig.extra.googleWebClientId,
+  const firebaseConfig = getFirebaseConfig()
+  const webClientId = Constants.expoConfig?.extra?.googleWebClientId || firebaseConfig.webClientId
+  const androidClientId = firebaseConfig.androidClientId
+  
+  const config = {
+    clientId: webClientId,
     redirectUri: makeRedirectUri({ native: 'com.tifto.customer:/oauthredirect' }),
     scopes: ['profile', 'email']
-  })
+  }
+  
+  // Add androidClientId for Android platform
+  if (Platform.OS === 'android' && androidClientId) {
+    config.androidClientId = androidClientId
+  }
+  
+  return Google.useAuthRequest(config)
 }
 
 /**

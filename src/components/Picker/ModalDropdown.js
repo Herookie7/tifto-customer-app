@@ -65,12 +65,20 @@ const ModalDropdown = ({ theme, visible, onItemPress, onClose }) => {
             ? (
             <Spinner backColor={theme.cardBackground} spinnerColor={theme.iconColor} />
               )
-            : (
+            : cities && cities.length > 0
+              ? (
           <FlatList
             data={cities}
             renderItem={renderItem}
             keyExtractor={item => item.id.toString()}
           />
+              )
+              : (
+            <View style={{ paddingTop: 100, paddingBottom: 130, paddingLeft: 50 }}>
+              <TextDefault textColor={theme.gray900} >
+                {t('noCitiesAvailable') || 'No cities available. Please check your connection and try again.'}
+              </TextDefault>
+            </View>
               )}
       </View>
     </Modal>
