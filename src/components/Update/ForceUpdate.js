@@ -22,8 +22,18 @@ const VERSIONS = gql`
 `
 
 const compareVersions = (version1, version2) => {
-  const v1Parts = version1.split('.').map(Number)
-  const v2Parts = version2.split('.').map(Number)
+  // Handle null or undefined versions
+  if (!version1 || !version2) {
+    console.warn('compareVersions: One or both versions are null/undefined', { version1, version2 });
+    return 0; // Return 0 (equal) if either version is missing
+  }
+
+  // Ensure versions are strings
+  const v1Str = String(version1);
+  const v2Str = String(version2);
+
+  const v1Parts = v1Str.split('.').map(Number)
+  const v2Parts = v2Str.split('.').map(Number)
 
   for (let i = 0; i < Math.max(v1Parts.length, v2Parts.length); i++) {
     const v1 = v1Parts[i] || 0
@@ -58,13 +68,20 @@ const ForceUpdate = () => {
       if (data?.getVersions && currentVersion) {
         const { customerAppVersion } = data.getVersions
 
+        // Check if customerAppVersion exists
+        if (!customerAppVersion) {
+          console.warn('ForceUpdate: customerAppVersion is missing');
+          return;
+        }
+
         // New Version
         const new_version =
           Platform.OS === 'ios'
             ? customerAppVersion.ios
             : customerAppVersion.android
 
-        if (compareVersions(currentVersion, new_version) < 0) {
+        // Only compare if new_version exists and is not null
+        if (new_version && currentVersion && compareVersions(currentVersion, new_version) < 0) {
           setIsUpdateModalVisible(true)
         }
       }
