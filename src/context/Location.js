@@ -83,7 +83,11 @@ export const LocationProvider = ({ children }) => {
     
     if (!loading && data?.zones) {
       try {
-        const fetchedZones = data.zones || []
+        // Filter only active zones
+        const fetchedZones = (data.zones || []).filter(zone => zone.isActive === true)
+        
+        console.log('LocationProvider: Total zones from API:', data.zones?.length || 0);
+        console.log('LocationProvider: Active zones:', fetchedZones.length);
 
         // Function to calculate centroid of a polygon
         const calculateCentroid = (coordinates) => {

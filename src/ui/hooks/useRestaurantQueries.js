@@ -84,8 +84,8 @@ export const useRestaurantQueries = (queryType, location, selectedType) => {
   const query = getQuery(queryType)
 
   const queryVariables = {
-    longitude: location.longitude || null,
-    latitude: location.latitude || null
+    longitude: location?.longitude || null,
+    latitude: location?.latitude || null
   }
 
   if (['grocery', 'restaurant'].includes(queryType)) {
@@ -95,6 +95,7 @@ export const useRestaurantQueries = (queryType, location, selectedType) => {
 
   const { data, refetch, networkStatus, loading, error } = useQuery(query, {
     variables: queryVariables,
+    skip: !location || (location && !location.longitude && !location.latitude && queryType !== 'orderAgain' && queryType !== 'topPicks' && queryType !== 'topBrands'),
     onCompleted: (data) => {
       getResult(queryType, data, setRestaurantData, setAllData, selectedType)
     },
