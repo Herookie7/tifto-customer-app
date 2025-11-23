@@ -177,6 +177,7 @@ function Checkout(props) {
 
   const [selectedTip, setSelectedTip] = useState()
   const inset = useSafeAreaInsets()
+  const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
 
   function onTipping() {
     if (isNaN(tipAmount)) FlashMessage({ message: t('invalidAmount') })
@@ -298,10 +299,6 @@ function Checkout(props) {
     }
   }, [data])
 
-  const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
-  if (!connect) {
-    return (<ErrorView refetchFunctions={[]} />);
-  }
   const showAvailablityMessage = () => {
     Alert.alert(
       '',
@@ -684,6 +681,11 @@ function Checkout(props) {
   }
   let deliveryTime = Math.floor((orderDate - Date.now()) / 1000 / 60)
   if (deliveryTime < 1) deliveryTime += restaurant?.deliveryTime
+  
+  // Early returns AFTER all hooks
+  if (!connect) {
+    return (<ErrorView refetchFunctions={[]} />);
+  }
   if (loading || loadingData || loadingTip || mutateOrderLoading || loadingOrder) return loadginScreen()
 
   return (

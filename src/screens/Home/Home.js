@@ -67,6 +67,7 @@ function Main(props) {
   })
 
   const { onScroll /* Event handler */, containerPaddingTop /* number */, scrollIndicatorInsetTop /* number */, translateY } = useCollapsibleSubHeader()
+  const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
 
   useFocusEffect(() => {
     if (Platform.OS === 'android') {
@@ -319,7 +320,7 @@ function Main(props) {
     restaurants: sec.restaurants.map((id) => restaurants.filter((res) => res._id === id)).flat()
   }))
 
-  const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
+  // Early returns AFTER all hooks
   if (!connect) {
     return (<ErrorView refetchFunctions={[refetch]} />);
   }

@@ -90,6 +90,7 @@ function Cart(props) {
 
   const [selectedTip, setSelectedTip] = useState()
   const modalRef = useRef(null)
+  const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
 
   useEffect(() => {
     if (tip) {
@@ -243,11 +244,6 @@ function Cart(props) {
     setLoadingData(false)
   }
 
-  const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
-  if (!connect) {
-    return (<ErrorView refetchFunctions={[]} />);
-  }
-
   function emptyCart() {
     return (
       <View style={styles().subContainerImage}>
@@ -317,6 +313,11 @@ function Cart(props) {
     if (modal) {
       modal.open()
     }
+  }
+  
+  // Early returns AFTER all hooks
+  if (!connect) {
+    return (<ErrorView refetchFunctions={[]} />);
   }
   if (loading || loadingData || loadingTip) return loadginScreen()
 
