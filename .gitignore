@@ -64,4 +64,11 @@ buck-out/
 .expo/
 web-build/
 
+# Sensitive files - DO NOT COMMIT
+google-service-account.json
+google-service-account*.json
+*.keystore
+!debug.keystore
+@herookie07__tifto.jks
+
 # @end expo-cli
