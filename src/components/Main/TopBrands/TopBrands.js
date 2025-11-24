@@ -28,7 +28,8 @@ function TopBrands(props) {
     variables: {
       latitude: location?.latitude,
       longitude: location?.longitude
-    }
+    },
+    skip: !location || !location.latitude || !location.longitude
   })
   const RenderItem = ({ item }) => (
     <TouchableOpacity style={styles().topbrandsContainer} onPress={() => navigation.navigate('Restaurant', { ...item })}>

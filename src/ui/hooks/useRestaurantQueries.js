@@ -93,9 +93,14 @@ export const useRestaurantQueries = (queryType, location, selectedType) => {
     queryVariables.ip = null
   }
 
+  // Skip query if location is required but not available
+  // For queries that require latitude/longitude (orderAgain, topPicks, topBrands), skip if location is missing
+  const requiresLocation = ['orderAgain', 'topPicks', 'topBrands'].includes(queryType)
+  const hasValidLocation = location && location.latitude && location.longitude
+  
   const { data, refetch, networkStatus, loading, error } = useQuery(query, {
     variables: queryVariables,
-    skip: !location || (location && !location.longitude && !location.latitude && queryType !== 'orderAgain' && queryType !== 'topPicks' && queryType !== 'topBrands'),
+    skip: requiresLocation ? !hasValidLocation : (!location || (!location.longitude && !location.latitude)),
     onCompleted: (data) => {
       getResult(queryType, data, setRestaurantData, setAllData, selectedType)
     },

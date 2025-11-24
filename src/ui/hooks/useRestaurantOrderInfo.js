@@ -13,11 +13,12 @@ export default function useHomeRestaurants() {
 
   const recentOrderRestaurants = useQuery(recentOrderRestaurantsQuery, {
     variables: { latitude: location?.latitude, longitude: location?.longitude },
-    skip: !isLoggedIn
+    skip: !isLoggedIn || !location || !location.latitude || !location.longitude
   })
 
   const mostOrderedRestaurants = useQuery(mostOrderedRestaurantsQuery, {
-    variables: { latitude: location?.latitude, longitude: location?.longitude }
+    variables: { latitude: location?.latitude, longitude: location?.longitude },
+    skip: !location || !location.latitude || !location.longitude
   })
 
   const orderLoading =
