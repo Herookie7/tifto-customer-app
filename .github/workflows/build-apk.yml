@@ -35,35 +35,28 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Generate Android native code
-        run: |
-          npx expo prebuild --platform android --clean
-          echo "Android folder generated successfully"
+      - name: Install EAS CLI
+        run: npm install -g eas-cli
 
-      - name: Verify Android folder exists
-        run: |
-          if [ ! -d "android" ]; then
-            echo "Error: android folder was not generated"
-            exit 1
-          fi
-          ls -la android/
+      - name: Generate Android native code
+        run: npx expo prebuild --platform android --clean
 
       - name: Configure Gradle
         working-directory: ./android
         run: |
           chmod +x gradlew
-          ./gradlew --version || echo "Gradle version check completed"
+          ./gradlew --version
 
-      - name: Build APK (Debug)
+      - name: Build APK (Release - Production)
         working-directory: ./android
         run: |
-          ./gradlew assembleDebug --no-daemon --stacktrace
+          ./gradlew assembleRelease --no-daemon
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: app-debug
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          name: app-release
+          path: android/app/build/outputs/apk/release/app-release.apk
           retention-days: 30
           if-no-files-found: error
 
