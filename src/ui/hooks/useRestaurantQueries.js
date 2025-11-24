@@ -66,7 +66,7 @@ const HEADING = {
   orderAgain: 'Order Again',
   topPicks: 'Top Picks',
   topBrands: 'Top Brands',
-  grocery: 'All Grocery',
+  grocery: 'All Tiffin Centers',
   restaurant: 'All Restaurant'
 }
 
@@ -74,7 +74,7 @@ const SUB_HEADING = {
   orderAgain: 'From your previous orders',
   topPicks: 'Top picked restaurants for you',
   topBrands: 'Top brands in your area',
-  grocery: 'Most ordered grocery stores',
+  grocery: 'Most ordered tiffin centers',
   restaurant: 'Most ordered restaurants'
 }
 

@@ -312,7 +312,7 @@ async function registerForPushNotificationsAsync() {
 // async function schedulePushNotification() {
 //   await Notifications.scheduleNotificationAsync({
 //     content: {
-//       title: "You've got mail! 📬",
+//       title: "You've got mail! ",
 //       body: 'Here is the notification body',
 //       data: { type: NOTIFICATION_TYPES.REVIEW_ORDER, _id: '65e068b2150aab288f2b821f' }
 //     },

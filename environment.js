@@ -16,42 +16,35 @@ const deriveHttpOrigin = (restUrl) =>
 const ensureGraphqlPath = (value) =>
   value.endsWith('graphql') ? value : `${ensureTrailingSlash(value)}graphql`
 
-const DEFAULT_REMOTE_REST = 'https://ftifto-backend.onrender.com/api/v1'
+const REST_BASE_URL = 'https://ftifto-backend.onrender.com/api/v1'
+const GRAPHQL_URL = 'https://ftifto-backend.onrender.com/graphql'
+const WS_GRAPHQL_URL = 'wss://ftifto-backend.onrender.com/graphql'
 
 const resolveRemoteRest = () =>
   process.env.EXPO_PUBLIC_SERVER_REST_URL ??
   process.env.SERVER_REST_URL ??
-  DEFAULT_REMOTE_REST
+  REST_BASE_URL
 
-const resolveRemoteGraphql = (restUrl) =>
-  ensureGraphqlPath(deriveHttpOrigin(restUrl))
+const resolveRemoteGraphql = () =>
+  process.env.EXPO_PUBLIC_GRAPHQL_URL ??
+  GRAPHQL_URL
 
-const resolveRemoteWsGraphql = (restUrl) => {
+const resolveRemoteWsGraphql = () => {
   if (process.env.EXPO_PUBLIC_WS_GRAPHQL_URL) {
     return process.env.EXPO_PUBLIC_WS_GRAPHQL_URL
   }
 
-  const baseSocket =
-    process.env.EXPO_PUBLIC_SOCKET_URL ??
-    process.env.SOCKET_URL
-
-  if (baseSocket) {
+  if (process.env.EXPO_PUBLIC_SOCKET_URL || process.env.SOCKET_URL) {
+    const baseSocket = process.env.EXPO_PUBLIC_SOCKET_URL ?? process.env.SOCKET_URL
     return ensureGraphqlPath(baseSocket)
   }
 
-  const derivedWs = deriveHttpOrigin(restUrl).replace(/^https/, 'wss')
-  return ensureGraphqlPath(derivedWs)
+  return WS_GRAPHQL_URL
 }
 
-const LOCAL_GRAPHQL = 'https://ftifto-backend.onrender.com/graphql'
-const LOCAL_WS_GRAPHQL = 'wss://ftifto-backend.onrender.com/graphql'
-const LOCAL_REST = 'https://ftifto-backend.onrender.com/api/v1'
-
 const REMOTE_REST = resolveRemoteRest()
-const REMOTE_GRAPHQL =
-  process.env.EXPO_PUBLIC_GRAPHQL_URL ??
-  resolveRemoteGraphql(REMOTE_REST)
-const REMOTE_WS_GRAPHQL = resolveRemoteWsGraphql(REMOTE_REST)
+const REMOTE_GRAPHQL = resolveRemoteGraphql()
+const REMOTE_WS_GRAPHQL = resolveRemoteWsGraphql()
 
 const PRODUCTION_CHANNELS = ['production', 'staging', 'preview']
 
@@ -95,24 +88,13 @@ const useEnvVars = () => {
     ]
   )
 
-  const useLocalBackend =
-    __DEV__ && (configuration?.useLocalBackend === true || configuration?.backendMode === 'local')
-
-  if (useLocalBackend) {
-    return {
-      GRAPHQL_URL: LOCAL_GRAPHQL,
-      WS_GRAPHQL_URL: LOCAL_WS_GRAPHQL,
-      SERVER_URL: LOCAL_GRAPHQL,
-      SERVER_REST_URL: LOCAL_REST,
-      ...shared
-    }
-  }
-
+  // Always use production URLs - no localhost fallback
   return {
     GRAPHQL_URL: REMOTE_GRAPHQL,
     WS_GRAPHQL_URL: REMOTE_WS_GRAPHQL,
     SERVER_URL: REMOTE_GRAPHQL,
     SERVER_REST_URL: REMOTE_REST,
+    REST_BASE_URL: REMOTE_REST,
     ...shared
   }
 }

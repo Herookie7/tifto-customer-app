@@ -11,7 +11,18 @@ const GETCONFIGURATION = gql`
 const ConfigurationContext = React.createContext({})
 
 export const ConfigurationProvider = props => {
-  const { loading, data, error } = useQuery(GETCONFIGURATION)
+  const { loading, data, error } = useQuery(GETCONFIGURATION, {
+    errorPolicy: 'all',
+    fetchPolicy: 'cache-and-network',
+    notifyOnNetworkStatusChange: true,
+    onError: (err) => {
+      console.error('ConfigurationProvider: GraphQL error fetching configuration:', err);
+      console.error('ConfigurationProvider: Error details:', err.message, err.graphQLErrors, err.networkError);
+    },
+    onCompleted: (data) => {
+      console.log('ConfigurationProvider: Configuration loaded successfully');
+    }
+  })
 
   const WEB_CLIENT_ID = '967541328677-d46sl62t52g5r3o5m0mnl2hpptr242nl.apps.googleusercontent.com'
   const ANDROID_CLIENT_ID = '967541328677-7264tf7tkdtoufk844rck9mimrve135c.apps.googleusercontent.com'

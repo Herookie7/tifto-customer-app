@@ -124,7 +124,7 @@
       [
         "expo-updates",
         {
-          "username": "herookie7"
+          "username": "herookie07"
         }
       ],
       [
@@ -137,13 +137,7 @@
       "expo-localization",
       "expo-web-browser",
       "expo-video",
-      "expo-apple-authentication",
-      [
-        "expo-tracking-transparency",
-        {
-          "userTrackingPermission": "Allow this app to collect app-related data that can be used for tracking you or your device."
-        }
-      ]
+      "expo-apple-authentication"
     ],
     "runtimeVersion": {
       "policy": "sdkVersion"
@@ -153,18 +147,22 @@
     },
     "extra": {
       "eas": {
-        "projectId": "c200e77c-656c-4d34-bf15-38baab1fdaef"
+        "projectId": "39c5a33b-04de-427b-9fbe-50edc90c3b08"
       },
+      "API_URL": "https://ftifto-backend.onrender.com/api/v1",
+      "GRAPHQL_URL": "https://ftifto-backend.onrender.com/graphql",
       "googleWebClientId": "253211113708-2cu4ru93vr8aslbs2ut114bkgg1cfmfk.apps.googleusercontent.com",
-      "FIREBASE_API_KEY": "AIzaSyCmiC7sAVx5DjMPACwci-L74qww3uNxna4",
-      "FIREBASE_AUTH_DOMAIN": "tifto-prod.firebaseapp.com",
-      "FIREBASE_PROJECT_ID": "tifto-prod",
-      "FIREBASE_STORAGE_BUCKET": "tifto-prod.firebasestorage.app",
-      "FIREBASE_MESSAGING_SENDER_ID": "253211113708",
-      "FIREBASE_APP_ID": "1:253211113708:android:8ae3bc83527d52b4698dc9",
-      "FIREBASE_MEASUREMENT_ID": "",
-      "FIREBASE_WEB_CLIENT_ID": "253211113708-2cu4ru93vr8aslbs2ut114bkgg1cfmfk.apps.googleusercontent.com",
-      "FIREBASE_ANDROID_CLIENT_ID": "253211113708-2cu4ru93vr8aslbs2ut114bkgg1cfmfk.apps.googleusercontent.com"
+      "firebase": {
+        "apiKey": "AIzaSyCmiC7sAVx5DjMPACwci-L74qww3uNxna4",
+        "authDomain": "tifto-prod.firebaseapp.com",
+        "projectId": "tifto-prod",
+        "storageBucket": "tifto-prod.firebasestorage.app",
+        "messagingSenderId": "253211113708",
+        "appId": "1:253211113708:android:8ae3bc83527d52b4698dc9",
+        "measurementId": "",
+        "webClientId": "253211113708-2cu4ru93vr8aslbs2ut114bkgg1cfmfk.apps.googleusercontent.com",
+        "androidClientId": "253211113708-n9lr31biog65897o28s295e7mngdhd8a.apps.googleusercontent.com"
+      }
+    }
   }
-}
 }

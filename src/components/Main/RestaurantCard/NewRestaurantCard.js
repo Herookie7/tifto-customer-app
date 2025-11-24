@@ -18,7 +18,6 @@ import { FlashMessage } from '../../../ui/FlashMessage/FlashMessage'
 import Spinner from '../../Spinner/Spinner'
 import Bicycle from '../../../assets/SVG/Bicycle'
 import { storeSearch } from '../../../utils/recentSearch'
-import Ripple from 'react-native-material-ripple'
 
 const ADD_FAVOURITE = gql`
   ${addFavouriteRestaurant}
@@ -66,6 +65,8 @@ function NewRestaurantCard(props) {
   }
 
   const handleRestaurantClick = () => {
+    console.log('Restaurant clicked:', props?.name, props?._id, props?.shopType)
+    
     if (isRestaurantClosed) {
       Alert.alert(
         '',
@@ -79,6 +80,7 @@ function NewRestaurantCard(props) {
           {
             text: t('seeMenu'),
             onPress: () => {
+              console.log('Navigating to menu (closed restaurant):', props?.shopType)
               if (props.shopType === 'grocery') {
                 navigation.navigate('NewRestaurantDetailDesign', { ...props })
               } else {
@@ -90,6 +92,7 @@ function NewRestaurantCard(props) {
         { cancelable: true }
       )
     } else {
+      console.log('Navigating to restaurant menu:', props?.shopType, props?._id)
       if (props?.shopType === 'grocery') {
         navigation.navigate('NewRestaurantDetailDesign', { ...props })
       } else {
@@ -106,8 +109,9 @@ function NewRestaurantCard(props) {
       props?.fullWidth && { width: '100%' },
       { position: 'relative' }
     ]}>
-      <Ripple
-        rippleColor={'#F5F5F5'}
+      <TouchableOpacity
+        activeOpacity={0.8}
+        onPress={handleRestaurantClick}
         style={[
           { width: '100%', height: '100%' },
           Platform.OS === 'android' && {
@@ -115,12 +119,6 @@ function NewRestaurantCard(props) {
             borderRadius: 15
           }
         ]}
-        activeOpacity={0.8}
-        onPress={handleRestaurantClick}
-        rippleContainerBorderRadius={15}
-        rippleDuration={Platform.OS === 'android' ? 300 : 400}
-        rippleSize={Platform.OS === 'android' ? 150 : 200}
-        disabled={false}
       >
         <View
           style={[
@@ -186,7 +184,7 @@ function NewRestaurantCard(props) {
             </View>
           </View>
         </View>
-      </Ripple>
+      </TouchableOpacity>
 
       <TouchableOpacity
         activeOpacity={0.7}

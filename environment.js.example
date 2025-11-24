@@ -7,22 +7,16 @@ const ensureTrailingSlash = (value) =>
 const deriveHttpOrigin = (restUrl) =>
   ensureTrailingSlash(restUrl.replace(/\/api(?:\/v\d+)?\/?$/, '/'))
 
-const REMOTE_REST = 'https://ftifto-backend.onrender.com/api/v1'
-const REMOTE_GRAPHQL = `${deriveHttpOrigin(REMOTE_REST)}graphql`
-const REMOTE_WS_GRAPHQL = `${deriveHttpOrigin(REMOTE_REST).replace(/^https/, 'wss')}graphql`
-
-const LOCAL_GRAPHQL = 'https://ftifto-backend.onrender.com/graphql'
-const LOCAL_WS_GRAPHQL = 'wss://ftifto-backend.onrender.com/graphql'
-const LOCAL_REST = 'https://ftifto-backend.onrender.com/api/v1'
+const REST_BASE_URL = 'https://ftifto-backend.onrender.com/api/v1'
+const GRAPHQL_URL = 'https://ftifto-backend.onrender.com/graphql'
+const WS_GRAPHQL_URL = 'wss://ftifto-backend.onrender.com/graphql'
 
 /**
  * Rename this file to `environment.js` to override the defaults.
- * Set `USE_LOCAL_BACKEND=true` inside the configuration query if you want to target a local server in development.
+ * All URLs point to production backend - no localhost configuration.
  */
 const useEnvVars = () => {
   const configuration = useContext(ConfigurationContext)
-  const useLocalBackend =
-    __DEV__ && (configuration?.useLocalBackend === true || configuration?.backendMode === 'local')
 
   const shared = {
     IOS_CLIENT_ID_GOOGLE: configuration?.iOSClientID,
@@ -34,21 +28,13 @@ const useEnvVars = () => {
     TEST_OTP: configuration?.testOtp
   }
 
-  if (useLocalBackend) {
-    return {
-      GRAPHQL_URL: LOCAL_GRAPHQL,
-      WS_GRAPHQL_URL: LOCAL_WS_GRAPHQL,
-      SERVER_URL: LOCAL_GRAPHQL,
-      SERVER_REST_URL: LOCAL_REST,
-      ...shared
-    }
-  }
-
+  // Always use production URLs - no localhost fallback
   return {
-    GRAPHQL_URL: REMOTE_GRAPHQL,
-    WS_GRAPHQL_URL: REMOTE_WS_GRAPHQL,
-    SERVER_URL: REMOTE_GRAPHQL,
-    SERVER_REST_URL: REMOTE_REST,
+    GRAPHQL_URL: GRAPHQL_URL,
+    WS_GRAPHQL_URL: WS_GRAPHQL_URL,
+    SERVER_URL: GRAPHQL_URL,
+    SERVER_REST_URL: REST_BASE_URL,
+    REST_BASE_URL: REST_BASE_URL,
     ...shared
   }
 }

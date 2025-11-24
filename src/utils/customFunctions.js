@@ -113,10 +113,14 @@ const isOpen = (restaurant) => {
 
   // Check all time slots for today's timings
   return todaysTimings.times.some((t) => {
-    const startHour = Number(t.startTime[0])
-    const startMinute = Number(t.startTime[1])
-    const endHour = Number(t.endTime[0])
-    const endMinute = Number(t.endTime[1])
+    // Parse time string "HH:MM" format - split by colon
+    const startTimeParts = String(t.startTime).split(':')
+    const endTimeParts = String(t.endTime).split(':')
+    
+    const startHour = Number(startTimeParts[0]) || 0
+    const startMinute = Number(startTimeParts[1]) || 0
+    const endHour = Number(endTimeParts[0]) || 0
+    const endMinute = Number(endTimeParts[1]) || 0
 
     const startTime = startHour * 60 + startMinute // Convert to minutes
     const endTime = endHour * 60 + endMinute // Convert to minutes

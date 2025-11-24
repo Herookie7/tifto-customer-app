@@ -28,12 +28,21 @@ update_version() {
   # Print the server response for debugging
   echo "Response from server: $response"
 
+  # Check if the response contains errors
+  local errors
+  errors=$(echo "$response" | jq -r '.errors // empty')
+  
+  if [ -n "$errors" ] && [ "$errors" != "null" ]; then
+    echo "Error updating version on the server: $errors"
+    exit 1
+  fi
+
   # Check if the response indicates success
   local success
-  success=$(echo "$response" | jq -r '.data.setVersions')
+  success=$(echo "$response" | jq -r '.data.setVersions // empty')
 
-  if [ "$success" == "null" ]; then
-    echo "Error updating version on the server: $(echo "$response" | jq -r '.errors')"
+  if [ -z "$success" ] || [ "$success" == "null" ]; then
+    echo "Error: Unexpected response from server: $response"
     exit 1
   fi
 

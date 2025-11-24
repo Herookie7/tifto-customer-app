@@ -7,10 +7,12 @@ import {
   ApolloLink,
   split,
   concat,
-  Observable
+  Observable,
+  from
 } from '@apollo/client'
 import { getMainDefinition, offsetLimitPagination } from '@apollo/client/utilities'
 import { WebSocketLink } from '@apollo/client/link/ws'
+import { onError } from '@apollo/client/link/error'
 
 import useEnvVars from '../../environment'
 import { calculateDistance } from '../utils/customFunctions'
@@ -22,6 +24,7 @@ const getAuthorizationToken = async() => {
     const currentUser = firebaseAuth.currentUser
     if (currentUser) {
       const idToken = await currentUser.getIdToken()
+      console.log('FIREBASE TOKEN:', idToken)
       setCachedAuthToken(idToken)
       return idToken
     }
@@ -55,6 +58,7 @@ const getAuthorizationToken = async() => {
 
 const setupApollo = () => {
   const { GRAPHQL_URL, WS_GRAPHQL_URL } = useEnvVars()
+  console.log('GRAPHQL TEST:', GRAPHQL_URL)
 
   const cache = useMemo(
     () =>
@@ -173,8 +177,66 @@ const setupApollo = () => {
       return definition.kind === 'OperationDefinition' && definition.operation === 'subscription'
     }, wsLink)
 
+    const errorLink = onError(({ graphQLErrors, networkError, operation, forward }) => {
+      if (graphQLErrors) {
+        graphQLErrors.forEach(({ message, locations, path }) => {
+          console.error('GRAPHQL ERROR:', {
+            message,
+            locations,
+            path,
+            operation: operation.operationName
+          })
+        })
+      }
+
+      if (networkError) {
+        console.error('NETWORK ERROR:', {
+          message: networkError.message,
+          statusCode: networkError.statusCode,
+          operation: operation.operationName,
+          url: GRAPHQL_URL
+        })
+
+        // Retry on network errors (server errors or connection failures)
+        if (networkError.statusCode >= 500 || !networkError.statusCode) {
+          // Server error or connection failure - retry once after 1 second
+          let retryCount = 0
+          const maxRetries = 1
+          
+          if (retryCount < maxRetries) {
+            retryCount++
+            return new Observable((observer) => {
+              const retryTimeout = setTimeout(() => {
+                const subscriber = forward(operation).subscribe({
+                  next: observer.next.bind(observer),
+                  error: (retryError) => {
+                    console.error('Retry failed:', retryError)
+                    observer.error(retryError)
+                  },
+                  complete: observer.complete.bind(observer)
+                })
+                
+                return () => {
+                  if (subscriber) subscriber.unsubscribe()
+                }
+              }, 1000) // Retry after 1 second
+
+              return () => {
+                clearTimeout(retryTimeout)
+              }
+            })
+          }
+        }
+      }
+    })
+
+    const link = from([
+      errorLink,
+      concat(ApolloLink.from([terminatingLink, authLink]), httpLink)
+    ])
+
     return new ApolloClient({
-      link: concat(ApolloLink.from([terminatingLink, authLink]), httpLink),
+      link,
       cache,
       resolvers: {}
     })

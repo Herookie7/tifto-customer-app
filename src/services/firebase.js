@@ -19,7 +19,25 @@ const getFirebaseConfig = () => {
 
 const firebaseConfig = getFirebaseConfig()
 
-const firebaseApp = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0]
-const firebaseAuth = getAuth(firebaseApp)
+let firebaseApp
+let firebaseAuth
+
+try {
+  firebaseApp = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0]
+  firebaseAuth = getAuth(firebaseApp)
+  console.log('Firebase initialized successfully')
+  console.log('Firebase project:', firebaseConfig.projectId)
+} catch (error) {
+  console.error('Firebase initialization error:', error)
+  console.error('Firebase config used:', JSON.stringify(firebaseConfig, null, 2))
+  // Initialize with fallback to prevent app crash
+  // The error will be visible in logs and can be handled by components
+  try {
+    firebaseApp = getApps()[0] || initializeApp(firebaseConfig)
+    firebaseAuth = getAuth(firebaseApp)
+  } catch (fallbackError) {
+    console.error('Firebase fallback initialization also failed:', fallbackError)
+  }
+}
 
 export { firebaseApp, firebaseAuth }

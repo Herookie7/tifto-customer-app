@@ -5,7 +5,7 @@ export default {
     version: '1.0.97',
     description: 'Tifto is a starter kit food ordering app built in React Native using Expo for IOS and Android. It\'s made keeping good aesthetics in mind as well keeping the best coding practices in mind. Its fully customisable to easily help you in your next food delivery project. https://market.nativebase.io/view/react-native-food-delivery-backend-app',
     slug: 'tifto',
-    owner: 'herookie7',
+    owner: 'herookie07',
     experiments: {
       buildCacheProvider: 'eas'
     },
@@ -123,13 +123,7 @@ export default {
       'expo-localization',
       'expo-web-browser',
       'expo-video',
-      'expo-apple-authentication',
-      [
-        'expo-tracking-transparency',
-        {
-          userTrackingPermission: 'Allow this app to collect app-related data that can be used for tracking you or your device.'
-        }
-      ]
+      'expo-apple-authentication'
     ],
     runtimeVersion: {
       policy: 'sdkVersion'
@@ -139,7 +133,7 @@ export default {
     },
     extra: {
       eas: {
-        projectId: 'c200e77c-656c-4d34-bf15-38baab1fdaef'
+        projectId: '39c5a33b-04de-427b-9fbe-50edc90c3b08'
       },
       googleWebClientId: process.env.GOOGLE_WEB_CLIENT_ID,
       // Firebase config from environment variables
@@ -153,7 +147,7 @@ export default {
         measurementId: process.env.FIREBASE_MEASUREMENT_ID || '',
         webClientId: process.env.FIREBASE_WEB_CLIENT_ID || '253211113708-2cu4ru93vr8aslbs2ut114bkgg1cfmfk.apps.googleusercontent.com',
         androidClientId: process.env.FIREBASE_ANDROID_CLIENT_ID || '253211113708-n9lr31biog65897o28s295e7mngdhd8a.apps.googleusercontent.com',
-        expoRedirectUri: process.env.FIREBASE_EXPO_REDIRECT_URI || 'https://auth.expo.io/@herookie7/tifto',
+        expoRedirectUri: process.env.FIREBASE_EXPO_REDIRECT_URI || 'https://auth.expo.io/@herookie07/tifto',
         redirectUri: process.env.FIREBASE_REDIRECT_URI || 'com.tifto.customer:/oauthredirect'
       }
     }

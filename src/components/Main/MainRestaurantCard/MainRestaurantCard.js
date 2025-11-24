@@ -36,8 +36,51 @@ function MainRestaurantCard(props) {
   if (props?.error) {
     return (<Text>Error: {props?.error?.message}</Text>);
   }
-  if (props?.orders?.length <= 0) {
-    return (<></>);
+  // Always show the section header even if no orders
+  if (!props?.orders || props?.orders?.length <= 0) {
+    // Return section with header but no items
+    return (
+      <View style={styles().orderAgainSec}>
+        <View style={{ gap: scale(8) }}>
+          <View style={styles(currentTheme).header}>
+            <View style={styles(currentTheme).row}>
+              <TextDefault
+                numberOfLines={1}
+                textColor={currentTheme.fontFourthColor}
+                bolder
+                H4
+              >
+                {t(props?.title)}
+              </TextDefault>
+              {props?.icon && (
+                <MaterialIcons
+                  name={ICONS[props?.icon]}
+                  size={24}
+                  color={currentTheme.editProfileButton}
+                />
+              )}
+            </View>
+            <Ripple
+              style={styles(currentTheme).seeAllBtn}
+              activeOpacity={0.8}
+              onPress={() => {
+                navigation.navigate('Menu', {
+                  selectedType: props?.selectedType ?? 'restaurant',
+                  queryType: props?.queryType ?? 'restaurant',
+                  shopType: props?.shopType ?? 'restaurant'
+                })
+              }}
+              rippleColor={'#F5F5F5'}
+              rippleDuration={300}
+            >
+              <TextDefault H5 bolder textColor={currentTheme.main}>
+                {t('SeeAll')}
+              </TextDefault>
+            </Ripple>
+          </View>
+        </View>
+      </View>
+    );
   }
   return (
     <View style={styles().orderAgainSec}>

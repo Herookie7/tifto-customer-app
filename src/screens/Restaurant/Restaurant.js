@@ -49,14 +49,13 @@ const FOOD = gql`
 
 // const concat = (...args) => args.join('')
 function Restaurant(props) {
-  const { _id: restaurantId } = props.route.params
   const Analytics = analytics()
   const { t, i18n } = useTranslation()
   const scrollRef = useRef(null)
   const flatListRef = useRef(null)
   const navigation = useNavigation()
   const route = useRoute()
-  const propsData = route.params
+  const propsData = route.params || props.route?.params || {}
   const animation = useSharedValue(0)
   const translationY = useSharedValue(0)
   const circle = useSharedValue(0)
@@ -74,13 +73,22 @@ function Restaurant(props) {
   const [filterData, setFilterData] = useState([])
   const [showSearchResults, setShowSearchResults] = useState(false)
   const { restaurant: restaurantCart, setCartRestaurant, cartCount, addCartItem, addQuantity, clearCart, checkItemCart } = useContext(UserContext)
-  // Use restaurantId from destructured params, or fallback to propsData._id
-  const restaurantIdToFetch = restaurantId || propsData?._id
+  // Safely extract restaurant ID from route params - try multiple possible locations
+  const restaurantIdToFetch = propsData?._id || propsData?.id || props.route?.params?._id || props.route?.params?.id
+  
+  // Debug logging
+  useEffect(() => {
+    console.log('Restaurant Screen - Route params:', route.params);
+    console.log('Restaurant Screen - Props route params:', props.route?.params);
+    console.log('Restaurant Screen - Extracted ID:', restaurantIdToFetch);
+  }, [restaurantIdToFetch, route.params])
+  
   const { data, refetch, networkStatus, loading, error } = useRestaurant(restaurantIdToFetch)
 
   const client = useApolloClient()
   const { data: popularItems } = useQuery(POPULAR_ITEMS, {
-    variables: { restaurantId }
+    variables: { restaurantId: restaurantIdToFetch },
+    skip: !restaurantIdToFetch
   })
 
   const fetchFoodDetails = (itemId) => {

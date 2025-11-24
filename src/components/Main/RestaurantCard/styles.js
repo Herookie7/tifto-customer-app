@@ -12,6 +12,12 @@ const styles = (props = null) =>
       ...alignment.MRsmall,
       backgroundColor: props != null ? props?.cardBackground : '#181818'
     },
+    container: {
+      width: '100%',
+      height: '100%',
+      borderRadius: 15,
+      overflow: 'hidden'
+    },
     overlayContainer: {
       position: 'absolute',
       top: 0,

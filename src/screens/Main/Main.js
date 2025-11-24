@@ -373,76 +373,92 @@ function Main(props) {
                       <View style={{ gap: 16 }}>
                         <View>{isLoggedIn && recentOrderRestaurantsVar && recentOrderRestaurantsVar.length > 0 && <>{orderLoading || isRefreshing ? <MainLoadingUI /> : <MainRestaurantCard orders={sortRestaurantsByOpenStatus(recentOrderRestaurantsVar || [])} loading={orderLoading} error={orderError} title={'Order it again'} queryType='orderAgain' />}</>}</View>
 
-                        <View>{orderLoading || isRefreshing ? <MainLoadingUI /> : <MainRestaurantCard orders={sortRestaurantsByOpenStatus(mostOrderedRestaurantsVar || [])} loading={orderLoading} error={orderError} title={t('Popular right now')} queryType='topPicks' icon='trending' />}</View>
+                        <View><MainRestaurantCard orders={orderLoading || isRefreshing ? [] : sortRestaurantsByOpenStatus(mostOrderedRestaurantsVar || [])} loading={orderLoading || isRefreshing} error={orderError} title={t('Popular right now')} queryType='topPicks' icon='trending' /></View>
                         <View style={{ padding: 15, gap: scale(8) }}>
                           <TextDefault bolder H4 isRTL>
                             {t('I feel like eating...')}
                           </TextDefault>
-                          <FlatList
-                            data={restaurantCuisines ?? []}
-                            renderItem={({ item }) => {
-                              return (
-                                <CollectionCard
-                                  onPress={() => {
-                                    navigation.navigate('Restaurants', {
-                                      collection: item.name
-                                    })
-                                  }}
-                                  image={item?.image ? item?.image : IMAGE_LINK}
-                                  name={item.name}
-                                />
-                              )
-                            }}
-                            keyExtractor={(item, index) => item?._id || `${item?.name}-restaurant-${index}`}
-                            contentContainerStyle={{
-                              flexGrow: 1,
-                              gap: 8,
-                              paddingBottom: 5
-                            }}
-                            showsVerticalScrollIndicator={false}
-                            showsHorizontalScrollIndicator={false}
-                            horizontal={true}
-                            inverted={!!currentTheme?.isRTL}
-                            maintainVisibleContentPosition={{
-                              minIndexForVisible: 0
-                            }}
-                          />
+                          {restaurantCuisines && restaurantCuisines.length > 0 ? (
+                            <FlatList
+                              data={restaurantCuisines}
+                              renderItem={({ item }) => {
+                                return (
+                                  <CollectionCard
+                                    onPress={() => {
+                                      navigation.navigate('Restaurants', {
+                                        collection: item.name
+                                      })
+                                    }}
+                                    image={item?.image ? item?.image : IMAGE_LINK}
+                                    name={item.name}
+                                  />
+                                )
+                              }}
+                              keyExtractor={(item, index) => item?._id || `${item?.name}-restaurant-${index}`}
+                              contentContainerStyle={{
+                                flexGrow: 1,
+                                gap: 8,
+                                paddingBottom: 5
+                              }}
+                              showsVerticalScrollIndicator={false}
+                              showsHorizontalScrollIndicator={false}
+                              horizontal={true}
+                              inverted={!!currentTheme?.isRTL}
+                              maintainVisibleContentPosition={{
+                                minIndexForVisible: 0
+                              }}
+                            />
+                          ) : (
+                            <View style={{ paddingVertical: scale(10) }}>
+                              <TextDefault textColor={currentTheme.fontFifthColor} Normal>
+                                {t('No restaurant categories available')}
+                              </TextDefault>
+                            </View>
+                          )}
                         </View>
                         <View>{loading || isRefreshing ? <MainLoadingUI /> : <MainRestaurantCard shopType='restaurant' orders={sortRestaurantsByOpenStatus(restaurantorders || [])} loading={orderLoading} error={orderError} title={t('Restaurants near you')} queryType='restaurant' icon='restaurant' />}</View>
                         <View style={{ padding: 15, gap: scale(8) }}>
                           <TextDefault bolder H4 isRTL>
                             {t('Fresh finds await...')}
                           </TextDefault>
-                          <FlatList
-                            data={groceryCuisines ?? []}
-                            renderItem={({ item }) => {
-                              return (
-                                <CollectionCard
-                                  onPress={() => {
-                                    navigation.navigate('Store', {
-                                      collection: item.name
-                                    })
-                                  }}
-                                  image={item?.image}
-                                  name={item.name}
-                                />
-                              )
-                            }}
-                            keyExtractor={(item, index) => item?._id || `${item?.name}-grocery-${index}`}
-                            contentContainerStyle={{
-                              flexGrow: 1,
-                              gap: 8,
-                              paddingBottom: 5
-                            }}
-                            showsVerticalScrollIndicator={false}
-                            showsHorizontalScrollIndicator={false}
-                            horizontal={true}
-                            inverted={!!currentTheme?.isRTL}
-                          />
+                          {groceryCuisines && groceryCuisines.length > 0 ? (
+                            <FlatList
+                              data={groceryCuisines}
+                              renderItem={({ item }) => {
+                                return (
+                                  <CollectionCard
+                                    onPress={() => {
+                                      navigation.navigate('Store', {
+                                        collection: item.name
+                                      })
+                                    }}
+                                    image={item?.image}
+                                    name={item.name}
+                                  />
+                                )
+                              }}
+                              keyExtractor={(item, index) => item?._id || `${item?.name}-grocery-${index}`}
+                              contentContainerStyle={{
+                                flexGrow: 1,
+                                gap: 8,
+                                paddingBottom: 5
+                              }}
+                              showsVerticalScrollIndicator={false}
+                              showsHorizontalScrollIndicator={false}
+                              horizontal={true}
+                              inverted={!!currentTheme?.isRTL}
+                            />
+                          ) : (
+                            <View style={{ paddingVertical: scale(10) }}>
+                              <TextDefault textColor={currentTheme.fontFifthColor} Normal>
+                                {t('No grocery categories available')}
+                              </TextDefault>
+                            </View>
+                          )}
                         </View>
-                        <View>{loading ? <MainLoadingUI /> : <MainRestaurantCard shopType='grocery' orders={sortRestaurantsByOpenStatus(groceryorders || [])} loading={orderLoading} error={orderError} title={t('Grocery List')} queryType='grocery' icon='grocery' selectedType='grocery' />}</View>
+                        <View><MainRestaurantCard shopType='grocery' orders={loading ? [] : sortRestaurantsByOpenStatus(groceryorders || [])} loading={loading} error={orderError} title={t('Grocery List')} queryType='grocery' icon='grocery' selectedType='grocery' /></View>
 
-                        <View>{orderLoading ? <MainLoadingUI /> : <MainRestaurantCard shopType='grocery' orders={sortRestaurantsByOpenStatus(mostOrderedRestaurantsVar?.filter((order) => order.shopType === 'grocery') || [])} loading={orderLoading} error={orderError} title={t('Top grocery picks')} queryType='grocery' icon='store' selectedType='grocery' />}</View>
+                        <View><MainRestaurantCard shopType='grocery' orders={orderLoading ? [] : sortRestaurantsByOpenStatus(mostOrderedRestaurantsVar?.filter((order) => order.shopType === 'grocery') || [])} loading={orderLoading} error={orderError} title={t('Top grocery picks')} queryType='grocery' icon='store' selectedType='grocery' /></View>
                       </View>
                       <View style={styles(currentTheme, hasActiveOrders).topBrandsMargin}>{orderLoading ? <TopBrandsLoadingUI /> : <TopBrands />}</View>
                     </ScrollView>
