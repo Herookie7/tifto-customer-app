@@ -15,6 +15,7 @@ import { useNavigation } from '@react-navigation/native'
 import TopBrandsLoadingUI from '../LoadingUI/TopBrandsLoadingUI'
 import NewRestaurantCard from '../RestaurantCard/NewRestaurantCard'
 import { isOpen, sortRestaurantsByOpenStatus } from '../../../utils/customFunctions'
+import { scale } from '../../../utils/scaling'
 
 const { height } = Dimensions.get('window')
 function TopBrands(props) {
@@ -67,26 +68,26 @@ function TopBrands(props) {
   return (
     <View style={styles().mainContainer}>
       {/* Our brands section - always show */}
-      <View style={styles().topbrandsSec}>
-        <View style={styles(currentTheme).header}>
-          <TextDefault numberOfLines={1} textColor={currentTheme.fontFourthColor} bolder H4>
-            {t('Our brands')}
-          </TextDefault>
-          <TouchableOpacity
-            style={styles(currentTheme).seeAllBtn}
-            activeOpacity={0.8}
-            onPress={() => {
-              navigation.navigate('Menu', {
-                selectedType: '',
-                queryType: 'topBrands'
-              })
-            }}
-          >
-            <TextDefault H5 bolder textColor={currentTheme.main}>
-              {t('SeeAll')}
+        <View style={styles().topbrandsSec}>
+          <View style={styles(currentTheme).header}>
+            <TextDefault numberOfLines={1} textColor={currentTheme.fontFourthColor} bolder H4>
+              {t('Our brands')}
             </TextDefault>
-          </TouchableOpacity>
-        </View>
+            <TouchableOpacity
+              style={styles(currentTheme).seeAllBtn}
+              activeOpacity={0.8}
+              onPress={() => {
+                navigation.navigate('Menu', {
+                  selectedType: '',
+                  queryType: 'topBrands'
+                })
+              }}
+            >
+              <TextDefault H5 bolder textColor={currentTheme.main}>
+                {t('SeeAll')}
+              </TextDefault>
+            </TouchableOpacity>
+          </View>
         {data?.topRatedVendorsPreview && data.topRatedVendorsPreview.length > 0 ? (
           <View style={{ ...alignment.PRsmall }}>
             <FlatList
@@ -107,32 +108,32 @@ function TopBrands(props) {
             <TextDefault textColor={currentTheme.fontFifthColor} Normal>
               {t('No brands available')}
             </TextDefault>
-          </View>
-        )}
+        </View>
+      )}
       </View>
 
       {/* Top Restaurant Brands section - always show */}
-      <View style={styles().topbrandsSec}>
-        <View style={styles(currentTheme).header}>
-          <TextDefault numberOfLines={1} textColor={currentTheme.fontFourthColor} bolder H4>
-            {t('Top Restaurant Brands')}
-          </TextDefault>
-          <TouchableOpacity
-            style={styles(currentTheme).seeAllBtn}
-            activeOpacity={0.8}
-            onPress={() => {
-              navigation.navigate('Menu', {
-                selectedType: 'restaurant',
-                queryType: 'topBrands',
-                shopType: 'restaurant'
-              })
-            }}
-          >
-            <TextDefault H5 bolder textColor={currentTheme.main}>
-              {t('SeeAll')}
+        <View style={styles().topbrandsSec}>
+          <View style={styles(currentTheme).header}>
+            <TextDefault numberOfLines={1} textColor={currentTheme.fontFourthColor} bolder H4>
+              {t('Top Restaurant Brands')}
             </TextDefault>
-          </TouchableOpacity>
-        </View>
+            <TouchableOpacity
+              style={styles(currentTheme).seeAllBtn}
+              activeOpacity={0.8}
+              onPress={() => {
+                navigation.navigate('Menu', {
+                  selectedType: 'restaurant',
+                  queryType: 'topBrands',
+                  shopType: 'restaurant'
+                })
+              }}
+            >
+              <TextDefault H5 bolder textColor={currentTheme.main}>
+                {t('SeeAll')}
+              </TextDefault>
+            </TouchableOpacity>
+          </View>
         {restaurantBrands && restaurantBrands.length > 0 ? (
           <View style={{ ...alignment.PRsmall, height: height * 0.384 }}>
             <FlatList
@@ -154,32 +155,32 @@ function TopBrands(props) {
             <TextDefault textColor={currentTheme.fontFifthColor} Normal>
               {t('No restaurant brands available')}
             </TextDefault>
-          </View>
-        )}
+        </View>
+      )}
       </View>
 
       {/* Top Grocery Brands section - always show */}
-      <View style={styles().topbrandsSec}>
-        <View style={styles(currentTheme).header}>
-          <TextDefault numberOfLines={1} textColor={currentTheme.fontFourthColor} bolder H4>
-            {t('Top Grocery Brands')}
-          </TextDefault>
-          <TouchableOpacity
-            style={styles(currentTheme).seeAllBtn}
-            activeOpacity={0.8}
-            onPress={() => {
-              navigation.navigate('Menu', {
-                selectedType: 'grocery',
-                queryType: 'topBrands',
-                shopType: 'grocery'
-              })
-            }}
-          >
-            <TextDefault H5 bolder textColor={currentTheme.main}>
-              {t('SeeAll')}
+        <View style={styles().topbrandsSec}>
+          <View style={styles(currentTheme).header}>
+            <TextDefault numberOfLines={1} textColor={currentTheme.fontFourthColor} bolder H4>
+              {t('Top Grocery Brands')}
             </TextDefault>
-          </TouchableOpacity>
-        </View>
+            <TouchableOpacity
+              style={styles(currentTheme).seeAllBtn}
+              activeOpacity={0.8}
+              onPress={() => {
+                navigation.navigate('Menu', {
+                  selectedType: 'grocery',
+                  queryType: 'topBrands',
+                  shopType: 'grocery'
+                })
+              }}
+            >
+              <TextDefault H5 bolder textColor={currentTheme.main}>
+                {t('SeeAll')}
+              </TextDefault>
+            </TouchableOpacity>
+          </View>
         {groceryBrands && groceryBrands.length > 0 ? (
           <View style={{ ...alignment.PRsmall }}>
             <FlatList
@@ -201,8 +202,8 @@ function TopBrands(props) {
             <TextDefault textColor={currentTheme.fontFifthColor} Normal>
               {t('No grocery brands available')}
             </TextDefault>
-          </View>
-        )}
+        </View>
+      )}
       </View>
     </View>
   )
