@@ -367,7 +367,9 @@ function Main(props) {
                     </View>
                   ) : restaurantorders?.length > 0 ? (
                     <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false} refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}>
-                      <Banner banners={banners?.banners} />
+                      {banners?.banners && banners.banners.length > 0 && (
+                        <Banner banners={banners.banners} />
+                      )}
                       <View style={{ gap: 16 }}>
                         <View>{isLoggedIn && recentOrderRestaurantsVar && recentOrderRestaurantsVar.length > 0 && <>{orderLoading || isRefreshing ? <MainLoadingUI /> : <MainRestaurantCard orders={sortRestaurantsByOpenStatus(recentOrderRestaurantsVar || [])} loading={orderLoading} error={orderError} title={'Order it again'} queryType='orderAgain' />}</>}</View>
 
