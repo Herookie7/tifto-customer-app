@@ -74,7 +74,9 @@ function Restaurant(props) {
   const [filterData, setFilterData] = useState([])
   const [showSearchResults, setShowSearchResults] = useState(false)
   const { restaurant: restaurantCart, setCartRestaurant, cartCount, addCartItem, addQuantity, clearCart, checkItemCart } = useContext(UserContext)
-  const { data, refetch, networkStatus, loading, error } = useRestaurant(propsData._id)
+  // Use restaurantId from destructured params, or fallback to propsData._id
+  const restaurantIdToFetch = restaurantId || propsData?._id
+  const { data, refetch, networkStatus, loading, error } = useRestaurant(restaurantIdToFetch)
 
   const client = useApolloClient()
   const { data: popularItems } = useQuery(POPULAR_ITEMS, {
@@ -427,8 +429,53 @@ function Restaurant(props) {
       </View>
     )
   }
+  if (!restaurantIdToFetch) {
+    return (
+      <View style={[styles(currentTheme).flex, { justifyContent: 'center', alignItems: 'center', padding: scale(20) }]}>
+        <TextError text="Restaurant ID is missing. Please go back and try again." />
+        <TouchableOpacity 
+          style={{ marginTop: scale(20), padding: scale(10), backgroundColor: currentTheme.main, borderRadius: scale(5) }}
+          onPress={() => navigation.goBack()}
+        >
+          <TextDefault textColor={currentTheme.white} bolder>Go Back</TextDefault>
+        </TouchableOpacity>
+      </View>
+    );
+  }
   if (error) {
-    return (<TextError text={JSON.stringify(error)} />);
+    console.error('Restaurant query error:', error);
+    return (
+      <View style={[styles(currentTheme).flex, { justifyContent: 'center', alignItems: 'center', padding: scale(20) }]}>
+        <TextError text={`Error loading restaurant: ${error.message || JSON.stringify(error)}`} />
+        <TouchableOpacity 
+          style={{ marginTop: scale(20), padding: scale(10), backgroundColor: currentTheme.main, borderRadius: scale(5) }}
+          onPress={() => refetch()}
+        >
+          <TextDefault textColor={currentTheme.white} bolder>Retry</TextDefault>
+        </TouchableOpacity>
+        <TouchableOpacity 
+          style={{ marginTop: scale(10), padding: scale(10), backgroundColor: currentTheme.fontSecondColor, borderRadius: scale(5) }}
+          onPress={() => navigation.goBack()}
+        >
+          <TextDefault textColor={currentTheme.white} bolder>Go Back</TextDefault>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+  if (!data || !data.restaurant) {
+    if (!loading) {
+      return (
+        <View style={[styles(currentTheme).flex, { justifyContent: 'center', alignItems: 'center', padding: scale(20) }]}>
+          <TextError text="Restaurant not found." />
+          <TouchableOpacity 
+            style={{ marginTop: scale(20), padding: scale(10), backgroundColor: currentTheme.main, borderRadius: scale(5) }}
+            onPress={() => navigation.goBack()}
+          >
+            <TextDefault textColor={currentTheme.white} bolder>Go Back</TextDefault>
+          </TouchableOpacity>
+        </View>
+      );
+    }
   }
   const restaurant = data.restaurant
   const allDeals = restaurant?.categories.filter((cat) => cat?.foods?.length)
