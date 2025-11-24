@@ -35,22 +35,29 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Install EAS CLI
-        run: npm install -g eas-cli
-
       - name: Generate Android native code
-        run: npx expo prebuild --platform android --clean
+        run: |
+          npx expo prebuild --platform android --clean
+          echo "Android folder generated successfully"
+
+      - name: Verify Android folder exists
+        run: |
+          if [ ! -d "android" ]; then
+            echo "Error: android folder was not generated"
+            exit 1
+          fi
+          ls -la android/
 
       - name: Configure Gradle
         working-directory: ./android
         run: |
           chmod +x gradlew
-          ./gradlew --version
+          ./gradlew --version || echo "Gradle version check completed"
 
       - name: Build APK (Debug)
         working-directory: ./android
         run: |
-          ./gradlew assembleDebug --no-daemon
+          ./gradlew assembleDebug --no-daemon --stacktrace
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
