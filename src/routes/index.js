@@ -1,72 +1,72 @@
-import React, { useCallback, useContext, useEffect } from 'react'
+import React, { Suspense, useCallback, useContext, useEffect } from 'react'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { NavigationContainer } from '@react-navigation/native'
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import navigationService from './navigationService'
 import * as Notifications from 'expo-notifications'
-import Login from '../screens/Login/Login'
-import Register from '../screens/Register/Register'
-import ForgotPassword from '../screens/ForgotPassword/ForgotPassword'
-import SetYourPassword from '../screens/ForgotPassword/SetYourPassword'
-import CreateAccount from '../screens/CreateAccount/CreateAccount'
-import ItemDetail from '../screens/ItemDetail/ItemDetail'
-import MyOrders from '../screens/MyOrders/MyOrders'
-import Cart from '../screens/Cart/Cart'
-import SaveAddress from '../screens/SaveAddress/SaveAddress'
-import RateAndReview from '../screens/RateAndReview/RateAndReview'
-import Payment from '../screens/Payment/Payment'
-import Help from '../screens/Help/Help'
-import Paypal from '../screens/Paypal/Paypal'
-import StripeCheckout from '../screens/Stripe/StripeCheckout'
-import Profile from '../screens/Profile/Profile'
-import Addresses from '../screens/Addresses/Addresses'
-import NewAddress from '../screens/NewAddress/NewAddress'
-import EditAddress from '../screens/EditAddress/EditAddress'
-import CartAddress from '../screens/CartAddress/CartAddress'
-import FullMap from '../screens/FullMap/FullMap'
-import OrderDetail from '../screens/OrderDetail/OrderDetail'
-import Settings from '../screens/Settings/Settings'
-import HelpBrowser from '../screens/HelpBrowser/HelpBrowser'
-import Main from '../screens/Main/Main'
-import Restaurant from '../screens/Restaurant/Restaurant'
-import About from '../screens/About'
-import SelectLocation from '../screens/SelectLocation'
-import AddNewAddress from '../screens/SelectLocation/AddNewAddress'
-import CurrentLocation from '../screens/CurrentLocation'
 import ThemeContext from '../ui/ThemeContext/ThemeContext'
 import { theme } from '../utils/themeColors'
 import screenOptions from './screenOptions'
 import { LocationContext } from '../context/Location'
-import Reorder from '../screens/Reorder/Reorder'
-import Favourite from '../screens/Favourite/Favourite'
-import ChatScreen from '../screens/ChatWithRider/ChatScreen'
 import { DarkBackButton, RightButton } from '../components/Header/HeaderIcons/HeaderIcons'
-import EmailOtp from '../screens/Otp/Email/EmailOtp'
-import PhoneOtp from '../screens/Otp/Phone/PhoneOtp'
-import ForgotPasswordOtp from '../screens/Otp/ForgotPassword/ForgetPasswordOtp'
-import PhoneNumber from '../screens/PhoneNumber/PhoneNumber'
 import { useApolloClient, gql } from '@apollo/client'
 import { myOrders } from '../apollo/queries'
-import Checkout from '../screens/Checkout/Checkout'
-import Menu from '../screens/Menu/Menu'
-import Reviews from '../screens/Reviews'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import BottomTabIcon from '../components/BottomTabIcon/BottomTabIcon'
 import { useTranslation } from 'react-i18next'
-import Collection from '../screens/Collection/Collection'
-import MapSection from '../screens/MapSection'
-import Account from '../screens/Account/Account'
-import EditName from '../components/Account/EditName/EditName'
-import SearchScreen from '../screens/Search/SearchScreen'
 import UserContext from '../context/User'
-import { Easing, Platform } from 'react-native'
-import CategoryPage from '../components/SubCategoryPage/SubCategoryPage'
-// import HypCheckout from '../screens/Hyp/HypCheckout'
-import NewRestaurantDetailDesign from '../components/NewRestaurantDetailDesign/RestaurantDetailDesign'
+import { Platform } from 'react-native'
 import { SLIDE_RIGHT_WITH_CURVE_ANIM, SLIDE_UP_RIGHT_ANIMATION, AIMATE_FROM_CENTER, SLIDE_UP_RIGHT_ANIMATION_FIXED_HEADER } from '../utils/constants'
 import * as LocationImport from 'expo-location'
 import LoadingScreen from '../components/LoadingScreen/LoadingScreen'
+
+const Login = React.lazy(() => import('../screens/Login/Login'))
+const Register = React.lazy(() => import('../screens/Register/Register'))
+const ForgotPassword = React.lazy(() => import('../screens/ForgotPassword/ForgotPassword'))
+const SetYourPassword = React.lazy(() => import('../screens/ForgotPassword/SetYourPassword'))
+const CreateAccount = React.lazy(() => import('../screens/CreateAccount/CreateAccount'))
+const ItemDetail = React.lazy(() => import('../screens/ItemDetail/ItemDetail'))
+const MyOrders = React.lazy(() => import('../screens/MyOrders/MyOrders'))
+const Cart = React.lazy(() => import('../screens/Cart/Cart'))
+const SaveAddress = React.lazy(() => import('../screens/SaveAddress/SaveAddress'))
+const RateAndReview = React.lazy(() => import('../screens/RateAndReview/RateAndReview'))
+const Payment = React.lazy(() => import('../screens/Payment/Payment'))
+const Help = React.lazy(() => import('../screens/Help/Help'))
+const Paypal = React.lazy(() => import('../screens/Paypal/Paypal'))
+const StripeCheckout = React.lazy(() => import('../screens/Stripe/StripeCheckout'))
+const Profile = React.lazy(() => import('../screens/Profile/Profile'))
+const Addresses = React.lazy(() => import('../screens/Addresses/Addresses'))
+const NewAddress = React.lazy(() => import('../screens/NewAddress/NewAddress'))
+const EditAddress = React.lazy(() => import('../screens/EditAddress/EditAddress'))
+const CartAddress = React.lazy(() => import('../screens/CartAddress/CartAddress'))
+const FullMap = React.lazy(() => import('../screens/FullMap/FullMap'))
+const OrderDetail = React.lazy(() => import('../screens/OrderDetail/OrderDetail'))
+const Settings = React.lazy(() => import('../screens/Settings/Settings'))
+const HelpBrowser = React.lazy(() => import('../screens/HelpBrowser/HelpBrowser'))
+const Main = React.lazy(() => import('../screens/Main/Main'))
+const Restaurant = React.lazy(() => import('../screens/Restaurant/Restaurant'))
+const About = React.lazy(() => import('../screens/About'))
+const SelectLocation = React.lazy(() => import('../screens/SelectLocation'))
+const AddNewAddress = React.lazy(() => import('../screens/SelectLocation/AddNewAddress'))
+const CurrentLocation = React.lazy(() => import('../screens/CurrentLocation'))
+const Reorder = React.lazy(() => import('../screens/Reorder/Reorder'))
+const Favourite = React.lazy(() => import('../screens/Favourite/Favourite'))
+const ChatScreen = React.lazy(() => import('../screens/ChatWithRider/ChatScreen'))
+const EmailOtp = React.lazy(() => import('../screens/Otp/Email/EmailOtp'))
+const PhoneOtp = React.lazy(() => import('../screens/Otp/Phone/PhoneOtp'))
+const ForgotPasswordOtp = React.lazy(() => import('../screens/Otp/ForgotPassword/ForgetPasswordOtp'))
+const PhoneNumber = React.lazy(() => import('../screens/PhoneNumber/PhoneNumber'))
+const Checkout = React.lazy(() => import('../screens/Checkout/Checkout'))
+const Menu = React.lazy(() => import('../screens/Menu/Menu'))
+const Reviews = React.lazy(() => import('../screens/Reviews'))
+const Collection = React.lazy(() => import('../screens/Collection/Collection'))
+const MapSection = React.lazy(() => import('../screens/MapSection'))
+const Account = React.lazy(() => import('../screens/Account/Account'))
+const EditName = React.lazy(() => import('../components/Account/EditName/EditName'))
+const SearchScreen = React.lazy(() => import('../screens/Search/SearchScreen'))
+const CategoryPage = React.lazy(() => import('../components/SubCategoryPage/SubCategoryPage'))
+const NewRestaurantDetailDesign = React.lazy(() => import('../components/NewRestaurantDetailDesign/RestaurantDetailDesign'))
 
 const NavigationStack = createStackNavigator()
 const Location = createStackNavigator()
@@ -334,16 +334,18 @@ function AppContainer() {
 
   return (
     <SafeAreaProvider>
-      <NavigationContainer
-        ref={(ref) => {
-          navigationService.setGlobalRef(ref)
-        }}
-      >
-        {!permissionState?.granted || !location ? <LocationStack /> : <MainNavigator />}
+      <Suspense fallback={<LoadingScreen />}>
+        <NavigationContainer
+          ref={(ref) => {
+            navigationService.setGlobalRef(ref)
+          }}
+        >
+          {!permissionState?.granted || !location ? <LocationStack /> : <MainNavigator />}
 
-        {/* {<LocationStack />}
+          {/* {<LocationStack />}
         <MainNavigator /> */}
-      </NavigationContainer>
+        </NavigationContainer>
+      </Suspense>
     </SafeAreaProvider>
   )
 }

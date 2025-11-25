@@ -6,8 +6,8 @@ import * as Device from 'expo-device'
 import * as Font from 'expo-font'
 import * as Notifications from 'expo-notifications'
 import * as Updates from 'expo-updates'
-import React, { useEffect, useReducer, useRef, useState } from 'react'
-import { ActivityIndicator, BackHandler, I18nManager, LogBox, Platform, SafeAreaView, StatusBar, StyleSheet, Text, View, useColorScheme } from 'react-native'
+import React, { useEffect, useMemo, useReducer, useRef, useState } from 'react'
+import { ActivityIndicator, BackHandler, Platform, StatusBar, StyleSheet, Text, View, useColorScheme } from 'react-native'
 import FlashMessage from 'react-native-flash-message'
 import 'react-native-gesture-handler'
 import * as Sentry from '@sentry/react-native';
@@ -64,7 +64,7 @@ export default function App() {
   const [orderId, setOrderId] = useState()
   const [isUpdating, setIsUpdating] = useState(false)
   const { SENTRY_DSN } = useEnvVars()
-  const client = setupApolloClient()
+  const client = useMemo(() => setupApolloClient(), [])
 
   useKeepAwake()
   // useWatchLocation()
