@@ -66,6 +66,43 @@ function NewRestaurantCard(props) {
   }
 
   const handleRestaurantClick = () => {
+    // Debug: Test if function is called
+    Alert.alert('Debug', `Restaurant clicked: ${props?.name}\nID: ${props?._id}`, [
+      {
+        text: 'Cancel',
+        style: 'cancel'
+      },
+      {
+        text: 'Navigate',
+        onPress: () => {
+          // Validate required props before navigation
+          if (!props?._id) {
+            Alert.alert('Error', 'Restaurant information is missing. Please try again.')
+            return
+          }
+
+          if (isRestaurantClosed) {
+            // Navigate even if closed
+            if (props?.shopType === 'grocery') {
+              navigation.navigate('NewRestaurantDetailDesign', { ...props })
+            } else {
+              navigation.navigate('Restaurant', { ...props })
+            }
+          } else {
+            // For open restaurants, navigate directly
+            if (props?.shopType === 'grocery') {
+              navigation.navigate('NewRestaurantDetailDesign', { ...props })
+            } else {
+              navigation.navigate('Restaurant', { ...props })
+            }
+          }
+        }
+      }
+    ])
+    return
+
+    // Original code below (commented out for testing)
+    /*
     // Validate required props before navigation
     if (!props?._id) {
       Alert.alert('Error', 'Restaurant information is missing. Please try again.')
@@ -133,6 +170,7 @@ function NewRestaurantCard(props) {
     if (props?.isSearch) {
       storeSearch(props?.isSearch)
     }
+    */
   }
   return (
     <View style={[
