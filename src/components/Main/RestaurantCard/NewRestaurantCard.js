@@ -66,8 +66,12 @@ function NewRestaurantCard(props) {
   }
 
   const handleRestaurantClick = () => {
-    console.log('Restaurant clicked:', props?.name, props?._id, props?.shopType)
-    
+    // Ensure we have the required props
+    if (!props?._id) {
+      Alert.alert('Error', 'Restaurant ID is missing')
+      return
+    }
+
     if (isRestaurantClosed) {
       Alert.alert(
         '',
@@ -81,24 +85,62 @@ function NewRestaurantCard(props) {
           {
             text: t('seeMenu'),
             onPress: () => {
-              console.log('Navigating to menu (closed restaurant):', props?.shopType)
-              if (props.shopType === 'grocery') {
-                navigation.navigate('NewRestaurantDetailDesign', { ...props })
-              } else {
-                navigation.navigate('Restaurant', { ...props })
-              }
+              // Use setTimeout to ensure navigation happens after alert dismisses
+              setTimeout(() => {
+                if (props.shopType === 'grocery') {
+                  navigation.navigate('NewRestaurantDetailDesign', { 
+                    _id: props._id,
+                    name: props.name,
+                    image: props.image,
+                    shopType: props.shopType,
+                    ...props 
+                  })
+                } else {
+                  navigation.navigate('Restaurant', { 
+                    _id: props._id,
+                    name: props.name,
+                    image: props.image,
+                    shopType: props.shopType,
+                    ...props 
+                  })
+                }
+              }, 100)
             }
           }
         ],
         { cancelable: true }
       )
     } else {
-      console.log('Navigating to restaurant menu:', props?.shopType, props?._id)
-      if (props?.shopType === 'grocery') {
-        navigation.navigate('NewRestaurantDetailDesign', { ...props })
-      } else {
-        navigation.navigate('Restaurant', { ...props })
-      }
+      // For open restaurants, navigate directly
+      // Temporary: Show alert to test if function is called
+      Alert.alert('Debug', `Opening restaurant: ${props?.name}`, [
+        {
+          text: 'Cancel',
+          style: 'cancel'
+        },
+        {
+          text: 'Open',
+          onPress: () => {
+            if (props?.shopType === 'grocery') {
+              navigation.navigate('NewRestaurantDetailDesign', { 
+                _id: props._id,
+                name: props.name,
+                image: props.image,
+                shopType: props.shopType,
+                ...props 
+              })
+            } else {
+              navigation.navigate('Restaurant', { 
+                _id: props._id,
+                name: props.name,
+                image: props.image,
+                shopType: props.shopType,
+                ...props 
+              })
+            }
+          }
+        }
+      ])
     }
     if (props?.isSearch) {
       storeSearch(props?.isSearch)
@@ -110,21 +152,18 @@ function NewRestaurantCard(props) {
       props?.fullWidth && { width: '100%' },
       { position: 'relative' }
     ]}>
-      <Ripple 
-        rippleColor={'#F5F5F5'} 
+      <TouchableOpacity
+        activeOpacity={0.8}
+        onPress={handleRestaurantClick}
         style={[
-          { width: '100%', height: '100%' },
+          { width: '100%', height: '100%', zIndex: 1 },
           Platform.OS === 'android' && {
             overflow: 'hidden',
             borderRadius: 15
           }
-        ]} 
-        activeOpacity={0.8} 
-        onPress={handleRestaurantClick}
-        rippleContainerBorderRadius={15}
-        rippleDuration={Platform.OS === 'android' ? 300 : 400}
-        rippleSize={Platform.OS === 'android' ? 150 : 200}
+        ]}
         disabled={false}
+        hitSlop={{ top: 5, bottom: 5, left: 5, right: 5 }}
       >
         <View
           style={[
@@ -190,7 +229,7 @@ function NewRestaurantCard(props) {
             </View>
           </View>
         </View>
-      </Ripple>
+      </TouchableOpacity>
       
       <TouchableOpacity
         activeOpacity={0.7}
@@ -208,6 +247,7 @@ function NewRestaurantCard(props) {
           zIndex: 1000,
           elevation: 1000
         }}
+        pointerEvents="box-only"
       >
         <View style={styles(currentTheme).favouriteOverlay}>
           {loadingMutation ? <Spinner size={'small'} backColor={'transparent'} spinnerColor={currentTheme.iconColorDark} /> : <AntDesign name={heart ? 'heart' : 'hearto'} size={scale(15)} color={currentTheme.iconColor} />}
