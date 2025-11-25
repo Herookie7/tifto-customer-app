@@ -66,6 +66,12 @@ function NewRestaurantCard(props) {
   }
 
   const handleRestaurantClick = () => {
+    // Validate required props before navigation
+    if (!props?._id) {
+      Alert.alert('Error', 'Restaurant information is missing. Please try again.')
+      return
+    }
+
     if (isRestaurantClosed) {
       Alert.alert(
         '',
@@ -81,10 +87,22 @@ function NewRestaurantCard(props) {
             onPress: () => {
               // Use setTimeout to ensure navigation happens after alert dismisses
               setTimeout(() => {
-                if (props.shopType === 'grocery') {
-                  navigation.navigate('NewRestaurantDetailDesign', { ...props })
-                } else {
-                  navigation.navigate('Restaurant', { ...props })
+                try {
+                  if (props.shopType === 'grocery') {
+                    navigation.navigate('NewRestaurantDetailDesign', { ...props })
+                  } else {
+                    navigation.navigate('Restaurant', { 
+                      _id: props._id,
+                      name: props.name,
+                      image: props.image,
+                      shopType: props.shopType,
+                      minimumOrder: props.minimumOrder,
+                      tax: props.tax,
+                      ...props 
+                    })
+                  }
+                } catch (navError) {
+                  Alert.alert('Navigation Error', 'Failed to open restaurant. Please try again.')
                 }
               }, 300)
             }
@@ -93,11 +111,23 @@ function NewRestaurantCard(props) {
         { cancelable: true }
       )
     } else {
-      // For open restaurants, navigate directly without alert
-      if (props?.shopType === 'grocery') {
-        navigation.navigate('NewRestaurantDetailDesign', { ...props })
-      } else {
-        navigation.navigate('Restaurant', { ...props })
+      // For open restaurants, navigate directly
+      try {
+        if (props?.shopType === 'grocery') {
+          navigation.navigate('NewRestaurantDetailDesign', { ...props })
+        } else {
+          navigation.navigate('Restaurant', { 
+            _id: props._id,
+            name: props.name,
+            image: props.image,
+            shopType: props.shopType,
+            minimumOrder: props.minimumOrder,
+            tax: props.tax,
+            ...props 
+          })
+        }
+      } catch (navError) {
+        Alert.alert('Navigation Error', 'Failed to open restaurant. Please check your connection and try again.')
       }
     }
     if (props?.isSearch) {
