@@ -19,7 +19,6 @@ import Spinner from '../../Spinner/Spinner'
 import Bicycle from '../../../assets/SVG/Bicycle'
 import { storeSearch } from '../../../utils/recentSearch'
 import Ripple from 'react-native-material-ripple'
-import Ripple from 'react-native-material-ripple'
 
 const ADD_FAVOURITE = gql`
   ${addFavouriteRestaurant}
