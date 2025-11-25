@@ -69,13 +69,15 @@ function Profile(props) {
     return orders.filter((o) => orderStatusActive.includes(o.orderStatus))
   }, [orders])
 
+  const hasLocation = Boolean(location?.latitude && location?.longitude)
   const { data, loading, error, refetch } = useQuery(RESTAURANTS, {
     variables: {
-      longitude: location.longitude || null,
-      latitude: location.latitude || null
+      longitude: location?.longitude || null,
+      latitude: location?.latitude || null
     },
     fetchPolicy: 'network-only',
-    errorPolicy: 'all'
+    errorPolicy: 'all',
+    skip: !hasLocation
   })
   const { orderLoading, orderData } = useHomeRestaurants()
 
@@ -197,7 +199,7 @@ function Profile(props) {
               <View style={styles(currentTheme).line} />
 
               {/* favourite section */}
-              {loading
+              {(loading || !hasLocation)
                 ? (
                 <Spinner
                   size={'small'}

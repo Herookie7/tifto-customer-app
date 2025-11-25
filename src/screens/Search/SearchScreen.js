@@ -87,14 +87,16 @@ const SearchScreen = () => {
     )
   }
 
+  const hasLocation = Boolean(location?.latitude && location?.longitude)
   const { data, refetch, networkStatus, loading, error } = useQuery(RESTAURANTS, {
     variables: {
-      longitude: location.longitude || null,
-      latitude: location.latitude || null,
+      longitude: location?.longitude || null,
+      latitude: location?.latitude || null,
       shopType: null,
       ip: null
     },
-    fetchPolicy: 'network-only'
+    fetchPolicy: 'network-only',
+    skip: !hasLocation
   })
 
   const { data: topRatedData } = useQuery(TOP_RATED_VENDORS, {
@@ -102,7 +104,7 @@ const SearchScreen = () => {
       longitude: location?.longitude || null,
       latitude: location?.latitude || null
     },
-    skip: !location.latitude || !location.longitude
+    skip: !hasLocation
   })
 
   const { data: recentOrderData } = useQuery(RECENT_ORDER_RESTAURANTS, {
@@ -110,7 +112,7 @@ const SearchScreen = () => {
       longitude: location?.longitude || null,
       latitude: location?.latitude || null
     },
-    skip: !location.latitude || !location.longitude
+    skip: !hasLocation
   })
 
   const { data: mostOrderedData } = useQuery(MOST_ORDERED_RESTAURANTS, {
@@ -118,7 +120,7 @@ const SearchScreen = () => {
       longitude: location?.longitude || null,
       latitude: location?.latitude || null
     },
-    skip: !location.latitude || !location.longitude
+    skip: !hasLocation
   })
 
   useEffect(() => {

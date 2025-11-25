@@ -38,13 +38,13 @@ function Location({
   const onLocationPress = (event) => {
     if (screenName === 'checkout') {
       if (addresses && !addresses.length) {
-        if (!location || !location.latitude || !location.longitude) {
+        if (!location || !location?.latitude || !location?.longitude) {
           return
         }
         navigation.navigate('AddNewAddress', {
           prevScreen: 'Checkout',
-          latitude: location.latitude,
-          longitude: location.longitude
+          latitude: location?.latitude,
+          longitude: location?.longitude
         })
       } else {
         navigation.navigate('CartAddress', {

@@ -81,7 +81,7 @@ export default function MapSection() {
           longitudeDelta: 0.0421
         }}
       >
-        {location && location.latitude && location.longitude && (
+        {location?.latitude && location?.longitude && (
         <Marker coordinate={location} title='Current Address'>
           <Image source={require('../../assets/images/user.png')} style={styles().userMarkerImage} />
         </Marker>

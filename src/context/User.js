@@ -95,12 +95,12 @@ export const UserProvider = (props) => {
       } catch (firebaseError) {
         console.log('Firebase sign-out error', firebaseError)
       }
-      if (location._id) {
+      if (location?._id) {
         setLocation({
           label: t('selectedLocation'),
-          latitude: location.latitude,
-          longitude: location.longitude,
-          deliveryAddress: location.deliveryAddress
+          latitude: location?.latitude,
+          longitude: location?.longitude,
+          deliveryAddress: location?.deliveryAddress
         })
       }
       client.cache.evict({

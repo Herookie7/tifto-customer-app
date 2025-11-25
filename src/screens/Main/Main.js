@@ -82,8 +82,8 @@ function Main(props) {
     refetch: refetchRestaurants
   } = useQuery(RESTAURANTS, {
     variables: {
-      longitude: location.longitude || null,
-      latitude: location.latitude || null,
+      longitude: location?.longitude || null,
+      latitude: location?.latitude || null,
       shopType: null,
       ip: null
     },

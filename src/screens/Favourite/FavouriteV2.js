@@ -40,14 +40,16 @@ function Favourite() {
   const themeContext = useContext(ThemeContext)
   const currentTheme = theme[themeContext.ThemeValue]
   const { location } = useContext(LocationContext)
+  const hasLocation = Boolean(location?.latitude && location?.longitude)
   const { data, refetch, networkStatus, loading, error } = useQuery(
     RESTAURANTS,
     {
       variables: {
-        longitude: location.longitude || null,
-        latitude: location.latitude || null
+        longitude: location?.longitude || null,
+        latitude: location?.latitude || null
       },
-      fetchPolicy: 'network-only'
+      fetchPolicy: 'network-only',
+      skip: !hasLocation
     }
   )
   useEffect(() => {
@@ -151,7 +153,7 @@ function Favourite() {
     )
   }
 
-  if (loading) {
+  if (loading || !hasLocation) {
     return (<Spinner />);
   }
   if (error) {

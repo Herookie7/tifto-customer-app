@@ -52,8 +52,8 @@ function Main(props) {
 
   const { data, refetch, networkStatus, loading, error } = useQuery(RESTAURANTS, {
     variables: {
-      longitude: location.longitude || null,
-      latitude: location.latitude || null,
+      longitude: location?.longitude || null,
+      latitude: location?.latitude || null,
       ip: null
     },
     fetchPolicy: 'network-only'
@@ -168,7 +168,7 @@ function Main(props) {
         </View>
       </TouchableOpacity>
       <View style={styles().addressTick}>
-        {location.label === 'currentLocation' && <MaterialIcons name='check' size={scale(15)} color={currentTheme.iconColorPink} />}
+        {location?.label === 'currentLocation' && <MaterialIcons name='check' size={scale(15)} color={currentTheme.iconColorPink} />}
         {busy && <Spinner size={'small'} backColor={currentTheme.lightHorizontalLine} />}
       </View>
     </View>
@@ -360,7 +360,7 @@ function Main(props) {
                       </TextDefault>
                     </View>
                   </TouchableOpacity>
-                  <View style={styles().addressTick}>{address._id === location?._id && ![t('currentLocation'), t('selectedLocation')].includes(location.label) && <MaterialIcons name='check' size={scale(25)} color={currentTheme.iconColorPink} />}</View>
+                  <View style={styles().addressTick}>{address._id === location?._id && ![t('currentLocation'), t('selectedLocation')].includes(location?.label) && <MaterialIcons name='check' size={scale(25)} color={currentTheme.iconColorPink} />}</View>
                 </View>
               )
             }}

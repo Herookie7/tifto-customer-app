@@ -71,6 +71,8 @@ function Checkout(props) {
   const themeContext = useContext(ThemeContext)
   const { location } = useContext(LocationContext)
   const { t, i18n } = useTranslation()
+  const hasLocationCoords = Boolean(location?.latitude && location?.longitude)
+  const hasSavedAddress = Boolean(location?._id)
   const currentTheme = {
     isRTL: i18n.dir() === 'rtl',
     ...theme[themeContext.ThemeValue]
@@ -485,7 +487,7 @@ function Checkout(props) {
       })
       return false
     }
-    if (!isPickup && !location._id) {
+    if (!isPickup && !hasSavedAddress) {
       props?.navigation.navigate('CartAddress')
       return false
     }
@@ -537,7 +539,7 @@ function Checkout(props) {
   }
   async function onPayment() {
     try {
-      if (!location || !location.latitude || !location.longitude) {
+      if (!hasLocationCoords) {
         FlashMessage({
           message: t('locationRequired') || 'Please select a location to continue'
         })
@@ -566,17 +568,17 @@ function Checkout(props) {
             label: 'Current Location',
             deliveryAddress: 'Pickup',
             details: 'User will pick up the order',
-            longitude: '' + location.longitude,
-            latitude: '' + location.latitude
+            longitude: '' + location?.longitude,
+            latitude: '' + location?.latitude
           }
         } else {
           // For delivery, use the selected address
           orderVariables.address = {
-            label: location.label,
-            deliveryAddress: location.deliveryAddress,
-            details: location.details,
-            longitude: '' + location.longitude,
-            latitude: '' + location.latitude
+            label: location?.label,
+            deliveryAddress: location?.deliveryAddress,
+            details: location?.details,
+            longitude: '' + location?.longitude,
+            latitude: '' + location?.latitude
           }
         }
 
