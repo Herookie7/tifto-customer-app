@@ -18,6 +18,7 @@ import { FlashMessage } from '../../../ui/FlashMessage/FlashMessage'
 import Spinner from '../../Spinner/Spinner'
 import Bicycle from '../../../assets/SVG/Bicycle'
 import { storeSearch } from '../../../utils/recentSearch'
+import Ripple from 'react-native-material-ripple'
 
 const ADD_FAVOURITE = gql`
   ${addFavouriteRestaurant}
@@ -109,16 +110,21 @@ function NewRestaurantCard(props) {
       props?.fullWidth && { width: '100%' },
       { position: 'relative' }
     ]}>
-      <TouchableOpacity
-        activeOpacity={0.8}
-        onPress={handleRestaurantClick}
+      <Ripple 
+        rippleColor={'#F5F5F5'} 
         style={[
           { width: '100%', height: '100%' },
           Platform.OS === 'android' && {
             overflow: 'hidden',
             borderRadius: 15
           }
-        ]}
+        ]} 
+        activeOpacity={0.8} 
+        onPress={handleRestaurantClick}
+        rippleContainerBorderRadius={15}
+        rippleDuration={Platform.OS === 'android' ? 300 : 400}
+        rippleSize={Platform.OS === 'android' ? 150 : 200}
+        disabled={false}
       >
         <View
           style={[
@@ -184,8 +190,8 @@ function NewRestaurantCard(props) {
             </View>
           </View>
         </View>
-      </TouchableOpacity>
-
+      </Ripple>
+      
       <TouchableOpacity
         activeOpacity={0.7}
         disabled={loadingMutation}
