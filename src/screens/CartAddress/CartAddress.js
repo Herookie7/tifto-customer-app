@@ -207,6 +207,9 @@ function CartAddresses(props) {
               activeOpacity={0.5}
               style={styles(currentTheme).addButton}
               onPress={() => {
+                if (!location || !location.latitude || !location.longitude) {
+                  return
+                }
                 const latitude = location.latitude
                 const longitude = location.longitude
                 props.navigation.navigate('AddNewAddress', {
@@ -228,19 +231,21 @@ function CartAddresses(props) {
                 activeOpacity={0.5}
                 style={styles(currentTheme).addButton}
                 onPress={() => {
+                  const newLatitude = Number(tempSelectedAddress.location.coordinates[1])
+                  const newLongitude = Number(tempSelectedAddress.location.coordinates[0])
                   setLocation({
                     _id: tempSelectedAddress._id,
                     label: tempSelectedAddress.label,
-                    latitude: Number(tempSelectedAddress.location.coordinates[1]),
-                    longitude: Number(tempSelectedAddress.location.coordinates[0]),
+                    latitude: newLatitude,
+                    longitude: newLongitude,
                     deliveryAddress: tempSelectedAddress.deliveryAddress,
                     details: tempSelectedAddress.details
                   })
                   mutate({ variables: { id: tempSelectedAddress._id } })
                   setSelectedAddress(tempSelectedAddress)
                   props.navigation.navigate('Checkout', {
-                    longitude: +location.longitude,
-                    latitude: +location.latitude,
+                    longitude: +newLongitude,
+                    latitude: +newLatitude,
                     prevScreen: 'CartAddress'
                   })
                 }}

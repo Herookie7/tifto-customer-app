@@ -203,7 +203,7 @@ function Checkout(props) {
   useEffect(() => {
     let isSubscribed = true
     ;(async() => {
-      if (data && !!data?.restaurant) {
+      if (data && !!data?.restaurant && location && location.latitude && location.longitude) {
         const latOrigin = Number(data?.restaurant.location.coordinates[1])
         const lonOrigin = Number(data?.restaurant.location.coordinates[0])
         const latDest = Number(location.latitude)
@@ -537,6 +537,14 @@ function Checkout(props) {
   }
   async function onPayment() {
     try {
+      if (!location || !location.latitude || !location.longitude) {
+        FlashMessage({
+          message: t('locationRequired') || 'Please select a location to continue'
+        })
+        setLoadingOrder(false)
+        return
+      }
+
       if (checkPaymentMethod(configuration.currency)) {
         const items = transformOrder(cart)
         const orderVariables = {

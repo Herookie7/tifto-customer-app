@@ -102,7 +102,7 @@ function Cart(props) {
   useEffect(() => {
     let isSubscribed = true
     ;(async() => {
-      if (data && data?.restaurant) {
+      if (data && data?.restaurant && location && location.latitude && location.longitude) {
         const latOrigin = Number(data?.restaurant.location.coordinates[1])
         const lonOrigin = Number(data?.restaurant.location.coordinates[0])
         const latDest = Number(location.latitude)

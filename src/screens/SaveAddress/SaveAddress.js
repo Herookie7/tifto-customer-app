@@ -63,7 +63,8 @@ function SaveAddress(props) {
       message: t('addressUpdated')
     })
 
-    const address = (createAddress || editAddress)?.addresses.find(a => a.selected) ||
+    const address = (createAddress || editAddress)?.addresses.find(a => a.selected)
+    if (address && locationData && locationData.latitude && locationData.longitude) {
       setLocation({
         _id: address._id,
         label: selectedLabel,
@@ -72,7 +73,8 @@ function SaveAddress(props) {
         longitude: locationData.longitude,
         city: locationData.city
       })
-    if (locationData.prevScreen) {
+    }
+    if (locationData?.prevScreen) {
       navigation.navigate(locationData.prevScreen)
     } else {
       navigation.navigate('Main')
@@ -134,6 +136,11 @@ function SaveAddress(props) {
   const onSelectLocation = () => {
     if (!selectedLabel) {
       Alert.alert('Alert', t('alertLocation'))
+      return
+    }
+
+    if (!locationData || !locationData.longitude || !locationData.latitude) {
+      Alert.alert('Alert', t('invalidLocation') || 'Invalid location data')
       return
     }
 
