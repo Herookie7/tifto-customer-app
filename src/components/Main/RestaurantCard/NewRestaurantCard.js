@@ -66,12 +66,6 @@ function NewRestaurantCard(props) {
   }
 
   const handleRestaurantClick = () => {
-    // Ensure we have the required props
-    if (!props?._id) {
-      Alert.alert('Error', 'Restaurant ID is missing')
-      return
-    }
-
     if (isRestaurantClosed) {
       Alert.alert(
         '',
@@ -88,59 +82,23 @@ function NewRestaurantCard(props) {
               // Use setTimeout to ensure navigation happens after alert dismisses
               setTimeout(() => {
                 if (props.shopType === 'grocery') {
-                  navigation.navigate('NewRestaurantDetailDesign', { 
-                    _id: props._id,
-                    name: props.name,
-                    image: props.image,
-                    shopType: props.shopType,
-                    ...props 
-                  })
+                  navigation.navigate('NewRestaurantDetailDesign', { ...props })
                 } else {
-                  navigation.navigate('Restaurant', { 
-                    _id: props._id,
-                    name: props.name,
-                    image: props.image,
-                    shopType: props.shopType,
-                    ...props 
-                  })
+                  navigation.navigate('Restaurant', { ...props })
                 }
-              }, 100)
+              }, 300)
             }
           }
         ],
         { cancelable: true }
       )
     } else {
-      // For open restaurants, navigate directly
-      // Temporary: Show alert to test if function is called
-      Alert.alert('Debug', `Opening restaurant: ${props?.name}`, [
-        {
-          text: 'Cancel',
-          style: 'cancel'
-        },
-        {
-          text: 'Open',
-          onPress: () => {
-            if (props?.shopType === 'grocery') {
-              navigation.navigate('NewRestaurantDetailDesign', { 
-                _id: props._id,
-                name: props.name,
-                image: props.image,
-                shopType: props.shopType,
-                ...props 
-              })
-            } else {
-              navigation.navigate('Restaurant', { 
-                _id: props._id,
-                name: props.name,
-                image: props.image,
-                shopType: props.shopType,
-                ...props 
-              })
-            }
-          }
-        }
-      ])
+      // For open restaurants, navigate directly without alert
+      if (props?.shopType === 'grocery') {
+        navigation.navigate('NewRestaurantDetailDesign', { ...props })
+      } else {
+        navigation.navigate('Restaurant', { ...props })
+      }
     }
     if (props?.isSearch) {
       storeSearch(props?.isSearch)
