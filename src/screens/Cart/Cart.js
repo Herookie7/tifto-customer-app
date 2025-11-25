@@ -90,7 +90,6 @@ function Cart(props) {
 
   const [selectedTip, setSelectedTip] = useState()
   const modalRef = useRef(null)
-  const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
 
   useEffect(() => {
     if (tip) {
@@ -109,8 +108,8 @@ function Cart(props) {
         const latDest = Number(location.latitude)
         const longDest = Number(location.longitude)
         const distance = await calculateDistance(latOrigin, lonOrigin, latDest, longDest)
-        const costType = configuration.costType
-        const amount = calculateAmount(costType, configuration.deliveryRate, distance)
+        let costType = configuration.costType
+        let amount = calculateAmount(costType, configuration.deliveryRate, distance)
 
         if (isSubscribed) {
           setDeliveryCharges(amount > 0 ? amount : configuration.deliveryRate)
@@ -314,11 +313,9 @@ function Cart(props) {
       modal.open()
     }
   }
-  
-  // Early returns AFTER all hooks
-  if (!connect) {
-    return (<ErrorView refetchFunctions={[]} />);
-  }
+  const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
+  if (!connect) return <ErrorView refetchFunctions={[]} />
+
   if (loading || loadingData || loadingTip) return loadginScreen()
 
   const restaurant = data?.restaurant
@@ -352,7 +349,7 @@ function Cart(props) {
     return {
       ...cartItem,
       optionsTitle,
-      title,
+      title: title,
       price: price.toFixed(2),
       image: food.image,
       addons: populateAddons
@@ -364,11 +361,9 @@ function Cart(props) {
   return (
     <>
       <View style={styles(currentTheme).mainContainer}>
-        {cart?.length === 0
-          ? (
-              emptyCart()
-            )
-          : (
+        {cart?.length === 0 ? (
+          emptyCart()
+        ) : (
           <>
             <ScrollView showsVerticalScrollIndicator={false} style={[styles().flex, styles().cartItems]}>
               <View
@@ -434,8 +429,7 @@ function Cart(props) {
                     {t('exclusiveVAt')}
                   </TextDefault>
                 </View>
-                {isLoggedIn && profile
-                  ? (
+                {isLoggedIn && profile ? (
                   <TouchableOpacity
                     activeOpacity={0.7}
                     onPress={() => {
@@ -453,8 +447,7 @@ function Cart(props) {
                       {t('checkoutBtn')}
                     </TextDefault>
                   </TouchableOpacity>
-                    )
-                  : (
+                ) : (
                   <TouchableOpacity
                     activeOpacity={0.7}
                     onPress={() => {
@@ -466,7 +459,7 @@ function Cart(props) {
                       {t('loginOrSignUp')}
                     </TextDefault>
                   </TouchableOpacity>
-                    )}
+                )}
               </View>
             </View>
           </>

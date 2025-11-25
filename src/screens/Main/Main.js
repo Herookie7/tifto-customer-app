@@ -82,8 +82,8 @@ function Main(props) {
     refetch: refetchRestaurants
   } = useQuery(RESTAURANTS, {
     variables: {
-      longitude: location?.longitude || null,
-      latitude: location?.latitude || null,
+      longitude: location.longitude || null,
+      latitude: location.latitude || null,
       shopType: null,
       ip: null
     },
@@ -157,7 +157,7 @@ function Main(props) {
     Other: CustomOtherIcon
   }
 
-  const setAddressLocation = async(address) => {
+  const setAddressLocation = async (address) => {
     setLocation({
       _id: address._id,
       label: address.label,
@@ -217,7 +217,7 @@ function Main(props) {
     }
   }
 
-  const handleMarkerPress = async(coordinates) => {
+  const handleMarkerPress = async (coordinates) => {
     setCitiesModalVisible(false)
     // setIsCheckingZone(true)
     if (!coordinates || !coordinates.latitude || !coordinates.longitude) {
@@ -250,11 +250,9 @@ function Main(props) {
       <View style={styles(currentTheme).addressContainer}>
         <TouchableOpacity style={[styles(currentTheme).addButton]} activeOpacity={0.7} onPress={setCurrentLocation} disabled={busy}>
           <View style={styles(currentTheme).addressSubContainer}>
-            {busy
-              ? (
+            {busy ? (
               <Spinner size='small' />
-                )
-              : (
+            ) : (
               <>
                 <SimpleLineIcons name='target' size={scale(18)} color={currentTheme.black} />
                 <View style={styles().mL5p} />
@@ -262,7 +260,7 @@ function Main(props) {
                   {t('currentLocation')}
                 </TextDefault>
               </>
-                )}
+            )}
           </View>
         </TouchableOpacity>
       </View>
@@ -303,9 +301,7 @@ function Main(props) {
     </View>
   )
 
-  if (error) {
-    return (<ErrorView />);
-  }
+  if (error) return <ErrorView />
 
   const groceryorders = data?.nearByRestaurantsPreview?.restaurants?.filter((restaurant) => restaurant.shopType === 'grocery')
 
@@ -367,98 +363,80 @@ function Main(props) {
                     </View>
                   ) : restaurantorders?.length > 0 ? (
                     <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false} refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}>
-                      {banners?.banners && banners.banners.length > 0 && (
-                        <Banner banners={banners.banners} />
-                      )}
+                      <Banner banners={banners?.banners} />
                       <View style={{ gap: 16 }}>
                         <View>{isLoggedIn && recentOrderRestaurantsVar && recentOrderRestaurantsVar.length > 0 && <>{orderLoading || isRefreshing ? <MainLoadingUI /> : <MainRestaurantCard orders={sortRestaurantsByOpenStatus(recentOrderRestaurantsVar || [])} loading={orderLoading} error={orderError} title={'Order it again'} queryType='orderAgain' />}</>}</View>
 
-                        <View><MainRestaurantCard orders={orderLoading || isRefreshing ? [] : sortRestaurantsByOpenStatus(mostOrderedRestaurantsVar || [])} loading={orderLoading || isRefreshing} error={orderError} title={t('Popular right now')} queryType='topPicks' icon='trending' /></View>
+                        <View>{orderLoading || isRefreshing ? <MainLoadingUI /> : <MainRestaurantCard orders={sortRestaurantsByOpenStatus(mostOrderedRestaurantsVar || [])} loading={orderLoading} error={orderError} title={t('Popular right now')} queryType='topPicks' icon='trending' />}</View>
                         <View style={{ padding: 15, gap: scale(8) }}>
                           <TextDefault bolder H4 isRTL>
                             {t('I feel like eating...')}
                           </TextDefault>
-                          {restaurantCuisines && restaurantCuisines.length > 0 ? (
-                            <FlatList
-                              data={restaurantCuisines}
-                              renderItem={({ item }) => {
-                                return (
-                                  <CollectionCard
-                                    onPress={() => {
-                                      navigation.navigate('Restaurants', {
-                                        collection: item.name
-                                      })
-                                    }}
-                                    image={item?.image ? item?.image : IMAGE_LINK}
-                                    name={item.name}
-                                  />
-                                )
-                              }}
-                              keyExtractor={(item, index) => item?._id || `${item?.name}-restaurant-${index}`}
-                              contentContainerStyle={{
-                                flexGrow: 1,
-                                gap: 8,
-                                paddingBottom: 5
-                              }}
-                              showsVerticalScrollIndicator={false}
-                              showsHorizontalScrollIndicator={false}
-                              horizontal={true}
-                              inverted={!!currentTheme?.isRTL}
-                              maintainVisibleContentPosition={{
-                                minIndexForVisible: 0
-                              }}
-                            />
-                          ) : (
-                            <View style={{ paddingVertical: scale(10) }}>
-                              <TextDefault textColor={currentTheme.fontFifthColor} Normal>
-                                {t('No restaurant categories available')}
-                              </TextDefault>
-                            </View>
-                          )}
+                          <FlatList
+                            data={restaurantCuisines ?? []}
+                            renderItem={({ item }) => {
+                              return (
+                                <CollectionCard
+                                  onPress={() => {
+                                    navigation.navigate('Restaurants', {
+                                      collection: item.name
+                                    })
+                                  }}
+                                  image={item?.image ? item?.image : IMAGE_LINK}
+                                  name={item.name}
+                                />
+                              )
+                            }}
+                            keyExtractor={(item, index) => item?._id || `${item?.name}-restaurant-${index}`}
+                            contentContainerStyle={{
+                              flexGrow: 1,
+                              gap: 8,
+                              paddingBottom: 5
+                            }}
+                            showsVerticalScrollIndicator={false}
+                            showsHorizontalScrollIndicator={false}
+                            horizontal={true}
+                            inverted={currentTheme?.isRTL ? true : false}
+                            maintainVisibleContentPosition={{
+                              minIndexForVisible: 0
+                            }}
+                          />
                         </View>
                         <View>{loading || isRefreshing ? <MainLoadingUI /> : <MainRestaurantCard shopType='restaurant' orders={sortRestaurantsByOpenStatus(restaurantorders || [])} loading={orderLoading} error={orderError} title={t('Restaurants near you')} queryType='restaurant' icon='restaurant' />}</View>
                         <View style={{ padding: 15, gap: scale(8) }}>
                           <TextDefault bolder H4 isRTL>
                             {t('Fresh finds await...')}
                           </TextDefault>
-                          {groceryCuisines && groceryCuisines.length > 0 ? (
-                            <FlatList
-                              data={groceryCuisines}
-                              renderItem={({ item }) => {
-                                return (
-                                  <CollectionCard
-                                    onPress={() => {
-                                      navigation.navigate('Store', {
-                                        collection: item.name
-                                      })
-                                    }}
-                                    image={item?.image}
-                                    name={item.name}
-                                  />
-                                )
-                              }}
-                              keyExtractor={(item, index) => item?._id || `${item?.name}-grocery-${index}`}
-                              contentContainerStyle={{
-                                flexGrow: 1,
-                                gap: 8,
-                                paddingBottom: 5
-                              }}
-                              showsVerticalScrollIndicator={false}
-                              showsHorizontalScrollIndicator={false}
-                              horizontal={true}
-                              inverted={!!currentTheme?.isRTL}
-                            />
-                          ) : (
-                            <View style={{ paddingVertical: scale(10) }}>
-                              <TextDefault textColor={currentTheme.fontFifthColor} Normal>
-                                {t('No grocery categories available')}
-                              </TextDefault>
-                            </View>
-                          )}
+                          <FlatList
+                            data={groceryCuisines ?? []}
+                            renderItem={({ item }) => {
+                              return (
+                                <CollectionCard
+                                  onPress={() => {
+                                    navigation.navigate('Store', {
+                                      collection: item.name
+                                    })
+                                  }}
+                                  image={item?.image}
+                                  name={item.name}
+                                />
+                              )
+                            }}
+                            keyExtractor={(item, index) => item?._id || `${item?.name}-grocery-${index}`}
+                            contentContainerStyle={{
+                              flexGrow: 1,
+                              gap: 8,
+                              paddingBottom: 5
+                            }}
+                            showsVerticalScrollIndicator={false}
+                            showsHorizontalScrollIndicator={false}
+                            horizontal={true}
+                            inverted={currentTheme?.isRTL ? true : false}
+                          />
                         </View>
-                        <View><MainRestaurantCard shopType='grocery' orders={loading ? [] : sortRestaurantsByOpenStatus(groceryorders || [])} loading={loading} error={orderError} title={t('Grocery List')} queryType='grocery' icon='grocery' selectedType='grocery' /></View>
+                        <View>{loading ? <MainLoadingUI /> : <MainRestaurantCard shopType='grocery' orders={sortRestaurantsByOpenStatus(groceryorders || [])} loading={orderLoading} error={orderError} title={t('Grocery List')} queryType='grocery' icon='grocery' selectedType='grocery' />}</View>
 
-                        <View><MainRestaurantCard shopType='grocery' orders={orderLoading ? [] : sortRestaurantsByOpenStatus(mostOrderedRestaurantsVar?.filter((order) => order.shopType === 'grocery') || [])} loading={orderLoading} error={orderError} title={t('Top grocery picks')} queryType='grocery' icon='store' selectedType='grocery' /></View>
+                        <View>{orderLoading ? <MainLoadingUI /> : <MainRestaurantCard shopType='grocery' orders={sortRestaurantsByOpenStatus(mostOrderedRestaurantsVar?.filter((order) => order.shopType === 'grocery') || [])} loading={orderLoading} error={orderError} title={t('Top grocery picks')} queryType='grocery' icon='store' selectedType='grocery' />}</View>
                       </View>
                       <View style={styles(currentTheme, hasActiveOrders).topBrandsMargin}>{orderLoading ? <TopBrandsLoadingUI /> : <TopBrands />}</View>
                     </ScrollView>

@@ -511,14 +511,17 @@ export const getConfiguration = `query Configuration{
     deliveryRate
     androidClientID 
     iOSClientID 
+    appAmplitudeApiKey 
     googleApiKey 
     expoClientID 
+    customerAppSentryUrl 
     termsAndConditions 
     privacyPolicy
     testOtp 
     skipMobileVerification
     skipEmailVerification
     costType
+    googlePlacesApiBaseUrl
   }
 }`
 

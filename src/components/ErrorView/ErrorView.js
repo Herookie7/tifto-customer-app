@@ -15,7 +15,7 @@ const ErrorView = ({ refetchFunctions = [] }) => {
   const { isConnected } = useNetworkStatus()
   const [refreshing, setRefreshing] = useState(false)
 
-  const onRefresh = async() => {
+  const onRefresh = async () => {
     setRefreshing(true)
     await Promise.all(refetchFunctions.map((refetch) => refetch()))
     setRefreshing(false)

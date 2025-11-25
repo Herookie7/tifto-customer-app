@@ -32,7 +32,7 @@ const Help = props => {
     },
     {
       title: t('titleAboutUs'),
-      url: 'https://ninjascode.com/about-us/'
+      url: 'https://tifto.com/about-us/'
     }
   ])
 
@@ -63,7 +63,7 @@ const Help = props => {
       {
         title: t('titleAboutUs'),
 
-        url: 'https://ninjascode.com/'
+        url: 'https://tifto.com/'
       }
     ])
   }, [])

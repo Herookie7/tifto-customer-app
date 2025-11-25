@@ -89,8 +89,8 @@ const SearchScreen = () => {
 
   const { data, refetch, networkStatus, loading, error } = useQuery(RESTAURANTS, {
     variables: {
-      longitude: location?.longitude || null,
-      latitude: location?.latitude || null,
+      longitude: location.longitude || null,
+      latitude: location.latitude || null,
       shopType: null,
       ip: null
     },
@@ -102,7 +102,7 @@ const SearchScreen = () => {
       longitude: location?.longitude || null,
       latitude: location?.latitude || null
     },
-    skip: !location || !location.latitude || !location.longitude
+    skip: !location.latitude || !location.longitude
   })
 
   const { data: recentOrderData } = useQuery(RECENT_ORDER_RESTAURANTS, {
@@ -110,7 +110,7 @@ const SearchScreen = () => {
       longitude: location?.longitude || null,
       latitude: location?.latitude || null
     },
-    skip: !location || !location.latitude || !location.longitude
+    skip: !location.latitude || !location.longitude
   })
 
   const { data: mostOrderedData } = useQuery(MOST_ORDERED_RESTAURANTS, {
@@ -118,10 +118,8 @@ const SearchScreen = () => {
       longitude: location?.longitude || null,
       latitude: location?.latitude || null
     },
-    skip: !location || !location.latitude || !location.longitude
+    skip: !location.latitude || !location.longitude
   })
-
-  const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
 
   useEffect(() => {
     navigation.setOptions({
@@ -198,9 +196,8 @@ const SearchScreen = () => {
 
   const uniqueTags = getUniqueTags(restaurants)
 
-  if (!connect) {
-    return <ErrorView />
-  }
+  const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
+  if (!connect) return <ErrorView />
 
   const emptyView = () => {
     return (
@@ -219,7 +216,7 @@ const SearchScreen = () => {
     setSearch(tag)
   }
 
-  const handleClearRecentSearches = async() => {
+  const handleClearRecentSearches = async () => {
     try {
       await clearRecentSearches()
       setRecentSearches([]) // Update state with empty array
@@ -312,23 +309,19 @@ const SearchScreen = () => {
     } else {
       return (
         <View style={styles(currentTheme).tagView}>
-          {loading
-            ? (
+          {loading ? (
             <View style={{ ...alignment.MTmedium }}>
               <Spinner size={'small'} backColor={'transparent'} spinnerColor={currentTheme.main} />
             </View>
-              )
-            : (
-                uniqueTags.map((tag, index) =>
-                  hasAnimated
-                    ? (
+          ) : (
+            uniqueTags.map((tag, index) =>
+              hasAnimated ? (
                 <TouchableOpacity key={index} onPress={() => handleTagPress(tag)}>
                   <View style={styles(currentTheme).tagItem}>
                     <TextDefault>{tag}</TextDefault>
                   </View>
                 </TouchableOpacity>
-                      )
-                    : (
+              ) : (
                 <CustomItem index={index}>
                   <TouchableOpacity key={tag} onPress={() => handleTagPress(tag)}>
                     <View style={styles(currentTheme).tagItem}>
@@ -336,9 +329,9 @@ const SearchScreen = () => {
                     </View>
                   </TouchableOpacity>
                 </CustomItem>
-                      )
-                )
-              )}
+              )
+            )
+          )}
         </View>
       )
     }

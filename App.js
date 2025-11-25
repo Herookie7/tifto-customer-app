@@ -10,6 +10,7 @@ import React, { useEffect, useReducer, useRef, useState } from 'react'
 import { ActivityIndicator, BackHandler, I18nManager, LogBox, Platform, SafeAreaView, StatusBar, StyleSheet, Text, View, useColorScheme } from 'react-native'
 import FlashMessage from 'react-native-flash-message'
 import 'react-native-gesture-handler'
+import * as Sentry from '@sentry/react-native';
 import useEnvVars, { isProduction } from './environment'
 import setupApolloClient from './src/apollo/index'
 import { MessageComponent } from './src/components/FlashMessage/MessageComponent'
@@ -62,6 +63,7 @@ export default function App() {
   // const responseListener = useRef()
   const [orderId, setOrderId] = useState()
   const [isUpdating, setIsUpdating] = useState(false)
+  const { SENTRY_DSN } = useEnvVars()
   const client = setupApolloClient()
 
   useKeepAwake()
@@ -131,6 +133,20 @@ export default function App() {
   /*   useEffect(() => {
     requestTrackingPermissions()
   }, []) */
+
+  // For Sentry
+  useEffect(() => {
+    if (SENTRY_DSN) {
+      Sentry.init({
+        dsn: SENTRY_DSN,
+        enableInExpoDevelopment: !isProduction() ? true : false,
+        environment: isProduction() ? 'production' : 'development',
+        debug: !isProduction(),
+        tracesSampleRate: 1.0,
+        enableTracing: true
+      })
+    }
+  }, [SENTRY_DSN])
 
   // For App Update
   useEffect(() => {

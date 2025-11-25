@@ -110,7 +110,7 @@ function Main(props) {
     Other: 'location-pin'
   }
 
-  const setAddressLocation = async(address) => {
+  const setAddressLocation = async (address) => {
     setLocation({
       _id: address._id,
       label: address.label,

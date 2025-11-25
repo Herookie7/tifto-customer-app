@@ -122,8 +122,6 @@ function Menu({ route, props }) {
 
   const { onScroll /* Event handler */, containerPaddingTop /* number */, scrollIndicatorInsetTop /* number */ } = useCollapsibleSubHeader()
 
-  const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
-
   const emptyViewDesc = selectedType === 'restaurant' ? t('noRestaurant') : t('noGrocery')
 
   useFocusEffect(() => {
@@ -198,7 +196,7 @@ function Menu({ route, props }) {
     Other: CustomOtherIcon
   }
 
-  const setAddressLocation = async(address) => {
+  const setAddressLocation = async (address) => {
     setLocation({
       _id: address._id,
       label: address.label,
@@ -254,7 +252,7 @@ function Menu({ route, props }) {
     }
   }, [routeData, allCuisines])
 
-  const setCurrentLocation = async() => {
+  const setCurrentLocation = async () => {
     setBusy(true)
 
     const { error, coords } = await getCurrentLocation()
@@ -417,13 +415,10 @@ function Menu({ route, props }) {
     )
   }
 
-  if (!connect) {
-    return (<ErrorView refetchFunctions={[refetch]} />);
-  }
+  const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
+  if (!connect) return <ErrorView refetchFunctions={[refetch]} />
 
-  if (loading || mutationLoading || loadingOrders) {
-    return (loadingScreen());
-  }
+  if (loading || mutationLoading || loadingOrders) return loadingScreen()
 
   // const searchRestaurants = (searchText) => {
   //   const data = []
@@ -558,7 +553,7 @@ function Menu({ route, props }) {
         <View style={[styles(currentTheme).header, { paddingHorizontal: 10, paddingVertical: 6 }]}>
           <View>
             <TextDefault bolder H2 isRTL>
-              {t(heading || (routeData?.name === 'Restaurants' ? 'Restaurants' : routeData?.name === 'Store' ? 'All Stores' : 'Restaurants'))}
+              {t(heading ? heading : routeData?.name === 'Restaurants' ? 'Restaurants' : routeData?.name === 'Store' ? 'All Stores' : 'Restaurants')}
             </TextDefault>
             <TextDefault bold H5 isRTL>
               {t('BrowseCuisines')}
@@ -613,12 +608,12 @@ function Menu({ route, props }) {
             // showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
             horizontal={true}
-            inverted={!!currentTheme?.isRTL}
+            inverted={currentTheme?.isRTL ? true : false}
             getItemLayout={getItemLayout}
           />
         </View>
 
-        <View style={{ backgroundColor: currentTheme?.toggler }}>{restaurantData?.length === 0 ? null : <ActiveOrdersAndSections menuPageHeading={heading || (routeData?.name === 'Restaurants' ? 'Restaurants' : routeData?.name === 'Store' ? 'All Stores' : 'Restaurants')} subHeading={subHeading || ''} />}</View>
+        <View style={{ backgroundColor: currentTheme?.toggler }}>{restaurantData?.length === 0 ? null : <ActiveOrdersAndSections menuPageHeading={heading ? heading : routeData?.name === 'Restaurants' ? 'Restaurants' : routeData?.name === 'Store' ? 'All Stores' : 'Restaurants'} subHeading={subHeading ? subHeading : ''} />}</View>
 
         {filterSectionApplied && <AppliedFilters filters={appliedFilters} />}
         <Animated.FlatList

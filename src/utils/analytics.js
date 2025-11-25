@@ -1,9 +1,12 @@
 import { useEffect } from 'react'
-
-const noop = () => {}
+import useEnvVars from '../../environment'
+import * as amplitude from '@amplitude/analytics-react-native'
+import { getTrackingPermissions } from './useAppTrackingTrasparency'
 
 const Analytics = () => {
+  const { AMPLITUDE_API_KEY } = useEnvVars()
   let isInitialized = false
+  const apiKey = AMPLITUDE_API_KEY
 
   const events = {
     USER_LOGGED_IN: 'USER_LOGGED_IN',
@@ -43,26 +46,54 @@ const Analytics = () => {
     NAVIGATE_TO_FAQS: 'NAVIGATE_TO_FAQS'
   }
 
-  const initialize = async() => {
-    isInitialized = true
+  const initialize = async () => {
+    try {
+      const trackingStatus = await getTrackingPermissions()
+      if (isInitialized || !apiKey /*  || trackingStatus !== 'granted' */) {
+        return
+      }
+      amplitude.init(apiKey)
+      isInitialized = true
+    } catch (error) {
+      console.log('Amplitude init error', error)
+    }
   }
 
-  const identify = async(options, userId) => {
+  const identify = async (options, userId) => {
     try {
       await initialize()
       if (!isInitialized) return
-      noop(options)
-      noop(userId)
+
+      const properties = options
+
+      if (!apiKey) return
+      if (userId) {
+        amplitude.setUserId(userId)
+      }
+      if (properties) {
+        amplitude.Identify(properties)
+      } else {
+        const identifyObj = new amplitude.Identify()
+        identifyObj.remove(properties)
+        amplitude.Identify(identifyObj)
+      }
     } catch (err) {}
   }
 
-  const track = async(event, options) => {
+  const track = async (event, options) => {
     try {
       await initialize()
       if (!isInitialized) return
 
-      noop(event)
-      noop(options)
+      const properties = options
+
+      if (!apiKey) return
+
+      if (properties) {
+        await amplitude.track(event, properties)
+      } else {
+        await amplitude.track(event)
+      }
     } catch (err) {}
   }
 

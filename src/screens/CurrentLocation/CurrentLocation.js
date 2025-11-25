@@ -40,7 +40,6 @@ export default function CurrentLocation() {
   const [citiesModalVisible, setCitiesModalVisible] = useState(false)
   const [currentLocation, setCurrentLocation] = useState(null)
   const [isInitialLoading, setIsInitialLoading] = useState(true)
-  const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
 
   const { getAddress } = useGeocoding()
 
@@ -71,6 +70,7 @@ export default function CurrentLocation() {
           }
         })
         setLoading(false)
+        return
       }
     }
   }
@@ -80,7 +80,7 @@ export default function CurrentLocation() {
     return newCities
   }
 
-  const handleMarkerPress = async(coordinates) => {
+  const handleMarkerPress = async (coordinates) => {
     setCitiesModalVisible(false)
     if (!coordinates || !coordinates.latitude || !coordinates.longitude) {
       return
@@ -191,6 +191,8 @@ export default function CurrentLocation() {
       } else {
         Linking.openSettings() // Android
       }
+
+      return
     }
   }
 
@@ -233,12 +235,10 @@ export default function CurrentLocation() {
     longitudeDelta: 130
   }
 
-  if (!connect) {
-    return <ErrorView refetchFunctions={[]} />
-  }
+  const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
+  if (!connect) return <ErrorView refetchFunctions={[]} />
 
-  if (!currentLocation && !isInitialLoading) {
-    return (
+  return !currentLocation && !isInitialLoading ? (
       <View style={[allowedLocationStyles.container, { backgroundColor: currentTheme.themeBackground }]}>
         <Text style={allowedLocationStyles.title}>Enable Location Services</Text>
         <Text style={allowedLocationStyles.description}>We need access to your location to show nearby restaurants and provide accurate delivery services.</Text>
@@ -246,10 +246,7 @@ export default function CurrentLocation() {
           <Text style={allowedLocationStyles.buttonText}>Allow Location Access</Text>
         </TouchableOpacity>
       </View>
-    )
-  }
-
-  return (
+    ) : (
     <View
       style={[
         styles().flex,
