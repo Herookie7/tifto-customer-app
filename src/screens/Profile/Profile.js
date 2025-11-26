@@ -74,11 +74,12 @@ function Profile(props) {
 
   const { data, loading, error, refetch } = useQuery(RESTAURANTS, {
     variables: {
-      longitude: location.longitude || null,
-      latitude: location.latitude || null
+      longitude: location?.longitude || null,
+      latitude: location?.latitude || null
     },
+    skip: !location?.latitude || !location?.longitude,
     fetchPolicy: 'network-only',
-    errorPolicy : "all"
+    errorPolicy: 'all'
   })
   const { orderLoading, orderData } = useHomeRestaurants()
 
@@ -86,13 +87,15 @@ function Profile(props) {
 
   useFocusEffect(
     useCallback(() => {
-      // Only refetch if we're coming back from a screen that might have updated data
-      const timeoutId = setTimeout(() => {
-        refetch();
-      }, 100); // Small delay to prevent immediate refetch
-      
-      return () => clearTimeout(timeoutId);
-    }, [refetch])
+      // Only refetch if location is available and we're coming back from a screen that might have updated data
+      if (location?.latitude && location?.longitude) {
+        const timeoutId = setTimeout(() => {
+          refetch();
+        }, 100); // Small delay to prevent immediate refetch
+        
+        return () => clearTimeout(timeoutId);
+      }
+    }, [refetch, location?.latitude, location?.longitude])
   );
 
   useFocusEffect(() => {
@@ -198,12 +201,24 @@ function Profile(props) {
               <View style={styles(currentTheme).line} />
 
               {/* favourite section */}
-              {loading ? (
+              {!location?.latitude || !location?.longitude ? (
+                <View style={styles().padding}>
+                  <TextDefault H5 textColor={currentTheme.secondaryText} style={{ textAlign: 'center', paddingVertical: 20 }}>
+                    {t('selectLocationToViewFavourites') || 'Please select a location to view your favourite restaurants'}
+                  </TextDefault>
+                </View>
+              ) : loading ? (
                 <Spinner
                   size={'small'}
                   backColor={currentTheme.themeBackground}
                   spinnerColor={currentTheme.main}
                 />
+              ) : error ? (
+                <View style={styles().padding}>
+                  <TextDefault H5 textColor={currentTheme.secondaryText} style={{ textAlign: 'center', paddingVertical: 20 }}>
+                    {t('errorLoadingFavourites') || 'Error loading favourites. Please try again.'}
+                  </TextDefault>
+                </View>
               ) : (
                 data?.userFavourite?.length >= 1 && (
                   <View style={styles().padding}>

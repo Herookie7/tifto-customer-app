@@ -12,7 +12,7 @@ import { useNavigation } from '@react-navigation/native'
 import { MaterialIcons } from '@expo/vector-icons'
 import { scale } from '../../../utils/scaling'
 import { isOpen } from '../../../utils/customFunctions'
-import Ripple from 'react-native-material-ripple'
+import { TouchableOpacity } from 'react-native'
 
 const ICONS = {
   grocery: 'local-grocery-store',
@@ -55,7 +55,7 @@ function MainRestaurantCard(props) {
               />
             )}
           </View>
-          <Ripple
+          <TouchableOpacity
             style={styles(currentTheme).seeAllBtn}
             activeOpacity={0.8}
             onPress={() => {
@@ -65,13 +65,11 @@ function MainRestaurantCard(props) {
                 shopType: props?.shopType ?? 'restaurant',
               })
             }}
-            rippleColor={'#F5F5F5'}
-            rippleDuration={300}
           >
             <TextDefault H5 bolder textColor={currentTheme.main}>
               {t('SeeAll')}
             </TextDefault>
-          </Ripple>
+          </TouchableOpacity>
         </View>
         <FlatList
           style={styles().offerScroll}

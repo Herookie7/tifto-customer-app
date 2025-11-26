@@ -119,8 +119,7 @@ const SearchScreen = () => {
       longitude: location?.longitude || null,
       latitude: location?.latitude || null
     },
-    skip: !location?.latitude || !location?.longitude,
-    skip: !location.latitude || !location.longitude
+    skip: !location?.latitude || !location?.longitude
   })
 
   useEffect(() => {

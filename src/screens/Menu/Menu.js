@@ -39,7 +39,7 @@ import AppliedFilters from '../../components/Filter/AppliedFilters'
 import NetInfo from '@react-native-community/netinfo'
 import useNetworkStatus from '../../utils/useNetworkStatus'
 import { isOpen, sortRestaurantsByOpenStatus } from '../../utils/customFunctions'
-import Ripple from 'react-native-material-ripple'
+import { TouchableOpacity } from 'react-native'
 import useGeocoding from '../../ui/hooks/useGeocoding'
 
 const SELECT_ADDRESS = gql`
@@ -557,7 +557,7 @@ function Menu({ route, props }) {
               {t('BrowseCuisines')}
             </TextDefault>
           </View>
-          <Ripple
+          <TouchableOpacity
             style={styles(currentTheme).seeAllBtn}
             activeOpacity={0.8}
             onPress={() => {
@@ -570,7 +570,7 @@ function Menu({ route, props }) {
             <TextDefault H5 bolder textColor={currentTheme.main}>
               {t('SeeAll')}
             </TextDefault>
-          </Ripple>
+          </TouchableOpacity>
         </View>
         <View style={{ paddingLeft: 10, paddingRight: 10, paddingHorizontal: '5' }}>
           <FlatList
@@ -579,7 +579,7 @@ function Menu({ route, props }) {
             renderItem={({ item, index }) => {
               setCurrentIndex(index)
               return (
-                <Ripple
+                <TouchableOpacity
                   activeOpacity={0.8}
                   onPress={() => onPressCollection(item, index)}
                   style={[
@@ -597,7 +597,7 @@ function Menu({ route, props }) {
                       {item.name}
                     </TextDefault>
                   </View>
-                </Ripple>
+                </TouchableOpacity>
               )
             }}
             initialScrollIndex={0}

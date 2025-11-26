@@ -439,7 +439,14 @@ function Main(props) {
                     </ScrollView>
                   ) : !location ? (
                     <View style={{ width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center', paddingHorizontal: 20 }}>
-                      <Spinner backColor='transparent' />
+                      <TextDefault bold H4 style={{ textAlign: 'center', marginBottom: 10 }}>
+                        {t('selectLocationToContinue') || 'Please select a location to continue'}
+                      </TextDefault>
+                      <TouchableOpacity activeOpacity={0.7} onPress={() => modalRef.current?.open()} style={[styles(currentTheme).button, { opacity: 1, marginTop: 10 }]}>
+                        <TextDefault textColor={currentTheme.color4} style={{ paddingHorizontal: 10 }} bold H7>
+                          {t('selectLocation') || 'Select Location'}
+                        </TextDefault>
+                      </TouchableOpacity>
                     </View>
                   ) : (
                     <View style={{ width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center', paddingHorizontal: 20 }}>
