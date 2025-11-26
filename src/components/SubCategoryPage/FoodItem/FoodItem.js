@@ -17,6 +17,7 @@ const FoodItem = ({ item, currentTheme, configuration, onPress }) => {
 
   const withoutDiscountPrice = calculateDiscountedPrice(price, discountedPrice)
 
+
   return (
     <TouchableOpacity style={[styles(currentTheme).foodItemContainer, isOutOfStock && styles(currentTheme).disabledItem]} activeOpacity={0.8} disabled={isOutOfStock} onPress={onPress} >
       <View style={styles(currentTheme).imageContainer}>
@@ -36,12 +37,12 @@ const FoodItem = ({ item, currentTheme, configuration, onPress }) => {
       </View>
 
       <View style={styles(currentTheme).detailsContainer}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', gap: scale(5) }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap:scale(5) }}>
           <TextDefault H5 bold textColor={currentTheme.fontMainColor} style={{ }}>
             {configuration.currencySymbol} {price}
           </TextDefault>
           {discountedPrice && discountedPrice > 0 && (
-            <TextDefault small bold textColor={currentTheme.fontSecondColor} style={{ textDecorationLine: 'line-through' }}>
+            <TextDefault small bold textColor={currentTheme.fontSecondColor} style={{textDecorationLine:  'line-through' }}>
               {configuration.currencySymbol} {withoutDiscountPrice}
             </TextDefault>
           )}

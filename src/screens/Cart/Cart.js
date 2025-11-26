@@ -20,13 +20,14 @@ import EmptyCart from '../../assets/SVG/imageComponents/EmptyCart'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import { DAYS } from '../../utils/enums'
 import { textStyles } from '../../utils/textStyles'
-import { calculateAmount, calculateDistance, isOpen } from '../../utils/customFunctions'
+import { calculateAmount, calculateDistance } from '../../utils/customFunctions'
 import analytics from '../../utils/analytics'
 import { HeaderBackButton } from '@react-navigation/elements'
 import navigationService from '../../routes/navigationService'
 import { useTranslation } from 'react-i18next'
 import WouldYouLikeToAddThese from './Section'
 import { SpecialInstructions } from '../../components/Cart/SpecialInstructions'
+import { isOpen } from '../../utils/customFunctions'
 import { FlashMessage } from '../../ui/FlashMessage/FlashMessage'
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated'
 
@@ -90,7 +91,6 @@ function Cart(props) {
 
   const [selectedTip, setSelectedTip] = useState()
   const modalRef = useRef(null)
-  const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
 
   useEffect(() => {
     if (tip) {
@@ -102,15 +102,15 @@ function Cart(props) {
 
   useEffect(() => {
     let isSubscribed = true
-    ;(async() => {
+    ;(async () => {
       if (data && data?.restaurant) {
         const latOrigin = Number(data?.restaurant.location.coordinates[1])
         const lonOrigin = Number(data?.restaurant.location.coordinates[0])
         const latDest = Number(location.latitude)
         const longDest = Number(location.longitude)
         const distance = await calculateDistance(latOrigin, lonOrigin, latDest, longDest)
-        const costType = configuration.costType
-        const amount = calculateAmount(costType, configuration.deliveryRate, distance)
+        let costType = configuration.costType
+        let amount = calculateAmount(costType, configuration.deliveryRate, distance)
 
         if (isSubscribed) {
           setDeliveryCharges(amount > 0 ? amount : configuration.deliveryRate)
@@ -244,6 +244,9 @@ function Cart(props) {
     setLoadingData(false)
   }
 
+  const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
+  if (!connect) return <ErrorView refetchFunctions={[]} />
+
   function emptyCart() {
     return (
       <View style={styles().subContainerImage}>
@@ -314,11 +317,6 @@ function Cart(props) {
       modal.open()
     }
   }
-  
-  // Early returns AFTER all hooks
-  if (!connect) {
-    return (<ErrorView refetchFunctions={[]} />);
-  }
   if (loading || loadingData || loadingTip) return loadginScreen()
 
   const restaurant = data?.restaurant
@@ -352,7 +350,7 @@ function Cart(props) {
     return {
       ...cartItem,
       optionsTitle,
-      title,
+      title: title,
       price: price.toFixed(2),
       image: food.image,
       addons: populateAddons
@@ -364,11 +362,9 @@ function Cart(props) {
   return (
     <>
       <View style={styles(currentTheme).mainContainer}>
-        {cart?.length === 0
-          ? (
-              emptyCart()
-            )
-          : (
+        {cart?.length === 0 ? (
+          emptyCart()
+        ) : (
           <>
             <ScrollView showsVerticalScrollIndicator={false} style={[styles().flex, styles().cartItems]}>
               <View
@@ -434,8 +430,7 @@ function Cart(props) {
                     {t('exclusiveVAt')}
                   </TextDefault>
                 </View>
-                {isLoggedIn && profile
-                  ? (
+                {isLoggedIn && profile ? (
                   <TouchableOpacity
                     activeOpacity={0.7}
                     onPress={() => {
@@ -453,8 +448,7 @@ function Cart(props) {
                       {t('checkoutBtn')}
                     </TextDefault>
                   </TouchableOpacity>
-                    )
-                  : (
+                ) : (
                   <TouchableOpacity
                     activeOpacity={0.7}
                     onPress={() => {
@@ -466,11 +460,11 @@ function Cart(props) {
                       {t('loginOrSignUp')}
                     </TextDefault>
                   </TouchableOpacity>
-                    )}
+                )}
               </View>
             </View>
           </>
-            )}
+        )}
       </View>
     </>
   )

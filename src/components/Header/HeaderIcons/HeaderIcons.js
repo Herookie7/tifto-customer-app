@@ -192,14 +192,18 @@ function RightButton(props) {
   }
 
   function navigateCart() {
-    // Always navigate to cart, even when empty
-    navigation.navigate('Cart')
+    if (cartCount > 0) {
+      navigation.navigate('Cart')
+    } else {
+      FlashMessage({
+        message: t('cartIsEmpty')
+      })
+    }
   }
   if (props?.icon === 'dots') {
     return (
       <View>
-        {password
-          ? (
+        {password ? (
           <TouchableOpacity
             activeOpacity={0.7}
             style={[styles().rightContainer, styles().passwordContainer]}
@@ -215,8 +219,7 @@ function RightButton(props) {
               </TextDefault>
             </View>
           </TouchableOpacity>
-            )
-          : (
+        ) : (
           <HeaderBackButton
             truncatedLabel=''
             labelVisible={false}
@@ -227,7 +230,7 @@ function RightButton(props) {
             )}
             onPress={showPasswordButton}
           />
-            )}
+        )}
       </View>
     )
   } else if (props?.icon === 'cart') {
@@ -285,8 +288,8 @@ function DarkBackButton(props) {
     <View
       style={{
         backgroundColor: props?.themeBackground,
-        borderRadius: 5
-
+        borderRadius: 5,
+    
       }}
     >
       <Ionicons

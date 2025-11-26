@@ -1,5 +1,6 @@
 import { useQuery, gql } from '@apollo/client'
-import { popularFoodItems, fetchCategoryDetailsByStore } from '../../apollo/queries'
+import { popularFoodItems } from '../../apollo/queries'
+import { fetchCategoryDetailsByStore } from '../../apollo/queries'
 
 // Convert the query strings to gql objects
 const POPULAR_FOOD_ITEMS = gql`

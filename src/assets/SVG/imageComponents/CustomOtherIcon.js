@@ -8,7 +8,7 @@ const CustomOtherIcon = ({ iconColor }) => {
   const themeContext = useContext(ThemeContext)
   const currentTheme = theme[themeContext.ThemeValue]
   if (!iconColor) {
-    iconColor = currentTheme.darkBgFont
+    iconColor = currentTheme.darkBgFont;
   }
   return (
     <View style={styles.container}>

@@ -34,7 +34,7 @@ const styles = (props = null) =>
     icon: {
       width: '8%',
       height: '55%',
-      backgroundColor: props !== null ? props?.newFontcolor : '#fafafa',
+      backgroundColor: props !== null ? props?.newFontcolor :'#fafafa',
       justifyContent: 'center',
       alignItems: 'center',
       borderRadius: scale(15)
@@ -46,7 +46,7 @@ const styles = (props = null) =>
       paddingTop: scale(10),
       paddingBottom: scale(10),
       borderRadius: scale(10),
-      borderColor: props !== null ? props?.newFontcolor : '#fafafa'
+      borderColor: props !== null ? props?.newFontcolor :'#fafafa',
     },
     btnContainer: {
       width: '60%',
@@ -63,26 +63,26 @@ const styles = (props = null) =>
       justifyContent: 'space-between',
       alignItems: 'center',
       backgroundColor: props !== null ? props?.newBorderColor : '#F3F4F6',
-      borderRadius: 40,
-      borderWidth: 1,
-      borderColor: props !== null ? props?.iconBackground : '#fcfcfc'
+      borderRadius:40,
+      borderWidth:1,
+      borderColor:props !== null ? props?.iconBackground: '#fcfcfc',
     },
     actionContainerBtns: {
       width: scale(30),
-      height: scale(30),
+      height:scale(30),
       borderRadius: scale(20),
       alignItems: 'center',
-      justifyContent: 'center'
+     justifyContent:'center'
     },
-    minusBtn: {
-      backgroundColor: '#fff'
+    minusBtn:{
+      backgroundColor: '#fff',
     },
-    plusBtn: {
-      backgroundColor: '#111827'
+    plusBtn:{
+      backgroundColor: '#111827',
     },
-    actionContainerView: {
+    actionContainerView: {    
       justifyContent: 'center',
-      alignItems: 'center'
-    }
+      alignItems: 'center',
+    },
   })
 export default styles

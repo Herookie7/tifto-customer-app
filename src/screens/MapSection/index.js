@@ -8,7 +8,8 @@ import React, {
 import MapView, { Marker, PROVIDER_DEFAULT } from 'react-native-maps'
 import styles from './styles'
 import { Image, View, FlatList, TouchableOpacity, Platform } from 'react-native'
-import { useNavigation, useRoute } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native'
+import { useRoute } from '@react-navigation/native'
 import TextDefault from '../../components/Text/TextDefault/TextDefault'
 import Bicycle from '../../assets/SVG/Bicycle'
 import { AntDesign, FontAwesome5, Ionicons } from '@expo/vector-icons'
@@ -21,7 +22,7 @@ export default function MapSection() {
   const { i18n } = useTranslation()
   const mapRef = useRef()
   const themeContext = useContext(ThemeContext)
-  const currentTheme = { isRTL: i18n.dir() === 'rtl', ...theme[themeContext.ThemeValue] }
+  const currentTheme = {isRTL : i18n.dir() === 'rtl', ...theme[themeContext.ThemeValue]}
   const route = useRoute()
   const navigation = useNavigation()
   const location = route?.params?.location
@@ -57,7 +58,7 @@ export default function MapSection() {
       longitude: parseFloat(rest.location.coordinates[0])
     }
     handleMarkerAnimate(coord)
-  }, [visibleMarkerIndex])
+}, [visibleMarkerIndex])
 
   return (
     <View>
@@ -73,19 +74,17 @@ export default function MapSection() {
         initialRegion={{
           latitude: restaurants?.length
             ? parseFloat(restaurants[0].location?.coordinates[1])
-            : (location?.latitude || 0),
+            : location.latitude,
           longitude: restaurants?.length
             ? parseFloat(restaurants[0].location?.coordinates[0])
-            : (location?.longitude || 0),
+            : location.longitude,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421
         }}
       >
-        {location && location.latitude && location.longitude && (
         <Marker coordinate={location} title='Current Address'>
           <Image source={require('../../assets/images/user.png')} style={styles().userMarkerImage} />
         </Marker>
-        )}
         {restaurants &&
           restaurants?.map((rest, index) => {
             const coord = {
@@ -109,11 +108,11 @@ export default function MapSection() {
                   style={styles(currentTheme).greenDot}
                 />
                 <Image
-                  source={{ uri: rest?.image }}
+                  source={{uri: rest?.image}}
                   width={20}
                   style={styles().markerImage}
                 />
-
+                
               </Marker>
             )
           })}
@@ -217,7 +216,7 @@ export default function MapSection() {
           horizontal={true}
           onViewableItemsChanged={onViewableItemsChanged}
           viewabilityConfig={{ itemVisiblePercentThreshold: 60 }}
-          inverted={!!currentTheme?.isRTL}
+          inverted={currentTheme?.isRTL ? true : false}
         />
       </View>
       <TouchableOpacity

@@ -78,7 +78,7 @@ const styles = (props = null) =>
     textContainer: {
       width: '58%',
       ...alignment.PTsmall,
-      // ...alignment.PBlarge,
+      //...alignment.PBlarge,
       ...alignment.PLsmall
     },
     subContainerLeft: {
@@ -136,7 +136,7 @@ const styles = (props = null) =>
       justifyContent: 'center',
       alignItems: 'center',
       borderBottomWidth: 3,
-      borderBottomColor: props !== null ? props?.newheaderColor : 'transparent'
+      borderBottomColor: props !== null ? props?.newheaderColor : 'transparent',
     },
     inactiveTabStyles: {
       width: '45%',

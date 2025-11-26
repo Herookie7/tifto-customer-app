@@ -16,7 +16,7 @@ import {
   FlatList,
   ScrollView
 } from 'react-native'
-import { useMutation, useQuery } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import gql from 'graphql-tag'
 import { TextField, OutlinedTextField } from 'react-native-material-textfield'
 import { scale, verticalScale } from '../../utils/scaling'
@@ -51,6 +51,7 @@ import navigationService from '../../routes/navigationService'
 import { useTranslation } from 'react-i18next'
 import Spinner from '../../components/Spinner/Spinner'
 import MainRestaurantCard from '../../components/Main/MainRestaurantCard/MainRestaurantCard'
+import { useQuery } from '@apollo/client'
 import { LocationContext } from '../../context/Location'
 import NewRestaurantCard from '../../components/Main/RestaurantCard/NewRestaurantCard'
 import Item from '../../components/Main/Item/Item'
@@ -523,6 +524,7 @@ function Account(props) {
                 </View>
               </View>
 
+
               <View style={styles(currentTheme).formSubContainer}>
                 <View style={{ flex: 3 }}>
                   <View style={styles().containerHeading}>
@@ -543,6 +545,7 @@ function Account(props) {
                 </View>
                 <View style={{ flex: 1 }} />
               </View>
+
 
               <View style={styles(currentTheme).formSubContainer}>
                 <View style={{ flex: 3 }}>
@@ -574,6 +577,7 @@ function Account(props) {
                   </TouchableOpacity>
                 </View>
               </View>
+
 
               <View style={styles(currentTheme).formSubContainer}>
                 <View style={{ flex: 3 }}>

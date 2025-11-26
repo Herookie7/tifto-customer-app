@@ -24,7 +24,7 @@ import { useRestaurant } from '../../ui/hooks'
 import { LocationContext } from '../../context/Location'
 import { useFocusEffect } from '@react-navigation/native'
 import { textStyles } from '../../utils/textStyles'
-import { calculateAmount, calculateDistance, isOpen } from '../../utils/customFunctions'
+import { calculateAmount, calculateDistance } from '../../utils/customFunctions'
 import analytics from '../../utils/analytics'
 import { HeaderBackButton } from '@react-navigation/elements'
 import navigationService from '../../routes/navigationService'
@@ -38,6 +38,7 @@ import { FulfillmentMode } from '../../components/Checkout/FulfillmentMode'
 import { Instructions } from '../../components/Checkout/Instructions'
 import PickUp from '../../components/Pickup'
 import { PaymentModeOption } from '../../components/Checkout/PaymentOption'
+import { isOpen } from '../../utils/customFunctions'
 import { WrongAddressModal } from '../../components/Checkout/WrongAddressModal'
 import { useCallback } from 'react'
 
@@ -120,7 +121,7 @@ function Checkout(props) {
     }
   }
 
-  const handleCartNavigation = async() => {
+  const handleCartNavigation = async () => {
     setisModalVisible(false)
     props?.navigation.navigate('CartAddress')
   }
@@ -177,7 +178,6 @@ function Checkout(props) {
 
   const [selectedTip, setSelectedTip] = useState()
   const inset = useSafeAreaInsets()
-  const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
 
   function onTipping() {
     if (isNaN(tipAmount)) FlashMessage({ message: t('invalidAmount') })
@@ -202,7 +202,7 @@ function Checkout(props) {
 
   useEffect(() => {
     let isSubscribed = true
-    ;(async() => {
+    ;(async () => {
       if (data && !!data?.restaurant) {
         const latOrigin = Number(data?.restaurant.location.coordinates[1])
         const lonOrigin = Number(data?.restaurant.location.coordinates[0])
@@ -210,8 +210,8 @@ function Checkout(props) {
         const longDest = Number(location.longitude)
         const distance = calculateDistance(latOrigin, lonOrigin, latDest, longDest)
 
-        const costType = configuration.costType
-        const amount = calculateAmount(costType, configuration.deliveryRate, distance)
+        let costType = configuration.costType
+        let amount = calculateAmount(costType, configuration.deliveryRate, distance)
 
         if (isSubscribed) {
           setDeliveryCharges(amount > 0 ? amount : configuration.deliveryRate)
@@ -299,6 +299,8 @@ function Checkout(props) {
     }
   }, [data])
 
+  const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
+  if (!connect) return <ErrorView refetchFunctions={[]} />
   const showAvailablityMessage = () => {
     Alert.alert(
       '',
@@ -546,7 +548,7 @@ function Checkout(props) {
           couponCode: coupon ? coupon.title : null,
           tipping: +calculateTip(),
           taxationAmount: +taxCalculation(),
-          orderDate,
+          orderDate: orderDate,
           isPickedUp: isPickup,
           deliveryCharges: isPickup ? 0 : deliveryCharges,
           instructions
@@ -618,7 +620,7 @@ function Checkout(props) {
           return {
             ...cartItem,
             optionsTitle,
-            title,
+            title: title,
             price: price.toFixed(2)
           }
         })
@@ -681,11 +683,6 @@ function Checkout(props) {
   }
   let deliveryTime = Math.floor((orderDate - Date.now()) / 1000 / 60)
   if (deliveryTime < 1) deliveryTime += restaurant?.deliveryTime
-  
-  // Early returns AFTER all hooks
-  if (!connect) {
-    return (<ErrorView refetchFunctions={[]} />);
-  }
   if (loading || loadingData || loadingTip || mutateOrderLoading || loadingOrder) return loadginScreen()
 
   return (
@@ -726,7 +723,7 @@ function Checkout(props) {
                     </View>
                     <View style={styles(currentTheme).labelContainer}>
                       <View style={{ marginHorizontal: scale(5) }}>
-                        {/* <TextDefault textColor={currentTheme.newFontcolor} numberOfLines={1} H5 bolder isRTL>
+                        {/* <TextDefault textColor={currentTheme.newFontcolor} numberOfLines={1} H5 bolder isRTL>                         
                           {t(isPickup ? 'pickUp' : 'delivery')} ({deliveryTime} {t('mins')})
                         </TextDefault> */}
                         {/* <TextDefault textColor={currentTheme.newFontcolor} numberOfLines={1} H5 bolder isRTL>
@@ -792,16 +789,14 @@ function Checkout(props) {
                 <View style={[styles(currentTheme).horizontalLine2, { width: '92%', alignSelf: 'center' }]} />
 
                 <View style={styles().voucherSec}>
-                  {!coupon
-? (
+                  {!coupon ? (
                     <TouchableOpacity activeOpacity={0.7} style={styles(currentTheme).voucherSecInner} onPress={() => onModalOpen(voucherModalRef)}>
                       <MaterialCommunityIcons name='ticket-confirmation-outline' size={24} color={currentTheme.lightBlue} />
                       <TextDefault H4 bolder textColor={currentTheme.lightBlue} center>
                         {t('applyVoucher')}
                       </TextDefault>
                     </TouchableOpacity>
-                  )
-: (
+                  ) : (
                     <>
                       <TextDefault numberOfLines={1} H5 bolder textColor={currentTheme.fontNewColor}>
                         Voucher

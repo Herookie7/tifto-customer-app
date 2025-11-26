@@ -67,7 +67,6 @@ function Main(props) {
   })
 
   const { onScroll /* Event handler */, containerPaddingTop /* number */, scrollIndicatorInsetTop /* number */, translateY } = useCollapsibleSubHeader()
-  const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
 
   useFocusEffect(() => {
     if (Platform.OS === 'android') {
@@ -110,7 +109,7 @@ function Main(props) {
     Other: 'location-pin'
   }
 
-  const setAddressLocation = async(address) => {
+  const setAddressLocation = async (address) => {
     setLocation({
       _id: address._id,
       label: address.label,
@@ -122,7 +121,7 @@ function Main(props) {
     mutate({ variables: { id: address._id } })
     modalRef.current.close()
   }
-  const setCurrentLocation = async() => {
+  const setCurrentLocation = async () => {
     setBusy(true)
 
     const { error, coords } = await getCurrentLocation()
@@ -270,9 +269,7 @@ function Main(props) {
     )
   }
 
-  if (error) {
-    return (<TextError text={t('networkError')} />);
-  }
+  if (error) return <TextError text={t('networkError')} />
 
   if (loading || mutationLoading || loadingOrders) return loadingScreen()
 
@@ -320,10 +317,8 @@ function Main(props) {
     restaurants: sec.restaurants.map((id) => restaurants.filter((res) => res._id === id)).flat()
   }))
 
-  // Early returns AFTER all hooks
-  if (!connect) {
-    return (<ErrorView refetchFunctions={[refetch]} />);
-  }
+  const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
+  if (!connect) return <ErrorView refetchFunctions={[refetch]} />
   return (
     <>
       <SafeAreaView edges={['bottom', 'left', 'right']} style={[styles().flex, { backgroundColor: 'black' }]}>
@@ -432,7 +427,7 @@ function Main(props) {
                   renderItem={({ item }) => <Item item={item} />}
                 /> */}
                 {/* <CollapsibleSubHeaderAnimator translateY={translateY}>
-                  <Search setSearch={setSearch} search={search} />
+                  <Search setSearch={setSearch} search={search} /> 
                   <MapSection location={location} restaurants={restaurants} />
                 </CollapsibleSubHeaderAnimator> */}
               </View>

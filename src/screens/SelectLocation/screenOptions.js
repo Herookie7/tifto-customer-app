@@ -9,6 +9,7 @@ import { scale } from '../../utils/scaling'
 import { StyleSheet } from 'react-native'
 
 const screenOptions = (props) => {
+
   return {
     headerTitleAlign: 'center',
     title: props?.title,

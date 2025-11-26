@@ -43,7 +43,7 @@ const ActiveOrders = ({ onActiveOrdersChange }) => {
   const onPressDetails = (order) => {
     navigation.navigate('OrderDetail', {
       _id: order._id,
-      order,
+      order: order,
       currencySymbol: configuration.currencySymbol
     })
   }
@@ -84,7 +84,7 @@ const ActiveOrders = ({ onActiveOrdersChange }) => {
   useEffect(() => {
     const hasActiveOrders = displayOrders.length > 0
     onActiveOrdersChange(hasActiveOrders)
-
+    
     // Reset states when no active orders
     if (!hasActiveOrders) {
       setIsMinimized(false)
@@ -95,37 +95,37 @@ const ActiveOrders = ({ onActiveOrdersChange }) => {
       }
       return
     }
-
+    
     // Auto-minimize after 3 seconds when a new order is detected
     if (hasActiveOrders && !justPlacedOrder) {
       setJustPlacedOrder(true)
       const timer = setTimeout(() => {
         setIsMinimized(true)
         setShowPulse(true)
-
+        
         // Start pulse animation
         Animated.loop(
           Animated.sequence([
             Animated.timing(pulseAnim, {
               toValue: 1.1,
               duration: 800,
-              useNativeDriver: true
+              useNativeDriver: true,
             }),
             Animated.timing(pulseAnim, {
               toValue: 1,
               duration: 800,
-              useNativeDriver: true
-            })
+              useNativeDriver: true,
+            }),
           ]),
           { iterations: 3 }
         ).start()
-
+        
         const pulseTimer = setTimeout(() => {
           setShowPulse(false)
         }, 5000)
         return () => clearTimeout(pulseTimer)
       }, 3000)
-
+      
       return () => clearTimeout(timer)
     }
   }, [displayOrders, onActiveOrdersChange, justPlacedOrder])
@@ -142,32 +142,26 @@ const ActiveOrders = ({ onActiveOrdersChange }) => {
     setCurrentTime(new Date())
   }
 
-  if (loadingOrders) {
-    return null;
-  }
-  if (errorOrders && !orders) {
-    return (<TextError text={errorOrders.message} />);
-  }
-  if (!displayOrders.length) {
-    return null;
-  }
+  if (loadingOrders) return null
+  if (errorOrders && !orders) return <TextError text={errorOrders.message} />
+  if (!displayOrders.length) return null
   const order = displayOrders[0]
-
+  
   // Calculate real-time remaining time
   const getRealTimeRemainingTime = (order) => {
     if (!order?.createdAt || !order?.expectedTime) {
       return calulateRemainingTime(order)
     }
-
+    
     const orderTime = new Date(order.createdAt)
     const expectedDeliveryTime = new Date(orderTime.getTime() + (order.expectedTime * 60000)) // expectedTime in minutes
     const now = currentTime
     const timeDiff = expectedDeliveryTime.getTime() - now.getTime()
     const minutesRemaining = Math.max(0, Math.ceil(timeDiff / (1000 * 60)))
-
+    
     return minutesRemaining || calulateRemainingTime(order)
   }
-
+  
   const remainingTime = getRealTimeRemainingTime(order)
   const modalStyle = {
     borderWidth: StyleSheet.hairlineWidth,
@@ -194,23 +188,23 @@ const ActiveOrders = ({ onActiveOrdersChange }) => {
           activeOpacity={0.8}
         >
           <View style={styles(currentTheme).minimizedContent}>
-            <MaterialIcons
-              name="delivery-dining"
-              size={scale(20)}
-              color={currentTheme.white}
+            <MaterialIcons 
+              name="delivery-dining" 
+              size={scale(20)} 
+              color={currentTheme.white} 
             />
-            <TextDefault
-              textColor={currentTheme.white}
-              H5
-              bold
+            <TextDefault 
+              textColor={currentTheme.white} 
+              H5 
+              bold 
               style={{ marginLeft: scale(8) }}
             >
               {t('orderTracking')}
             </TextDefault>
             <View style={styles(currentTheme).minimizedBadge}>
-              <TextDefault
-                textColor={currentTheme.white}
-                H6
+              <TextDefault 
+                textColor={currentTheme.white} 
+                H6 
                 bold
               >
                 {remainingTime > 0 ? `${remainingTime}m` : 'Soon'}
@@ -242,14 +236,14 @@ const ActiveOrders = ({ onActiveOrdersChange }) => {
             {t('estimatedDeliveryTime')}
           </TextDefault>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <TouchableOpacity
+            <TouchableOpacity 
               onPress={handleMinimize}
               style={{ marginRight: scale(15) }}
             >
-              <MaterialIcons
-                name="keyboard-arrow-down"
-                size={scale(20)}
-                color={currentTheme.gray700}
+              <MaterialIcons 
+                name="keyboard-arrow-down" 
+                size={scale(20)} 
+                color={currentTheme.gray700} 
               />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => onPressDetails(order)}>
@@ -261,7 +255,7 @@ const ActiveOrders = ({ onActiveOrdersChange }) => {
         </View>
         <View style={{ marginTop: scale(10) }}>
           <TextDefault Regular textColor={currentTheme.gray900} H1 bolder isRTL>
-            {remainingTime > 0
+            {remainingTime > 0 
               ? `${remainingTime}-${remainingTime + 5} ${t('mins')}`
               : `${t('deliveringSoon')}`
             }

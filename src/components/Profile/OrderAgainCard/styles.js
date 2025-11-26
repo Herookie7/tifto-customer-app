@@ -16,7 +16,7 @@ const styles = (props = null) =>
       borderWidth: 1,
       borderTopRightRadius: 8,
       borderBottomRightRadius: 8,
-      backgroundColor: props != null ? props.cardBackground : '#181818'
+      backgroundColor: props != null ? props.cardBackground : '#181818',
     },
 
     overlayContainer: {
@@ -68,11 +68,11 @@ const styles = (props = null) =>
       width: scale(80),
       height: scale(80),
       borderTopLeftRadius: scale(10),
-      borderBottomLeftRadius: scale(10)
+      borderBottomLeftRadius: scale(10),
     },
     imageContainer: {
       position: 'relative',
-      alignItems: 'center'
+      alignItems: 'center',
     },
     restaurantTotalRating: {
       paddingLeft: scale(5)

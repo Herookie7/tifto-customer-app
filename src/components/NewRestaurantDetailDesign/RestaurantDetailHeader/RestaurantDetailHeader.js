@@ -199,14 +199,12 @@ function RestaurantDetailHeader({
                 <TextDefault textColor={currentTheme.fontThirdColor} bold>
                   {t(todayOpeningTimes?.day)}{' '}
                 </TextDefault>
-                {todayOpeningTimes?.times?.length < 1
-                  ? (
+                {todayOpeningTimes?.times?.length < 1 ? (
                   <TextDefault small bold center>
                     {t('ClosedAllDay')}
                   </TextDefault>
-                    )
-                  : (
-                      todayOpeningTimes?.times?.map((timing, index) => (
+                ) : (
+                  todayOpeningTimes?.times?.map((timing, index) => (
                     <TextDefault
                       key={index}
                       textColor={currentTheme.fontThirdColor}
@@ -215,8 +213,8 @@ function RestaurantDetailHeader({
                       {timing.startTime[0]}:{timing.startTime[1]} -{' '}
                       {timing.endTime[0]}:{timing.endTime[1]}
                     </TextDefault>
-                      ))
-                    )}
+                  ))
+                )}
               </View>
             )}
           </View>

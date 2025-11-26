@@ -1,9 +1,8 @@
 import * as Location from 'expo-location'
 import { getLocationFromStorage } from './useWatchLocation'
-import { getSafeLocation } from '../../services/location'
 
 export default function useLocation() {
-  const getLocationPermission = async() => {
+  const getLocationPermission = async () => {
     const {
       status,
       canAskAgain
@@ -11,7 +10,7 @@ export default function useLocation() {
     return { status, canAskAgain }
   }
 
-  const askLocationPermission = async() => {
+  const askLocationPermission = async () => {
     let finalStatus = null
     let finalCanAskAgain = null
     const {
@@ -37,29 +36,24 @@ export default function useLocation() {
     return { status: finalStatus, canAskAgain: finalCanAskAgain }
   }
 
-  const getCurrentLocation = async() => {
+  const getCurrentLocation = async () => {
     const location = await getLocationFromStorage()
-    if (location) {
-      if (!location || !location.latitude || !location.longitude) {
-        return { error: true, message: 'LocationUnavailable', coords: { latitude: 0, longitude: 0 } }
-      }
-      return { coords: location, error: false }
-    }
+    if (location) return { coords: location }
     const { status } = await askLocationPermission()
 
+    
     if (status === 'granted') {
       try {
-        const location = await getSafeLocation()
-        if (!location || !location.coords) {
-          return { error: true, message: 'LocationUnavailable', coords: { latitude: 0, longitude: 0 } }
-        }
+        const location = await Location.getCurrentPositionAsync({
+          enableHighAccuracy: true
+        })
         return { ...location, error: false }
       } catch (e) {
-        console.log('location error', e)
-        return { error: true, message: e.message, coords: { latitude: 0, longitude: 0 } }
+        console.log("location error", e)
+        return { error: true, message: e.message }
       }
     }
-    return { error: true, message: 'Location permission was not granted', coords: { latitude: 0, longitude: 0 } }
+    return { error: true, message: 'Location permission was not granted' }
   }
 
   return { getCurrentLocation, getLocationPermission }

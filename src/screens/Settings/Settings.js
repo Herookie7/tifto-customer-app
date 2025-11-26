@@ -6,7 +6,7 @@ import {
   Platform,
   Linking,
   StatusBar,
-  ActivityIndicator
+  ActivityIndicator,
 } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as Notifications from 'expo-notifications'
@@ -16,7 +16,7 @@ import { profile } from '../../apollo/queries'
 
 import {
   pushToken,
-  updateNotificationStatus
+  updateNotificationStatus,
 } from '../../apollo/mutations'
 
 import gql from 'graphql-tag'
@@ -71,7 +71,7 @@ function Settings(props) {
   const {
     profile,
     loadingProfile,
-    errorProfile
+    errorProfile,
   } = useContext(UserContext)
   const themeContext = useContext(ThemeContext)
   const currentTheme = theme[themeContext.ThemeValue]
@@ -93,8 +93,6 @@ function Settings(props) {
     onError,
     refetchQueries: [{ query: PROFILE }]
   })
-
-  const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
 
   useEffect(() => {
     async function Track() {
@@ -155,7 +153,7 @@ function Settings(props) {
       const permission = await getPermission()
       if (permission === 'granted') {
         if (!profile.notificationToken) {
-          token = await Notifications.getExpoPushTokenAsync({ projectId: Constants.expoConfig.extra.eas.projectId })
+          token = await Notifications.getExpoPushTokenAsync({  projectId: Constants.expoConfig.extra.eas.projectId})
           uploadToken({ variables: { token: token.data } })
         }
         offerNotificationSetter(profile.isOfferNotification)
@@ -215,7 +213,7 @@ function Settings(props) {
         languageTypes[languageInd].code
       )
 
-      const lang = await AsyncStorage.getItem('tifto-language')
+      var lang = await AsyncStorage.getItem('tifto-language')
       if (lang) {
         const defLang = languageTypes.findIndex((el) => el.code === lang)
         const langName = languageTypes[defLang].value
@@ -280,15 +278,13 @@ function Settings(props) {
       message: t('errorInProfile')
     })
   }
-  if (loadingProfile) {
+  if (loadingProfile)
     return (
       <Spinner backColor={currentTheme.CustomLoadingBG} spinnerColor={currentTheme.main} />
     )
-  }
 
-  if (!connect) {
-    return <ErrorView refetchFunctions={[]} />
-  }
+    const { isConnected:connect,setIsConnected :setConnect} = useNetworkStatus();
+    if (!connect) return <ErrorView refetchFunctions={[]} />
   return (
     <SafeAreaView
       edges={['bottom', 'left', 'right']}

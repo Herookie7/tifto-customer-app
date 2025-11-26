@@ -43,7 +43,7 @@ const styles = (props = null) =>
     logoContainer: {
       // width: 120,
       // height: 130,
-      // alignSelf: 'center'
+      //alignSelf: 'center'
     },
     form: {
       width: '100%'
@@ -71,7 +71,7 @@ const styles = (props = null) =>
     eyeBtn: {
       zIndex: 1,
       elevation: 999,
-      ...props?.isRTL ? { marginRight: -40 } : { marginLeft: -40 }
+      ...props?.isRTL ? {marginRight: -40} : {marginLeft: -40}
     },
     btnContainer: {
       width: '100%',
@@ -87,7 +87,7 @@ const styles = (props = null) =>
     },
     number: {
       display: 'flex',
-      flexDirection: props?.isRTL ? 'row-reverse' : 'row'
+      flexDirection: props?.isRTL ? 'row-reverse' : 'row',
     },
     countryCode: {
       flexDirection: props?.isRTL ? 'row-reverse' : 'row',

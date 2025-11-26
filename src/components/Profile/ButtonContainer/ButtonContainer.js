@@ -2,17 +2,15 @@ import React from 'react'
 import { TouchableOpacity, View } from 'react-native'
 import styles from './styles.js'
 import TextDefault from '../../Text/TextDefault/TextDefault.js'
-import { EvilIcons, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
+import { EvilIcons, Ionicons, MaterialCommunityIcons  } from '@expo/vector-icons'
 import { verticalScale } from '../../../utils/scaling.js'
 
 const ButtonContainer = (props) => {
   const currentTheme = props.currentTheme
   const IconComponent =
-  props.iconType === 'Ionicons'
-    ? Ionicons
-    : props.iconType === 'MaterialCommunityIcons'
-      ? MaterialCommunityIcons
-      : Ionicons
+  props.iconType === 'Ionicons' ? Ionicons :
+  props.iconType === 'MaterialCommunityIcons' ? MaterialCommunityIcons :
+  Ionicons;
 
   return (
    <>

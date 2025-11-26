@@ -32,7 +32,7 @@ const styles = (props = null) =>
     mainContainer: {
       flex: 1,
       backgroundColor: props !== null ? props.themeBackground : 'transparent'
-      // ...alignment.PTsmall
+      //...alignment.PTsmall
     },
     dealContainer: {
       width: '100%',
@@ -239,7 +239,7 @@ const styles = (props = null) =>
       borderRadius: scale(10),
       backgroundColor: props !== null ? props.main : 'transparent',
       width: '22%',
-      // borderWidth: 2,
+      //borderWidth: 2,
       justifyContent: 'center',
       color: props !== null ? props.tagColor : 'transparent',
       borderColor: props !== null ? props.tagColor : 'transparent',

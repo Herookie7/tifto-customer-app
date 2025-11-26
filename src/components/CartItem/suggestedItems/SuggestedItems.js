@@ -1,5 +1,5 @@
-import React from 'react'
-import { FlatList, Text, View } from 'react-native'
+import React from 'react';
+import { FlatList, Text, View } from 'react-native';
 
 const SuggestedItems = ({ data }) => {
   const renderItem = ({ item }) => (
@@ -7,7 +7,7 @@ const SuggestedItems = ({ data }) => {
       <Text>{item.title}</Text>
       <Text>{item.description}</Text>
     </View>
-  )
+  );
 
   return (
     <FlatList
@@ -15,7 +15,7 @@ const SuggestedItems = ({ data }) => {
       renderItem={renderItem}
       keyExtractor={(item) => item.id.toString()}
     />
-  )
-}
+  );
+};
 
-export default SuggestedItems
+export default SuggestedItems;

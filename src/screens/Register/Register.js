@@ -8,7 +8,6 @@ import {
   TextInput,
   Text,
   ActivityIndicator
-  , I18nManager
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import styles from './styles'
@@ -22,6 +21,7 @@ import { useTranslation } from 'react-i18next'
 import SignUpSvg from '../../assets/SVG/imageComponents/SignUpSvg'
 import { useHeaderHeight } from '@react-navigation/elements'
 import { scale } from '../../utils/scaling'
+import { I18nManager } from 'react-native'
 import PhoneNumberInput from '../../components/PhoneNumberInput'
 
 function Register(props) {
@@ -64,6 +64,7 @@ function Register(props) {
       })
     )
   }, [props?.navigation])
+
 
   return (
     <SafeAreaView
@@ -224,10 +225,11 @@ function Register(props) {
                   >
 
                     {
-                      isCountryLoading
+                      isCountryLoading ?
 
-                        ? <ActivityIndicator size='small' color={currentTheme.white} />
-                        : <>
+                        <ActivityIndicator size='small' color={currentTheme.white} />
+                        :
+                        <>
                           <CountryPicker
                             countryCode={countryCode}
                             onSelect={(country) => onCountrySelect(country)}
@@ -242,6 +244,7 @@ function Register(props) {
                             {/* {country?.cca2} */}+{country?.callingCode[0]}
                           </TextDefault>
                         </>
+
 
                     }
                   </View>

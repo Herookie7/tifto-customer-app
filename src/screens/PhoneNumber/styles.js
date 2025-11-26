@@ -73,11 +73,11 @@ const styles = (props = null) =>
     phoneNumber: {
       width: '70%'
     },
-    phoneField: {
+    phoneField:{
       flexDirection: 'row',
-      alignItems: 'center'
+      alignItems: 'center',
     },
-    phoneNo: {
+    phoneNo:{
       color: props !== null ? props?.newFontcolor : '#f5f5f5f',
       width: '100%',
       padding: scale(12)

@@ -5,8 +5,6 @@ import gql from 'graphql-tag'
 import { rider } from '../../../apollo/queries'
 import { subscriptionRiderLocation } from '../../../apollo/subscriptions'
 import RiderMarker from '../../../assets/SVG/rider-marker'
-import LoadingScreen from '../../LoadingScreen/LoadingScreen'
-import RetryScreen from '../../RetryScreen/RetryScreen'
 
 const RIDER = gql`
   ${rider}
@@ -20,7 +18,6 @@ const TrackingRider = ({ id }) => {
     fetchPolicy: 'network-only'
   })
   useEffect(() => {
-    if (!subscribeToMore) return
     const unsubscribe = subscribeToMore({
       document: RIDER_LOCATION,
       variables: { riderId: id },
@@ -35,12 +32,10 @@ const TrackingRider = ({ id }) => {
       }
     })
     return unsubscribe
-  }, [subscribeToMore, id])
+  }, [])
 
-  // Early returns AFTER all hooks
-  if (loading) return <LoadingScreen />
-  if (error) return <RetryScreen />
-  if (!data?.rider?.location?.coordinates) return null
+  if (loading) return null
+  if (error) return null
 
   return (
     <Marker

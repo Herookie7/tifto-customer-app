@@ -1,6 +1,8 @@
 import React from 'react'
-import { View, Animated, Easing, StyleSheet, StatusBar } from 'react-native'
+import { View, Animated, Easing } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { scale } from '../../utils/scaling'
+import { StatusBar } from 'react-native'
 
 const STATUSBAR_HEIGHT = StatusBar.currentHeight || 44
 
@@ -52,11 +54,11 @@ const RestaurantDetailSkeleton = ({ currentTheme }) => {
           <SkeletonPlaceholder
             currentTheme={currentTheme}
             style={{
-              width: '100%',
+              width: '100%', 
               height: scale(200)
             }}
           />
-
+          
           {/* Header icons overlay */}
           <View style={styles.headerIconsContainer}>
             <View style={[styles.iconButton, { backgroundColor: 'rgba(0, 0, 0, 0.5)' }]}>
@@ -98,7 +100,7 @@ const RestaurantDetailSkeleton = ({ currentTheme }) => {
             </View>
           </View>
         </View>
-
+        
         <View style={styles.contentContainer}>
           {/* Restaurant title and logo section */}
           <View style={styles.titleContainer}>
@@ -157,27 +159,27 @@ const RestaurantDetailSkeleton = ({ currentTheme }) => {
         <View style={styles.sectionHeaderSkeleton}>
           <SkeletonPlaceholder currentTheme={currentTheme} style={{ width: scale(80), height: scale(22), borderRadius: scale(4) }} />
         </View>
-
+        
         <View style={styles.popularItems}>
           {[1, 2, 3].map((item) => (
-            <View
-              key={item}
+            <View 
+              key={item} 
               style={[
-                styles.popularItemSkeleton,
+                styles.popularItemSkeleton, 
                 { backgroundColor: currentTheme.popularitemcard || currentTheme.cardBackground || '#FFFFFF' }
               ]}
             >
               {/* Plus button in actual position */}
               <View style={[
-                styles.plusButtonSkeleton,
+                styles.plusButtonSkeleton, 
                 { backgroundColor: currentTheme.plusIcon || '#AAC810' }
               ]}>
                 <SkeletonPlaceholder currentTheme={currentTheme} style={{ width: scale(16), height: scale(16), borderRadius: scale(8) }} />
               </View>
-
+              
               {/* Image area */}
               <SkeletonPlaceholder currentTheme={currentTheme} style={{ width: '100%', height: scale(100) }} />
-
+              
               {/* Content area */}
               <View style={styles.itemDetails}>
                 <SkeletonPlaceholder currentTheme={currentTheme} style={{ width: scale(60), height: scale(16), borderRadius: scale(3) }} />
@@ -191,7 +193,7 @@ const RestaurantDetailSkeleton = ({ currentTheme }) => {
       {/* Categories Section Skeleton */}
       <View style={[styles.sectionSkeleton, { backgroundColor: currentTheme.themeBackground }]}>
         <SkeletonPlaceholder currentTheme={currentTheme} style={{ width: scale(140), height: scale(22), borderRadius: scale(4), marginBottom: scale(15) }} />
-
+        
         <View style={styles.categoriesGrid}>
           {[1, 2, 3, 4].map((item) => (
             <View
@@ -199,7 +201,7 @@ const RestaurantDetailSkeleton = ({ currentTheme }) => {
               style={styles.categoryWrapper}
             >
               <View style={[
-                styles.categoryItemSkeleton,
+                styles.categoryItemSkeleton, 
                 { backgroundColor: currentTheme.popularitemcard || currentTheme.cardBackground || '#FFFFFF' }
               ]}>
                 <SkeletonPlaceholder currentTheme={currentTheme} style={{ width: '100%', height: scale(100) }} />

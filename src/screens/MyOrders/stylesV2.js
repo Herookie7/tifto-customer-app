@@ -78,7 +78,7 @@ const styles = (props = null) =>
     textContainer: {
       width: '58%',
       ...alignment.PTsmall,
-      // ...alignment.PBlarge,
+      //...alignment.PBlarge,
       ...alignment.PLsmall
     },
     subContainerLeft: {

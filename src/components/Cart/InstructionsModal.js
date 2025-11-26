@@ -7,9 +7,10 @@ import { scale } from '../../utils/scaling'
 import { textStyles } from '../../utils/textStyles'
 import { alignment } from '../../utils/alignment'
 
-export const InstructionsModal = ({ theme, isVisible, hideModal, onSubmit, value, setValue, t }) => {
-  const styles = useStyles(theme)
-  return (<Modal
+export const InstructionsModal = ({ theme, isVisible, hideModal, onSubmit, value, setValue, t }) => {  
+    
+    const styles = useStyles(theme)
+    return (<Modal
         visible={isVisible}
         animationType="slide"
         transparent={true}>
@@ -29,16 +30,16 @@ export const InstructionsModal = ({ theme, isVisible, hideModal, onSubmit, value
                     <TextDefault numberOfLines={3} H5 smaller isRTL textColor={theme.secondaryText} style={styles.ternaryText}>{t('kindlyBeAdvisedText')}</TextDefault>
                 </View>
                 <View style={styles.inputContainer}>
-                    <TextInput
-                        value={value}
-                        onChangeText={setValue}
-                        autoFocus
-                        onSubmitEditing={onSubmit}
-                        placeholderTextColor={theme.name === 'Dark' ? '#CCCCCC' : '#666666'}
-                        placeholder={t('typeHere')}
-                        allowFontScaling
+                    <TextInput 
+                        value={value} 
+                        onChangeText={setValue} 
+                        autoFocus 
+                        onSubmitEditing={onSubmit} 
+                        placeholderTextColor={theme.name === 'Dark' ? '#CCCCCC' : '#666666'} 
+                        placeholder={t('typeHere')} 
+                        allowFontScaling 
                         style={styles.textInput}
-                        maxLength={400}
+                        maxLength={400} 
                     />
                     <TouchableOpacity style={styles.clearButton} onPress={() => setValue('')}>
                         <Ionicons name='close-circle-outline' size={scale(18)} color={theme.fontNewColor} />

@@ -1,6 +1,6 @@
-import * as React from 'react'
-import Svg, { Path } from 'react-native-svg'
-const ArrowForwardIcon = ({ stroke }) => (
+import * as React from "react"
+import Svg, { Path } from "react-native-svg"
+const ArrowForwardIcon = ({stroke}) => (
   <Svg
     xmlns="http://www.w3.org/2000/svg"
     width={10}

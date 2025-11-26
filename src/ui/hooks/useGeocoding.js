@@ -4,7 +4,7 @@ import useEnvVars from '../../../environment'
 const useGeocoding = () => {
   const { GOOGLE_MAPS_KEY } = useEnvVars()
 
-  const getAddress = async(latitude, longitude) => {
+  const getAddress = async (latitude, longitude) => {
     try {
       const response = await axios.get(
         `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${GOOGLE_MAPS_KEY}&language=en`
@@ -25,8 +25,9 @@ const useGeocoding = () => {
             component.types.includes('administrative_area_level_2')
         )
         const city = cityComponent ? cityComponent.long_name : null
-
+        
         return { formattedAddress, city }
+        
       } else {
         throw new Error('No address found for the given coordinates.')
       }
@@ -35,7 +36,7 @@ const useGeocoding = () => {
       throw error
     }
   }
-  return { getAddress }
+  return {getAddress}
 }
 
 export default useGeocoding

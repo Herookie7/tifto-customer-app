@@ -193,9 +193,7 @@ function NewAddress(props) {
   }
 
   const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
-  if (!connect) {
-    return (<ErrorView refetchFunctions={[]} />);
-  }
+  if (!connect) return <ErrorView refetchFunctions={[]} />
   return (
     <>
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} keyboardVerticalOffset={Platform.OS === 'android' ? 20 : 0} style={styles(currentTheme).flex} enabled={!modalVisible}>

@@ -283,8 +283,8 @@ const RestaurantSections = ({
     } else {
       // Navigate directly if restaurant is open
       navigation.navigate('CategoryPage', {
-        category,
-        restaurantId,
+        category: category,
+        restaurantId: restaurantId,
         restaurantName: restaurant?.name,
         deliveryTime: restaurant?.deliveryTime || '15-20'
       })
@@ -327,7 +327,7 @@ const RestaurantSections = ({
   // const renderCategoryItem = ({ item, index }) => {
   //   const content = (
   //     // update beautifull shadow to category card
-  //     <TouchableOpacity style={styles(currentTheme).categoryCard} onPress={() => handleCategoryClick(item)}>
+  //     <TouchableOpacity style={styles(currentTheme).categoryCard} onPress={() => handleCategoryClick(item)}> 
   //     <ShimmerImage imageUrl={item.url} style={styles(currentTheme).categoryImage} resizeMode='cover' />
   //       <TextDefault numberOfLines={1} style={styles(currentTheme).categoryTitle}>
   //         {item.category_name}
@@ -344,7 +344,7 @@ const RestaurantSections = ({
 
   const renderCategoryItem = ({ item, index }) => {
     const content = (
-      <TouchableOpacity
+      <TouchableOpacity 
         style={[
           styles(currentTheme).categoryCard,
           // Cross-platform shadow with subtle appearance
@@ -353,7 +353,7 @@ const RestaurantSections = ({
             shadowColor: '#000000',
             shadowOffset: {
               width: 0,
-              height: 2 // Reduced for subtlety
+              height: 2, // Reduced for subtlety
             },
             shadowOpacity: 0.08, // Much lighter opacity
             shadowRadius: 3, // Smaller radius for crisp shadow
@@ -363,37 +363,35 @@ const RestaurantSections = ({
             backgroundColor: currentTheme.themeBackground || '#FFFFFF',
             // Add these for iOS shadow fix
             borderRadius: scale(16), // Make sure border radius is here
-            overflow: 'visible' // Important for shadow visibility
+            overflow: 'visible', // Important for shadow visibility
           }
-        ]}
+        ]} 
         onPress={() => handleCategoryClick(item)}
-      >
-        <ShimmerImage
-          imageUrl={item.url}
-          style={styles(currentTheme).categoryImage}
-          resizeMode='cover'
+      > 
+        <ShimmerImage 
+          imageUrl={item.url} 
+          style={styles(currentTheme).categoryImage} 
+          resizeMode='cover' 
         />
         <TextDefault numberOfLines={1} style={styles(currentTheme).categoryTitle}>
           {item.category_name}
         </TextDefault>
       </TouchableOpacity>
     )
-
+  
     if (!hasCategoriesAnimated) {
       return <AnimatedItem index={index}>{content}</AnimatedItem>
     }
-
+  
     return content
   }
   return (
     <View style={styles(currentTheme).container}>
       {/* Popular Section */}
-      {popularItems.loading
-        ? (
+      {popularItems.loading ? (
         <PopularItemsSkeleton currentTheme={currentTheme} />
-          )
-        : (
-            popularItems.data?.length > 0 && (
+      ) : (
+        popularItems.data?.length > 0 && (
           <View style={styles(currentTheme).section}>
             <View style={styles(currentTheme).sectionHeader}>
               <TextDefault H4 bolder textColor={currentTheme.fontMainColor}>
@@ -416,8 +414,8 @@ const RestaurantSections = ({
               }}
             />
           </View>
-            )
-          )}
+        )
+      )}
 
       {/* Categories Section */}
       {categories.loading ? (

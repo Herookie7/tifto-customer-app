@@ -15,9 +15,7 @@ function DrawerProfile(props) {
   const currentTheme = theme[themeContext.ThemeValue]
   const { isLoggedIn, loadingProfile, profile } = useContext(UserContext)
 
-  if (loadingProfile) {
-    return (<TextDefault>{t('loading')}</TextDefault>);
-  }
+  if (loadingProfile) return <TextDefault>{t('loading')}</TextDefault>
   return (
     <View style={styles(currentTheme).mainContainer}>
       {!isLoggedIn && (

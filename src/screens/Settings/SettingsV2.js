@@ -15,7 +15,7 @@ import * as Notifications from 'expo-notifications'
 import * as Localization from 'expo-localization'
 import Modal from 'react-native-modal'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { Ionicons, MaterialIcons } from '@expo/vector-icons'
+import { Ionicons } from '@expo/vector-icons'
 import { profile } from '../../apollo/queries'
 
 import {
@@ -45,7 +45,7 @@ import analytics from '../../utils/analytics'
 import { Divider } from 'react-native-paper'
 import { HeaderBackButton } from '@react-navigation/elements'
 import navigationService from '../../routes/navigationService'
-
+import { MaterialIcons } from '@expo/vector-icons'
 import { scale } from '../../utils/scaling'
 import i18next from '../../../i18next'
 import { useTranslation } from 'react-i18next'
@@ -75,7 +75,7 @@ const DEACTIVATE = gql`
 function Settings(props) {
   const Analytics = analytics()
 
-  const { token } = useContext(AuthContext)
+  const { token, setToken } = useContext(AuthContext)
   const {
     profile,
     loadingProfile,
@@ -177,7 +177,7 @@ function Settings(props) {
       const permission = await getPermission()
       if (permission === 'granted') {
         if (!profile.notificationToken) {
-          token = await Notifications.getExpoPushTokenAsync({ projectId: Constants.expoConfig.extra.eas.projectId })
+          token = await Notifications.getExpoPushTokenAsync({  projectId: Constants.expoConfig.extra.eas.projectId})
           uploadToken({ variables: { token: token.data } })
         }
         offerNotificationSetter(profile.isOfferNotification)
@@ -240,7 +240,7 @@ function Settings(props) {
         languageTypes[languageInd].code
       )
 
-      const lang = await AsyncStorage.getItem('tifto-language')
+      var lang = await AsyncStorage.getItem('tifto-language')
       if (lang) {
         const defLang = languageTypes.findIndex(el => el.code === lang)
         const langName = languageTypes[defLang].value
@@ -248,7 +248,7 @@ function Settings(props) {
       }
       i18next.changeLanguage(lang)
       modalVisibleSetter(false)
-      // Updates.reloadAsync()
+      //Updates.reloadAsync()
       // }
     } catch (error) {
       console.error('Error during language selection:', error)
@@ -307,9 +307,7 @@ function Settings(props) {
       message: t('errorInProfile')
     })
   }
-  if (loadingProfile) {
-    return <Spinner />
-  }
+  if (loadingProfile) return <Spinner />
   return (
     <SafeAreaView
       edges={['bottom', 'left', 'right']}

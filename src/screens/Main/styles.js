@@ -1,7 +1,7 @@
 import { verticalScale, scale } from '../../utils/scaling'
 import { Dimensions, StyleSheet } from 'react-native'
-import { alignment } from '../../utils/alignment'
 const windowWidth = Dimensions.get('window').width
+import { alignment } from '../../utils/alignment'
 
 const SCREEN_HEIGHT = Dimensions.get('screen').height
 const MODAL_HEIGHT = Math.floor(SCREEN_HEIGHT / 4)

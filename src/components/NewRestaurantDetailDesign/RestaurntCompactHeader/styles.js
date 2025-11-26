@@ -1,6 +1,6 @@
 // components/SmallHeader/styles.js
-import { StyleSheet, Platform, StatusBar } from 'react-native'
-import { scale } from '../../../utils/scaling'
+import { StyleSheet, Platform, StatusBar } from 'react-native';
+import { scale } from '../../../utils/scaling';
 
 const styles = (props = null) => StyleSheet.create({
   container: {
@@ -28,6 +28,6 @@ const styles = (props = null) => StyleSheet.create({
     fontSize: scale(16),
     textAlign: 'center'
   }
-})
+});
 
-export default styles
+export default styles;

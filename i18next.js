@@ -1,7 +1,7 @@
-import i18next from 'i18next'
-import { initReactI18next } from 'react-i18next'
-import * as Localization from 'expo-localization'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import i18next from 'i18next';
+import { initReactI18next } from 'react-i18next';
+import * as Localization from 'expo-localization';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { en } from './translations/en'
 import { de } from './translations/de'
@@ -13,19 +13,19 @@ import { he } from './translations/he'
 import { hi } from './translations/hi'
 import { es } from './translations/es'
 import { bn } from './translations/bn'
-import { pt } from './translations/pt'
-import { ru } from './translations/ru'
-import { ur } from './translations/ur'
-import { id } from './translations/id'
-import { jp } from './translations/jp'
-import { tr } from './translations/tr'
+import {pt} from './translations/pt'
+import {ru} from './translations/ru'
+import {ur} from './translations/ur'
+import {id} from './translations/id'
+import {jp} from './translations/jp'
+import {tr} from './translations/tr'
 import { mr } from './translations/mr'
 import { te } from './translations/te'
 import { vi } from './translations/vi'
 import { ko } from './translations/ko'
-import { it } from './translations/it'
-import { th } from './translations/th'
-import { gu } from './translations/gu'
+import {it} from './translations/it'
+import {th} from './translations/th'
+import {gu} from './translations/gu'
 import { fa } from './translations/fa'
 import { pl } from './translations/pl'
 import { ps } from './translations/ps'
@@ -34,6 +34,7 @@ import { ku } from './translations/ku'
 import { uz } from './translations/uz'
 import { az } from './translations/az'
 import { nl } from './translations/nl'
+
 
 export const languageResources = {
   en: { translation: en },
@@ -79,35 +80,36 @@ i18next
     fallbackLng: 'en',
     resources: languageResources,
     interpolation: {
-      escapeValue: false // React already escapes by default
-    }
-  })
+      escapeValue: false, // React already escapes by default
+    },
+  });
 
 // Async function to detect and set language
-const detectAndSetLanguage = async() => {
+const detectAndSetLanguage = async () => {
   try {
-    const storedLanguage = await AsyncStorage.getItem('tifto-language')
-    const systemLanguage = Localization?.locale?.split('-')[0]
-    const availableLanguages = Object.keys(languageResources)
+    const storedLanguage = await AsyncStorage.getItem('tifto-language');
+    const systemLanguage = Localization?.locale?.split('-')[0];
+    const availableLanguages = Object.keys(languageResources);
 
     // Prefer stored language if available, else system language if supported, else fallback to 'en'
-    let languageToUse = 'en'
+    let languageToUse = 'en';
     if (storedLanguage && availableLanguages.includes(storedLanguage)) {
-      languageToUse = storedLanguage
+      languageToUse = storedLanguage;
     } else if (availableLanguages.includes(systemLanguage)) {
-      languageToUse = systemLanguage
+      languageToUse = systemLanguage;
     }
 
-    await i18next.changeLanguage(languageToUse)
+    await i18next.changeLanguage(languageToUse);
 
     // Optionally clear stored language keys if you want fresh detection next time
-    await AsyncStorage.removeItem('tifto-language')
-    await AsyncStorage.removeItem('tifto-language-name')
+    await AsyncStorage.removeItem('tifto-language');
+    await AsyncStorage.removeItem('tifto-language-name');
   } catch (error) {
-    console.error('Error detecting or setting language:', error)
+    console.error('Error detecting or setting language:', error);
   }
-}
+};
 
-detectAndSetLanguage()
+detectAndSetLanguage();
 
-export default i18next
+export default i18next;
+

@@ -4,7 +4,8 @@ import { alignment } from '../../utils/alignment'
 import { theme } from '../../utils/themeColors'
 const { height } = Dimensions.get('window')
 
-const styles = (props = null) => {
+
+const styles = (props = null) => {  
   return StyleSheet.create({
     backdrop: {
       height: '80%'
@@ -27,7 +28,7 @@ const styles = (props = null) => {
       borderWidth: scale(1),
       borderColor: props !== null ? props?.customBorder : '#E5E7EB',
       justifyContent: 'center',
-      flex: 1
+      flex: 1,
       // ...alignment.Psmall,
     },
     subContainer: {

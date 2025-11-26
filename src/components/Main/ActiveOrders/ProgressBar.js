@@ -1,3 +1,4 @@
+
 import React from 'react'
 import { View } from 'react-native'
 import { scale } from '../../../utils/scaling'
@@ -43,9 +44,9 @@ export const orderStatuses = [
     statusText: 'cancelledOrder'
   },
   {
-    key: 'CANCELLEDBYREST',
-    status: 7,
-    statusText: 'cancelledOrder'
+    key:'CANCELLEDBYREST',
+    status:7,
+    statusText:'cancelledOrder'
   }
 ]
 
@@ -71,12 +72,12 @@ export const ProgressBar = ({ currentTheme, item, customWidth, isPicked }) => {
   // Filter statuses if isPicked is true
   const filteredStatuses = isPicked
     ? orderStatuses.filter((s) => s.key !== 'ASSIGNED' && s.key !== 'PICKED')
-    : orderStatuses
+    : orderStatuses;
 
-  const currentStatus = filteredStatuses.find((x) => x.key === item.orderStatus) || { status: 0 }
+  const currentStatus = filteredStatuses.find((x) => x.key === item.orderStatus) || { status: 0 };
 
   // Set the total number of filled bars based on the isPicked prop
-  const totalBars = isPicked ? 3 : 4
+  const totalBars = isPicked ? 3 : 4;
 
   return (
     <View style={{ marginTop: scale(10) }}>
@@ -89,7 +90,7 @@ export const ProgressBar = ({ currentTheme, item, customWidth, isPicked }) => {
               style={{
                 height: scale(4),
                 backgroundColor: currentTheme.primary,
-                width,
+                width: width,
                 marginRight: scale(10)
               }}
             />
@@ -102,7 +103,7 @@ export const ProgressBar = ({ currentTheme, item, customWidth, isPicked }) => {
               style={{
                 height: scale(4),
                 backgroundColor: currentTheme.gray200,
-                width,
+                width: width,
                 marginRight: scale(10)
               }}
             />

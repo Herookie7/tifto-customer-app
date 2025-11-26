@@ -422,7 +422,7 @@ function EditAddress(props) {
                   mutate({
                     variables: {
                       addressInput: {
-                        _id,
+                        _id: _id,
                         latitude: `${region.latitude}`,
                         longitude: `${region.longitude}`,
                         deliveryAddress: deliveryAddress.trim(),
@@ -447,15 +447,13 @@ function EditAddress(props) {
         onClose={onClose}
         onSubmit={onSubmit}
       /> */}
-      {modalVisible
-        ? (
+      {modalVisible ? (
         <SearchModal
           visible={modalVisible}
           onClose={onClose}
           onSubmit={onSubmit}
         />
-          )
-        : null}
+      ) : null}
       <View
         style={{
           paddingBottom: inset.bottom,

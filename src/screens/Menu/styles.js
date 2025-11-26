@@ -11,8 +11,8 @@ const styles = (props = null) =>
     container: { flex: 1, gap: 8, backgroundColor: props != null ? props?.themeBackground : '#FFF' },
     screenBackground: {
       backgroundColor: props != null ? props?.themeBackground : '#FFF',
-      ...alignment.PBlarge
-
+      ...alignment.PBlarge,
+      
     },
     searchbar: {
       ...alignment.PBmedium,
@@ -22,7 +22,7 @@ const styles = (props = null) =>
     mainContentContainer: {
       width: '100%',
       height: '80%',
-      alignSelf: 'center'
+      alignSelf: 'center',
       // backgroundColor: 'red'
     },
 
@@ -183,12 +183,12 @@ const styles = (props = null) =>
       borderTopRightRadius: 8
     },
     header: {
-
+      
       flexDirection: props?.isRTL ? 'row-reverse' : 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
-      ...alignment.MTsmall
-
+      ...alignment.MTsmall,
+      
     },
     seeAllBtn: {
       backgroundColor: props != null ? props?.newButtonBackground : '#F3FFEE',
@@ -196,7 +196,7 @@ const styles = (props = null) =>
       paddingTop: 8,
       paddingBottom: 8,
       paddingLeft: 16,
-      paddingRight: 16
+      paddingRight: 16,
     },
     modalContainer: {
       display: 'flex',
@@ -216,12 +216,12 @@ const styles = (props = null) =>
     },
     all:
     {
-      padding: 3,
-      backgroundColor: 'red'
+      padding:3,
+      backgroundColor:"red"
     },
     brandImgContainer:
     {
-      overflow: 'scroll'
+      overflow:"scroll",
     }
   })
 export default styles

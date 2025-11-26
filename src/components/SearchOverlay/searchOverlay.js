@@ -74,7 +74,7 @@ const SearchOverlay = ({
       Alert.alert('Currently Unavailable', 'Item Out of Stock')
       return
     }
-
+    
     if (!isRestaurantOpen) {
       // Show alert if restaurant is closed
       Alert.alert(
@@ -122,7 +122,7 @@ const SearchOverlay = ({
         padding: scale(15),
         borderBottomWidth: 1,
         borderBottomColor: currentTheme.borderColor
-      },
+      }, 
       { opacity: item.isOutOfStock ? 0.5 : 1 }]}
       activeOpacity={0.7}
       onPress={() => onPressItem(item)}
@@ -136,19 +136,19 @@ const SearchOverlay = ({
         imageUrl={item.image}
       />
 
-      <View style={{
-        flex: 1,
-        marginLeft: isRTL ? 0 : scale(15),
+      <View style={{ 
+        flex: 1, 
+        marginLeft: isRTL ? 0 : scale(15), 
         marginRight: isRTL ? scale(15) : 0,
         alignItems: isRTL ? 'flex-end' : 'flex-start'
       }}>
         <TextDefault
           numberOfLines={1}
           textColor={currentTheme.fontMainColor}
-          style={{
-            fontSize: scale(16),
+          style={{ 
+            fontSize: scale(16), 
             marginBottom: scale(4),
-            textAlign: isRTL ? 'right' : 'left'
+            textAlign: isRTL ? 'right' : 'left' 
           }}
           bold
           isRTL={isRTL}
@@ -159,8 +159,8 @@ const SearchOverlay = ({
         <TextDefault
           numberOfLines={2}
           textColor={currentTheme.fontSecondColor}
-          style={{
-            fontSize: scale(14),
+          style={{ 
+            fontSize: scale(14), 
             marginBottom: scale(4),
             textAlign: isRTL ? 'right' : 'left'
           }}
@@ -169,9 +169,9 @@ const SearchOverlay = ({
           {item.description}
         </TextDefault>
 
-        <View style={{
-          flexDirection: isRTL ? 'row-reverse' : 'row',
-          alignItems: 'center'
+        <View style={{ 
+          flexDirection: isRTL ? 'row-reverse' : 'row', 
+          alignItems: 'center' 
         }}>
           <TextDefault
             textColor={currentTheme.fontMainColor}

@@ -21,6 +21,6 @@ const styles = (props = null) =>
       width: '100%',
       borderTopLeftRadius: 8,
       borderTopRightRadius: 8
-    }
+    },
   })
 export default styles

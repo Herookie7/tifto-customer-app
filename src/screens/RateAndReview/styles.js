@@ -1,8 +1,8 @@
 import { scale, verticalScale } from '../../utils/scaling'
 import { Dimensions, StyleSheet } from 'react-native'
 import { textStyles } from '../../utils/textStyles'
-import { theme } from '../../utils/themeColors'
 const { height } = Dimensions.get('window')
+import { theme } from '../../utils/themeColors'
 const styles = (props = null) =>
   StyleSheet.create({
     flex: {

@@ -1,5 +1,5 @@
-import * as React from 'react'
-import Svg, { G, Path, Defs, ClipPath } from 'react-native-svg'
+import * as React from "react"
+import Svg, { G, Path, Defs, ClipPath } from "react-native-svg"
 const DeliveryIcon = (props) => (
     <Svg
         xmlns="http://www.w3.org/2000/svg"

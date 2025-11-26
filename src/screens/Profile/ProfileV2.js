@@ -28,7 +28,8 @@ import TextDefault from '../../components/Text/TextDefault/TextDefault'
 import { alignment } from '../../utils/alignment'
 import { useFocusEffect } from '@react-navigation/native'
 import analytics from '../../utils/analytics'
-import { Feather, MaterialIcons } from '@expo/vector-icons'
+import { Feather } from '@expo/vector-icons'
+import { MaterialIcons } from '@expo/vector-icons'
 import { HeaderBackButton } from '@react-navigation/elements'
 import navigationService from '../../routes/navigationService'
 import { useTranslation } from 'react-i18next'
@@ -137,7 +138,7 @@ function Profile(props) {
     }
   }
 
-  const validateName = async() => {
+  const validateName = async () => {
     setNameError('')
 
     const name = refName.current.value()
@@ -152,7 +153,7 @@ function Profile(props) {
       try {
         await mutate({
           variables: {
-            name
+            name: name
           }
         })
       } catch (error) {
@@ -163,13 +164,13 @@ function Profile(props) {
     return true
   }
 
-  const updateName = async() => {
+  const updateName = async () => {
     const isValid = await validateName()
     if (isValid) {
       await mutate({
         variables: {
           name: refName.current.value(),
-          phone: profile?.phone ?? ''
+          phone: profile?.phone ?? ""
         }
       })
     }
@@ -178,7 +179,7 @@ function Profile(props) {
   const handleNamePress = () => {
     viewHideAndShowName()
   }
-  const handleNamePressUpdate = async() => {
+  const handleNamePressUpdate = async () => {
     await updateName()
     viewHideAndShowName()
   }
@@ -333,11 +334,9 @@ function Profile(props) {
                 </>
               )}
             </View>
-            {toggleNameView
-              ? (
-                  changeNameTab()
-                )
-              : (
+            {toggleNameView ? (
+              changeNameTab()
+            ) : (
               <View>
                 <View style={styles(currentTheme).containerHeading}>
                   <View style={styles(currentTheme).headingTitle}>
@@ -376,7 +375,7 @@ function Profile(props) {
                   </TextDefault>
                 </TouchableOpacity>
               </View>
-                )}
+            )}
           </View>
 
           {/* email */}
@@ -469,11 +468,9 @@ function Profile(props) {
                 </>
               )}
             </View>
-            {toggleView
-              ? (
-                  changePhoneTab()
-                )
-              : (
+            {toggleView ? (
+              changePhoneTab()
+            ) : (
               <View>
                 <View style={styles().containerHeading}>
                   <View style={styles().headingTitle}>
@@ -542,7 +539,7 @@ function Profile(props) {
                   </View>
                 </View>
               </View>
-                )}
+            )}
           </View>
         </KeyboardAvoidingView>
       </View>

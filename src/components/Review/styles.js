@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
   container: theme => ({
     paddingHorizontal: scale(16),
     paddingVertical: scale(24),
-    backgroundColor: theme.cardBackground
+    backgroundColor:theme.cardBackground
   }),
   starContainer: theme => ({
     width: '100%',
@@ -45,7 +45,7 @@ export const styles = StyleSheet.create({
     flexDirection: theme?.isRTL ? 'row-reverse' : 'row',
     alignItems: 'center'
   }),
-  modalInput: (theme) => ({
+  modalInput: (theme)=> ({
     height: scale(40),
     borderWidth: 1,
     borderColor: theme != null ? theme.verticalLine : '#B8B8B8',
@@ -53,6 +53,6 @@ export const styles = StyleSheet.create({
     borderRadius: 6,
     color: theme !== null ? theme.newFontcolor : '#f9f9f9',
     fontFamily: fontStyles.MuseoSans500,
-    textAlign: theme?.isRTL ? 'right' : 'left'
+    textAlign : theme?.isRTL ? 'right' : 'left'
   })
 })

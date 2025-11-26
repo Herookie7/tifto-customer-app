@@ -1,6 +1,7 @@
 import { verticalScale, scale } from '../../../utils/scaling'
 import { alignment } from '../../../utils/alignment'
-import { StyleSheet, Dimensions } from 'react-native'
+import { StyleSheet } from 'react-native'
+import { Dimensions } from 'react-native'
 const { width } = Dimensions.get('window')
 
 const styles = (props = null) =>
@@ -13,12 +14,12 @@ const styles = (props = null) =>
         width: 0,
         height: 3
       },
-      margin: 0,
-      borderRadius: 8
+      margin:0,
+      borderRadius: 8,
     },
     image: {
       width: '90%',
-      alignSelf: 'center',
+      alignSelf:"center",
       resizeMode: 'cover',
       flex: 1,
       justifyContent: 'center',
@@ -30,7 +31,7 @@ const styles = (props = null) =>
       height: '100%',
       backgroundColor: 'rgba(0,0,0,0.3)',
       alignItems: props?.isRTL ? 'flex-end' : 'flex-start',
-      justifyContent: 'flex-end'
+      justifyContent: 'flex-end',
     },
     pagination: {
       position: 'relative',
@@ -42,23 +43,23 @@ const styles = (props = null) =>
     },
     imgs1:
     {
-      overflow: 'hidden',
-      resizeMode: 'cover',
+      overflow:"hidden",
+      resizeMode: "cover",
       alignSelf: 'center',
-      width: '100%',
-      height: '100%',
-      borderRadius: 8
-
+      width: "100%",
+      height:"100%",
+      borderRadius: 8,
+    
     },
     csd:
     {
 
-      flex: 1,
-      justifyContent: 'center', // Centers vertically
-      alignItems: 'center', // Centers horizontally
-      width: '100%',
-      height: '100%',
-      paddingHorizontal: '5%'
+    flex: 1,
+    justifyContent: 'center', // Centers vertically
+    alignItems: 'center', // Centers horizontally
+    width: '100%',
+      height: "100%",
+    paddingHorizontal:'5%',
     }
   })
 export default styles

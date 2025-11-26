@@ -1,25 +1,25 @@
-import React, { useContext, useState } from 'react'
-import { ScrollView, RefreshControl } from 'react-native'
-import TextDefault from '../Text/TextDefault/TextDefault'
-import ThemeContext from '../../ui/ThemeContext/ThemeContext'
-import { theme } from '../../utils/themeColors'
-import { useTranslation } from 'react-i18next'
-import ErrorSvg from '../../assets/SVG/error'
-import useNetworkStatus from '../../utils/useNetworkStatus'
+import React, { useContext, useState } from 'react';
+import { ScrollView, RefreshControl } from 'react-native';
+import TextDefault from '../Text/TextDefault/TextDefault';
+import ThemeContext from '../../ui/ThemeContext/ThemeContext';
+import { theme } from '../../utils/themeColors';
+import { useTranslation } from 'react-i18next';
+import ErrorSvg from '../../assets/SVG/error';
+import useNetworkStatus from '../../utils/useNetworkStatus';
 
 const ErrorView = ({ refetchFunctions = [] }) => {
-  const themeContext = useContext(ThemeContext)
-  const currentTheme = theme[themeContext.ThemeValue]
-  const { t } = useTranslation()
+  const themeContext = useContext(ThemeContext);
+  const currentTheme = theme[themeContext.ThemeValue];
+  const { t } = useTranslation();
+  
+  const { isConnected } = useNetworkStatus();
+  const [refreshing, setRefreshing] = useState(false);
 
-  const { isConnected } = useNetworkStatus()
-  const [refreshing, setRefreshing] = useState(false)
-
-  const onRefresh = async() => {
-    setRefreshing(true)
+  const onRefresh = async () => {
+    setRefreshing(true);
     await Promise.all(refetchFunctions.map((refetch) => refetch()))
-    setRefreshing(false)
-  }
+    setRefreshing(false);
+  };
 
   return (
     <ScrollView
@@ -36,7 +36,7 @@ const ErrorView = ({ refetchFunctions = [] }) => {
         {t('checkInternet')}
       </TextDefault>
     </ScrollView>
-  )
-}
+  );
+};
 
-export default ErrorView
+export default ErrorView;

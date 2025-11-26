@@ -81,7 +81,8 @@ export const useRestaurantData = (
     })
 
   const processCategories = (restaurant) => {
-    if (!restaurant) { return { sortedDeals: [], merged_food_items: [], deals: [] } }
+    if (!restaurant)
+      return { sortedDeals: [], merged_food_items: [], deals: [] }
 
     // First create the popular section
     const popularSection = {
@@ -146,7 +147,7 @@ export const useRestaurantData = (
         grouped_subcategories_arr
           ?.filter((sub_ctg) => sub_ctg.parentCategoryId === ctg._id)
           .flatMap((sub_ctg) => {
-            const item = {
+            let item = {
               subCategoryTitle:
                 ctg.foods?.some(
                   (fd) => fd?.subCategory === sub_ctg?._id && !fd.isOutOfStock
@@ -154,11 +155,11 @@ export const useRestaurantData = (
               parentCategoryTitle: '',
               foods: sub_ctg?._id
                 ? ctg.foods.filter(
-                  (fd) => fd?.subCategory === sub_ctg?._id && !fd.isOutOfStock
-                )
+                    (fd) => fd?.subCategory === sub_ctg?._id && !fd.isOutOfStock
+                  )
                 : ctg.foods.filter(
-                  (fd) => fd?.subCategory === ctg?._id && !fd.isOutOfStock
-                )
+                    (fd) => fd?.subCategory === ctg?._id && !fd.isOutOfStock
+                  )
             }
 
             if (
@@ -166,7 +167,7 @@ export const useRestaurantData = (
               (ctg?._id !== null && sub_ctg?.parentCategoryId !== ctg?._id)
             ) {
               if (!map.get(ctg._id)) {
-                item.parentCategoryTitle = ctg?.title
+                item['parentCategoryTitle'] = ctg?.title
                 map.set(ctg._id, true)
               }
             }
@@ -188,6 +189,7 @@ export const useRestaurantData = (
           ) || []
       }))
     ]
+
 
     return {
       sortedDeals,

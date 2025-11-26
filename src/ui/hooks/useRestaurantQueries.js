@@ -66,7 +66,7 @@ const HEADING = {
   orderAgain: 'Order Again',
   topPicks: 'Top Picks',
   topBrands: 'Top Brands',
-  grocery: 'All Tiffin Centers',
+  grocery: 'All Grocery',
   restaurant: 'All Restaurant'
 }
 
@@ -74,7 +74,7 @@ const SUB_HEADING = {
   orderAgain: 'From your previous orders',
   topPicks: 'Top picked restaurants for you',
   topBrands: 'Top brands in your area',
-  grocery: 'Most ordered tiffin centers',
+  grocery: 'Most ordered grocery stores',
   restaurant: 'Most ordered restaurants'
 }
 
@@ -84,8 +84,8 @@ export const useRestaurantQueries = (queryType, location, selectedType) => {
   const query = getQuery(queryType)
 
   const queryVariables = {
-    longitude: location?.longitude || null,
-    latitude: location?.latitude || null
+    longitude: location.longitude || null,
+    latitude: location.latitude || null
   }
 
   if (['grocery', 'restaurant'].includes(queryType)) {
@@ -93,14 +93,8 @@ export const useRestaurantQueries = (queryType, location, selectedType) => {
     queryVariables.ip = null
   }
 
-  // Skip query if location is required but not available
-  // For queries that require latitude/longitude (orderAgain, topPicks, topBrands), skip if location is missing
-  const requiresLocation = ['orderAgain', 'topPicks', 'topBrands'].includes(queryType)
-  const hasValidLocation = location && location.latitude && location.longitude
-  
   const { data, refetch, networkStatus, loading, error } = useQuery(query, {
     variables: queryVariables,
-    skip: requiresLocation ? !hasValidLocation : (!location || (!location.longitude && !location.latitude)),
     onCompleted: (data) => {
       getResult(queryType, data, setRestaurantData, setAllData, selectedType)
     },

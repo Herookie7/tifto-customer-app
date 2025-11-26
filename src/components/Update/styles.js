@@ -17,16 +17,16 @@ const styles = (props = null) =>
       shadowColor: '#000',
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.25,
-      shadowRadius: 3.84
+      shadowRadius: 3.84,
     },
     title: {
       fontSize: 18,
       fontWeight: 'bold',
-      marginBottom: 10
+      marginBottom: 10,
     },
     message: {
-      marginBottom: 20
-    }
+      marginBottom: 20,
+    },
   })
 
 export default styles

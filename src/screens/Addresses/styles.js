@@ -42,7 +42,7 @@ const styles = (props = null) =>
     containerSpace: {
       width: '100%',
       alignItems: 'center',
-      justifyContent: 'center'
+      justifyContent: 'center',
     },
     width100: {
       width: '100%'
@@ -52,7 +52,7 @@ const styles = (props = null) =>
     },
     midContainer: {
       display: 'flex',
-      flexDirection: props?.isRTL ? 'row-reverse' : 'row'
+      flexDirection: props?.isRTL ? 'row-reverse' : 'row',
     },
     homeIcon: {
       color: props !== null ? props.darkBgFont : '#000',
@@ -64,7 +64,7 @@ const styles = (props = null) =>
     },
     line: {
       height: 0.5,
-      backgroundColor: props !== null ? props.borderBottomColor : '#f9f9f9'
+      backgroundColor: props !== null ? props.borderBottomColor : '#f9f9f9',
     },
     buttonsAddress: {
       display: 'flex',
@@ -76,7 +76,7 @@ const styles = (props = null) =>
       flexDirection: props?.isRTL ? 'row-reverse' : 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
-      ...alignment.Psmall
+      ...alignment.Psmall,
     }
   })
 export default styles

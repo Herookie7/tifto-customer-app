@@ -39,12 +39,12 @@ const Banner = ({ banners }) => {
         _id: banner.screen
       })
     } else {
-      /*
-
+      /* 
+      
          navigation?.getState()?.routeNames?.includes(banner.screen)
           ? banner.screen
           : name,
-
+          
       */
 
       const { name, selectedType, queryType } = BANNER_PARAMETERS[banner?.screen]
@@ -94,19 +94,17 @@ const Banner = ({ banners }) => {
               onPressBanner(item)
             }}
           >
-            {mediaType === 'video'
-              ? (
+            {mediaType === 'video' ? (
               <VideoBanner style={styles().image} source={{ uri: item?.file }}>
                 {renderBannerContent(item)}
               </VideoBanner>
-                )
-              : (
+            ) : (
               <View style={styles().csd}>
                 <ImageBackground source={{ uri: item?.file }} style={styles().imgs1} resizeMode='cover'>
                   {renderBannerContent(item)}
                 </ImageBackground>
               </View>
-                )}
+            )}
           </TouchableOpacity>
         )
       }}

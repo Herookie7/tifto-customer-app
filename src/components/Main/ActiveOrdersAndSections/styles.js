@@ -8,11 +8,11 @@ const styles = (props = null) =>
     ML20: {
       ...alignment.MLlarge
     },
-    menuPageHeading: {
+    menuPageHeading:{
       ...alignment.MLmedium,
       ...alignment.MRmedium,
-      backgroundColor: props?.toggler,
-      padding: 8
+      backgroundColor:props?.toggler,
+      padding:8
     },
     offerScroll: {
       height: scale(230),

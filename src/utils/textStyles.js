@@ -55,7 +55,8 @@ export const textStyles = {
   },
 
   TextItalic: {
-    fontStyle: 'italic'
+    fontStyle: 'italic',
   }
+
 
 }

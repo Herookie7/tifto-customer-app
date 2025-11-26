@@ -14,7 +14,6 @@ import analytics from '../../utils/analytics'
 import AuthContext from '../../context/Auth'
 import { useNavigation } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
-import { signInWithEmail } from '../../services/authService'
 
 const LOGIN = gql`
   ${login}
@@ -35,8 +34,8 @@ export const useLogin = () => {
   const [passwordError, setPasswordError] = useState(null)
   const [registeredEmail, setRegisteredEmail] = useState(false)
   const themeContext = useContext(ThemeContext)
-  const currentTheme = { isRTL: i18n.dir() === 'rtl', ...theme[themeContext.ThemeValue] }
-  const { setTokenAsync, setFirebaseTokenAsync } = useContext(AuthContext)
+  const currentTheme = {isRTL : i18n.dir() === 'rtl', ...theme[themeContext.ThemeValue]}
+  const { setTokenAsync } = useContext(AuthContext)
 
   const [EmailEixst, { loading }] = useMutation(EMAIL, {
     onCompleted,
@@ -49,7 +48,7 @@ export const useLogin = () => {
   })
 
   // Debounce the setEmail function
-  const setEmail = (email) => {
+  const setEmail = (email)=>{
     emailRef.current = email
   }
 
@@ -102,7 +101,7 @@ export const useLogin = () => {
           navigation.navigate({ name: 'Main', merge: true })
         }
       } else {
-        navigation.navigate('Register', { email: emailRef.current })
+        navigation.navigate('Register', { email:emailRef.current })
       }
     }
   }
@@ -135,17 +134,6 @@ export const useLogin = () => {
           name: data.login.name,
           email: data.login.email
         })
-        try {
-          const normalizedEmail = (emailRef.current || '').trim().toLowerCase()
-          const result = await signInWithEmail(normalizedEmail, password)
-          if (result.success && result.idToken) {
-            await setFirebaseTokenAsync(result.idToken)
-          } else {
-            console.log('Firebase sign-in error', result.error)
-          }
-        } catch (firebaseError) {
-          console.log('Firebase sign-in error', firebaseError)
-        }
         setTokenAsync(data.login.token)
         navigation.navigate({
           name: 'Main',
@@ -171,20 +159,20 @@ export const useLogin = () => {
     try {
       if (validateCredentials()) {
         let notificationToken = null
-        try {
-          if (Device.isDevice) {
-            const {
-              status: existingStatus
-            } = await Notifications.getPermissionsAsync()
-            if (existingStatus === 'granted') {
-              notificationToken = (await Notifications.getExpoPushTokenAsync({
-                projectId: Constants.expoConfig?.extra?.eas?.projectId
-              })).data
+          try {
+            if (Device.isDevice) {
+              const {
+                status: existingStatus
+              } = await Notifications.getPermissionsAsync()
+              if (existingStatus === 'granted') {
+                notificationToken = (await Notifications.getExpoPushTokenAsync({
+                  projectId: Constants.expoConfig.extra.eas.projectId
+                })).data
+              }
             }
-          }
         } catch (error) {
           FlashMessage({
-            message: t('errorWhileGettingNotificationToken')
+            message: t('errorWhileGettingNotificationToken'),
           })
         }
         LoginMutation({
@@ -205,7 +193,7 @@ export const useLogin = () => {
   }
 
   function checkEmailExist() {
-    EmailEixst({ variables: { email: emailRef.current } })
+    EmailEixst({ variables: { email:emailRef.current } })
   }
 
   function onBackButtonPressAndroid() {

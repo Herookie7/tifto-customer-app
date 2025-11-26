@@ -14,7 +14,7 @@ const styles = (props = null) =>
       // ...alignment.PLmedium
       marginHorizontal: scale(10)
     },
-    topbrandsHeading: {
+    topbrandsHeading:{
       ...alignment.PRmedium
 
     },
@@ -23,7 +23,7 @@ const styles = (props = null) =>
       // aspectRatio: 18/8,
       height: scale(70),
       objectFit: 'cover',
-      borderRadius: 8
+      borderRadius: 8,
     },
     topbrandsContainer: {
       flexGrow: 1,
@@ -64,7 +64,7 @@ const styles = (props = null) =>
     header: {
       flexDirection: props?.isRTL ? 'row-reverse' : 'row',
       alignItems: 'center',
-      justifyContent: 'space-between'
+      justifyContent: 'space-between',
       // ...alignment.MRmedium,
       // marginHorizontal: scale(10),
     },
@@ -74,8 +74,8 @@ const styles = (props = null) =>
       paddingTop: 8,
       paddingBottom: 8,
       paddingLeft: 16,
-      paddingRight: 16
-
+      paddingRight: 16,
+      
     }
   })
 

@@ -76,9 +76,9 @@ const usePhoneOtp = () => {
       route.params?.prevScreen
         ? navigation.navigate(route.params.prevScreen)
         : navigation.navigate({
-          name: 'Main',
-          merge: true
-        })
+            name: 'Main',
+            merge: true
+          })
     }
   }
 
@@ -96,7 +96,7 @@ const usePhoneOtp = () => {
     onError: onUpdateUserError
   })
 
-  const onCodeFilled = async(otp_code) => {
+  const onCodeFilled = async (otp_code) => {
     if (configuration?.skipMobileVerification) {
       mutateUser({
         variables: {
@@ -168,7 +168,7 @@ const usePhoneOtp = () => {
     if (!configuration.skipMobileVerification) {
       onSendOTPHandler()
     }
-  }, [configuration, phone])
+  }, [configuration,  phone])
 
   useEffect(() => {
     let timer = null

@@ -12,12 +12,6 @@ const styles = (props = null) =>
       ...alignment.MRsmall,
       backgroundColor: props != null ? props?.cardBackground : '#181818'
     },
-    container: {
-      width: '100%',
-      height: '100%',
-      borderRadius: 15,
-      overflow: 'hidden'
-    },
     overlayContainer: {
       position: 'absolute',
       top: 0,
@@ -97,7 +91,7 @@ const styles = (props = null) =>
       flexDirection: props?.isRTL ? 'row-reverse' : 'row',
       alignItems: 'center',
       gap: scale(4)
-    },
+    }, 
     border: {
       width: '100%',
       height: 1,
@@ -113,8 +107,8 @@ const styles = (props = null) =>
       bottom: 0,
       backgroundColor: 'rgba(150, 150, 150, 0.7)',
       justifyContent: 'center',
-      alignItems: 'center'
-    }
+      alignItems: 'center',
+    },
   })
 
 export default styles

@@ -12,7 +12,7 @@ const styles = (props = null) =>
       borderRadius: scale(8),
       backgroundColor: props !== null ? props?.cardBackground : '#F3F4F6',
       // ...alignment.Msmall,
-      ...alignment.Psmall
+      ...alignment.Psmall,
     },
     header: {
       display: 'flex',

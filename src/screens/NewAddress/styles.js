@@ -6,7 +6,7 @@ import { theme } from '../../utils/themeColors'
 const styles = (props = null) =>
   StyleSheet.create({
     flex: {
-      flex: 1,
+      flex:1,
       backgroundColor: props !== null ? props?.radioOuterColor : '#FFF'
     },
     subContainer: {
@@ -75,7 +75,7 @@ const styles = (props = null) =>
       borderRadius: scale(8),
       justifyContent: 'center',
       ...alignment.PxSmall,
-      backgroundColor: props !== null ? props?.tagColor : 'transparent'
+      backgroundColor: props !== null ? props?.tagColor : 'transparent',
     },
     textlabelButton: {
       justifyContent: 'center',

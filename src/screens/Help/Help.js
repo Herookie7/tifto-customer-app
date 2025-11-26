@@ -8,11 +8,12 @@ import TextDefault from '../../components/Text/TextDefault/TextDefault'
 import Analytics from '../../utils/analytics'
 import { useFocusEffect } from '@react-navigation/native'
 import { HeaderBackButton } from '@react-navigation/elements'
-import { MaterialIcons, FontAwesome } from '@expo/vector-icons'
+import { MaterialIcons } from '@expo/vector-icons'
 import navigationService from '../../routes/navigationService'
 import { scale } from '../../utils/scaling'
 import { useTranslation } from 'react-i18next'
 import Accordion from '../../components/Accordion/Accordion'
+import { FontAwesome } from '@expo/vector-icons'
 import { FlashMessage } from '../../ui/FlashMessage/FlashMessage'
 import { WhatsAppNotInstalledModal } from '../../components/Help/WhatsAppNotInstalledModal'
 
@@ -68,7 +69,7 @@ const Help = (props) => {
     Linking.openURL('https://play.google.com/store/apps/details?id=com.whatsapp')
   }
 
-  const openWhatsAppChat = async() => {
+  const openWhatsAppChat = async () => {
     const phoneNumber = '+14232600408'
 
     if (Platform.OS === 'android') {
@@ -156,9 +157,7 @@ const Help = (props) => {
   }, [props?.navigation])
 
   const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
-  if (!connect) {
-    return (<ErrorView refetchFunctions={[]} />);
-  }
+  if (!connect) return <ErrorView refetchFunctions={[]} />
 
   return (
     <SafeAreaView edges={['bottom', 'right', 'left']} style={styles(currentTheme).flex}>

@@ -16,7 +16,7 @@ const styles = (props = null) =>
       },
       shadowOpacity: 0.5,
       shadowRadius: verticalScale(1),
-      // flexDirection: 'row',
+      //flexDirection: 'row',
       justifyContent: 'space-between',
       ...alignment.MRsmall,
       ...alignment.MLsmall,
@@ -54,7 +54,7 @@ const styles = (props = null) =>
     },
     subContainerRight: {
       justifyContent: 'flex-start',
-      width: '35%'
+      width: '35%',
     },
     rateOrderContainer: {
       flex: 1,
@@ -104,7 +104,7 @@ const styles = (props = null) =>
       flex: 1,
       backgroundColor: props !== null ? props?.cardBackground : '#F3F4F6',
       borderColor: props !== null ? props?.customBorder : '#fff',
-      borderWidth: scale(1),
+      borderWidth:scale(1),
       borderRadius: scale(8),
       elevation: 1,
       ...alignment.MRmedium,
@@ -115,7 +115,7 @@ const styles = (props = null) =>
     restaurantImage: {
       height: 85,
       width: 85,
-      borderRadius: 10
+      borderRadius: 10,
     },
     restaurantImage1: {
       height: 85,
@@ -151,12 +151,12 @@ const styles = (props = null) =>
       borderRadius: scale(10)
     },
     starsContainer: {
-      flexDirection: props?.isRTL ? 'row-reverse' : 'row',
+      flexDirection: props?.isRTL ? 'row-reverse' :'row',
       alignItems: 'center',
       justifyContent: 'space-between',
       width: '100%',
       height: scale(50)
-      // backgroundColor: props !== null ? props?.gray200 : '#F3F4F6'
+      //backgroundColor: props !== null ? props?.gray200 : '#F3F4F6'
     },
     starsStyle: {
       borderColor: props !== null ? props?.newheaderColor : '#90E36D',

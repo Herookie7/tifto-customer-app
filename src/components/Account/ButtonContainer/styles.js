@@ -1,8 +1,9 @@
 import { scale } from '../../../utils/scaling'
-import { StyleSheet, Dimensions } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { alignment } from '../../../utils/alignment'
 import { theme } from '../../../utils/themeColors'
-const { height } = Dimensions.get('screen')
+import { Dimensions } from 'react-native'
+const {height} = Dimensions.get('screen')
 
 const styles = (props = null) =>
   StyleSheet.create({
@@ -11,12 +12,12 @@ const styles = (props = null) =>
       flexDirection: props?.isRTL ? 'row-reverse' : 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      gap: scale(5)
+      gap: scale(5),
     },
     flexRow: {
       display: 'flex',
       flexDirection: props?.isRTL ? 'row-reverse' : 'row',
-      justifyContent: 'space-between'
+      justifyContent: 'space-between',
       // marginVertical: scale(10)
     },
     linkContainer: {
@@ -28,11 +29,11 @@ const styles = (props = null) =>
     mainLeftContainer: {
       flexDirection: props?.isRTL ? 'row-reverse' : 'row',
       justifyContent: 'space-between',
-      alignItems: 'center'
+      alignItems: 'center',
     },
     verifyView: {
       // alignItems: 'flex-end'
-      ...props?.isRTL ? { alignItems: 'flex-start' } : { alignItems: 'flex-end' }
+      ...props?.isRTL ? {alignItems: 'flex-start'} : {alignItems: 'flex-end'}
     },
     padding: {
       ...alignment.Pmedium

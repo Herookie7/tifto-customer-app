@@ -7,7 +7,7 @@ const styles = (props = null) =>
     flex: {
       flex: 1,
       flexDirection: 'row',
-      alignSelf: 'flex-start'
+      alignSelf: 'flex-start',
     },
     textBtn: {
       backgroundColor: 'transparent',
@@ -15,7 +15,7 @@ const styles = (props = null) =>
       alignItems: 'flex-end',
       ...alignment.PBsmall
     },
-
+  
     modalContainer: {
       flex: 1,
       backgroundColor: props !== null ? props?.cardBackground : '#FAFAFA',
@@ -30,13 +30,13 @@ const styles = (props = null) =>
       width: scale(30),
       ...alignment.MTsmall
     },
-    locationIcon: {
+    locationIcon:{
       backgroundColor: props != null ? props?.themeBackground : '#E5E7EB',
       width: 28,
       height: 28,
       borderRadius: 30,
       justifyContent: 'center',
-      alignItems: 'center'
-    }
+      alignItems: 'center',
+    },
   })
 export default styles

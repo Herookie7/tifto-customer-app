@@ -2,11 +2,11 @@ import React, { useState, useEffect, useContext } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useApolloClient, useQuery } from '@apollo/client'
 import gql from 'graphql-tag'
-import { v5 as uuidv5, v1 as uuidv1 } from 'uuid'
+import { v5 as uuidv5 } from 'uuid'
+import { v1 as uuidv1 } from 'uuid'
 import { profile } from '../apollo/queries'
 import { LocationContext } from './Location'
 import AuthContext from './Auth'
-import { signOutUser } from '../services/authService'
 
 import analytics from '../utils/analytics'
 
@@ -27,7 +27,7 @@ export const UserProvider = (props) => {
 
   const { t } = useTranslation()
 
-  const { token, clearAuthState } = useContext(AuthContext)
+  const { token, setToken } = useContext(AuthContext)
   const client = useApolloClient()
   const { location, setLocation } = useContext(LocationContext)
   const [cart, setCart] = useState([])
@@ -51,7 +51,7 @@ export const UserProvider = (props) => {
   })
   useEffect(() => {
     let isSubscribed = true
-    ;(async() => {
+    ;(async () => {
       const restaurant = await AsyncStorage.getItem('restaurant')
 
       const cart = await AsyncStorage.getItem('cartItems')
@@ -84,17 +84,10 @@ export const UserProvider = (props) => {
     })
   }
 
-  const logout = async() => {
+  const logout = async () => {
     try {
-      await clearAuthState()
-      try {
-        const result = await signOutUser()
-        if (!result.success) {
-          console.log('Firebase sign-out error', result.error)
-        }
-      } catch (firebaseError) {
-        console.log('Firebase sign-out error', firebaseError)
-      }
+      await AsyncStorage.removeItem('token')
+      setToken(null)
       if (location._id) {
         setLocation({
           label: t('selectedLocation'),
@@ -112,7 +105,7 @@ export const UserProvider = (props) => {
     }
   }
 
-  const clearCart = async() => {
+  const clearCart = async () => {
     setCart([])
     setRestaurant(null)
     setInstructions('')
@@ -121,14 +114,14 @@ export const UserProvider = (props) => {
     await AsyncStorage.removeItem('restaurant')
   }
 
-  const addQuantity = async(key, quantity = 1) => {
+  const addQuantity = async (key, quantity = 1) => {
     const cartIndex = cart.findIndex((c) => c.key === key)
     cart[cartIndex].quantity += quantity
     setCart([...cart])
     await AsyncStorage.setItem('cartItems', JSON.stringify([...cart]))
   }
 
-  const deleteItem = async(key) => {
+  const deleteItem = async (key) => {
     const cartIndex = cart.findIndex((c) => c.key === key)
     if (cartIndex > -1) {
       cart.splice(cartIndex, 1)
@@ -139,7 +132,7 @@ export const UserProvider = (props) => {
     }
   }
 
-  const removeQuantity = async(key) => {
+  const removeQuantity = async (key) => {
     const cartIndex = cart.findIndex((c) => c.key === key)
     cart[cartIndex].quantity -= 1
     const items = [...cart.filter((c) => c.quantity > 0)]
@@ -166,17 +159,17 @@ export const UserProvider = (props) => {
   const numberOfCartItems = () => {
     return cart
       .map((c) => c.quantity)
-      .reduce(function(a, b) {
+      .reduce(function (a, b) {
         return a + b
       }, 0)
   }
 
-  const addCartItem = async(_id, variation, quantity = 1, addons = [], clearFlag, specialInstructions = '') => {
+  const addCartItem = async (_id, variation, quantity = 1, addons = [], clearFlag, specialInstructions = '') => {
     const cartItems = clearFlag ? [] : cart
     cartItems.push({
       key: uuidv1(v1options),
       _id,
-      quantity,
+      quantity: quantity,
       variation: {
         _id: variation
       },
@@ -188,17 +181,17 @@ export const UserProvider = (props) => {
     setCart([...cartItems])
   }
 
-  const updateCart = async(cart) => {
+  const updateCart = async (cart) => {
     setCart(cart)
     await AsyncStorage.setItem('cartItems', JSON.stringify(cart))
   }
 
-  const setCartRestaurant = async(id) => {
+  const setCartRestaurant = async (id) => {
     setRestaurant(id)
     await AsyncStorage.setItem('restaurant', id)
   }
 
-  const saveCoupon = async(couponData) => {
+  const saveCoupon = async (couponData) => {
     setCoupon(couponData)
     if (couponData) {
       await AsyncStorage.setItem('coupon', JSON.stringify(couponData))

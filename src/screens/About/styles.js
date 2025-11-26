@@ -141,7 +141,7 @@ const styles = (props = null) =>
     timingRow: {
       flexDirection: props?.isRTL ? 'row-reverse' : 'row',
       alignItems: 'center',
-      gap: scale(5)
+      gap: scale(5),
     },
     timingRowMain: {
       flexDirection: props?.isRTL ? 'row-reverse' : 'row',

@@ -135,7 +135,7 @@ export const useChatScreen = ({ navigation, route }) => {
   })
   const onSend = () => {
     if (!inputMessage?.trim()) return
-
+    
     const newMessage = {
       _id: Date.now().toString(),
       text: inputMessage.trim(),
@@ -145,13 +145,13 @@ export const useChatScreen = ({ navigation, route }) => {
         name: profile.name
       }
     }
-
+    
     // Optimistically update messages
     setMessages(previousMessages => [newMessage, ...previousMessages])
-
+    
     send({
       variables: {
-        orderId,
+        orderId: orderId,
         messageInput: {
           message: inputMessage.trim(),
           user: {

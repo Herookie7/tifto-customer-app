@@ -6,9 +6,11 @@ import ThemeContext from '../../ui/ThemeContext/ThemeContext'
 import { theme } from '../../utils/themeColors'
 import { FlashMessage } from '../../ui/FlashMessage/FlashMessage'
 import { phoneRegex } from '../../utils/regex'
-import { useNavigation, useRoute, useIsFocused } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import UserContext from '../../context/User'
 import countryCallingCodes from './countryCodes'
+import { useIsFocused } from '@react-navigation/native'
+import ConfigurationContext from '../../context/Configuration'
 import { useTranslation } from 'react-i18next'
 import { useCountryFromIP } from '../../utils/useCountryFromIP'
 
@@ -22,19 +24,24 @@ const useRegister = () => {
   const route = useRoute()
   const [phone, setPhone] = useState('')
   const [phoneError, setPhoneError] = useState(null)
+  const configuration = useContext(ConfigurationContext)
   const isFocused = useIsFocused()
   const { name } = route?.params
+ 
 
   const {
-    country,
-    setCountry,
-    currentCountry: countryCode,
-    setCurrentCountry: setCountryCode,
-    ipAddress,
-    isLoading: isCountryLoading,
-    error: countryError,
-    refetch
-  } = useCountryFromIP()
+      country,
+      setCountry,
+      currentCountry: countryCode,
+      setCurrentCountry: setCountryCode,
+      ipAddress,
+      isLoading: isCountryLoading,
+      error: countryError,
+      refetch
+    } = useCountryFromIP()
+
+
+ 
 
   const onCountrySelect = country => {
     setCountryCode(country.cca2)
@@ -43,7 +50,7 @@ const useRegister = () => {
   const { profile } = useContext(UserContext)
   const { refetchProfile } = useContext(UserContext)
   const themeContext = useContext(ThemeContext)
-  const currentTheme = { isRTL: i18n.dir() === 'rtl', ...theme[themeContext.ThemeValue] }
+  const currentTheme = {isRTL : i18n.dir() === 'rtl', ...theme[themeContext.ThemeValue]}
 
   const [mutate, { loading }] = useMutation(UPDATEUSER, {
     onCompleted,
@@ -64,19 +71,31 @@ const useRegister = () => {
   }
 
   async function onCompleted(data) {
-    const concatPhone = '+'.concat(country.callingCode[0] ?? '').concat(phone ?? '')
+    let concatPhone = '+'.concat(country.callingCode[0] ?? "").concat(phone ?? "")
     if (navigation && route && profile) {
-      mutate({
-        variables: {
-          name: profile.name,
-          phone: concatPhone,
-          phoneIsVerified: true
-        }
-      })
-      if (isFocused) {
-        navigation.navigate({
-          name: 'Profile'
+      if (configuration.twilioEnabled) {
+        FlashMessage({
+          message: 'Phone number has been added successfully!'
         })
+        await refetchProfile()
+        navigation.navigate({
+          name: 'PhoneOtp',
+          merge: true,
+          params: {name, phone: concatPhone, screen: route?.params?.screen}
+        })
+      } else {
+        mutate({
+          variables: {
+            name: profile.name,
+            phone: concatPhone,
+            phoneIsVerified: true
+          }
+        })
+        if (isFocused) {
+          navigation.navigate({
+            name: 'Profile'
+          })
+        }
       }
     }
   }
@@ -96,7 +115,7 @@ const useRegister = () => {
     mutate({
       variables: {
         name: profile.name,
-        phone: '+'.concat(country.callingCode[0] ?? '').concat(phone ?? ''),
+        phone: '+'.concat(country.callingCode[0] ?? "").concat(phone ?? ""),
         phoneIsVerified: false
       }
     })

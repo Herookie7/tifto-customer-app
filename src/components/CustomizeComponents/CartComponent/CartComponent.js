@@ -61,9 +61,9 @@ function CartComponent(props) {
             !props?.disabled
               ? styles(currentTheme).btnContainer
               : {
-                  ...styles().btnContainer,
-                  backgroundColor: currentTheme.main
-                }
+                ...styles().btnContainer,
+                backgroundColor: currentTheme.main
+              }
           }>
           <TextDefault textColor={currentTheme.black} H5 bolder center>
             {t('addToCart')}

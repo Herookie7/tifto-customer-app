@@ -11,7 +11,7 @@ const CollectionCard = ({ onPress, image, name }) => {
   const themeContext = useContext(ThemeContext)
   const currentTheme = theme[themeContext.ThemeValue]
   const imageUri = image || IMAGE_LINK
-
+  
   return (
     <Ripple
       activeOpacity={0.8}

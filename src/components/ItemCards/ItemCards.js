@@ -1,7 +1,8 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { Image, Text, View, TouchableOpacity, Alert } from 'react-native'
 import { scale } from '../../utils/scaling'
 import styles from './styles'
+import { useContext } from 'react'
 import ConfigurationContext from '../../context/Configuration'
 import { IMAGE_LINK } from '../../utils/constants'
 import TextDefault from '../Text/TextDefault/TextDefault'
@@ -11,6 +12,7 @@ import { formatNumber } from '../../utils/formatNumber'
 import { LinearGradient } from 'expo-linear-gradient'
 
 const ItemCard = ({ item, onPressItem, restaurant, tagCart }) => {
+
   const themeContext = useContext(ThemeContext)
   const currentTheme = theme[themeContext.ThemeValue]
   const configuration = useContext(ConfigurationContext)

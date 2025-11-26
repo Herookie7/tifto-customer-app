@@ -66,12 +66,12 @@ export const useStyles = (theme) =>
       alignSelf: 'center', // Horizontal centering
       justifyContent: 'center', // Vertical centering
       alignItems: 'center', // Ensure content is centered
-      height: 'auto' // Auto height
+      height: 'auto', // Auto height
     },
     backdrop: {
       flex: 1,
       backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background
       justifyContent: 'center', // Vertical centering of modal
-      alignItems: 'center' // Horizontal centering of modal
+      alignItems: 'center', // Horizontal centering of modal
     }
   })

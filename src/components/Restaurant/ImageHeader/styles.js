@@ -6,10 +6,10 @@ import { textStyles } from '../../../utils/textStyles'
 const styles = (props = null) =>
   StyleSheet.create({
     flex: {
-      flex: 1
+      flex: 1,
     },
     mainContainer: {
-      backgroundColor: props != null ? props.cardBackground : '#181818',
+      backgroundColor:  props != null ? props.cardBackground : '#181818',
       width: '100%',
       position: 'absolute',
       top: 0,
@@ -22,7 +22,7 @@ const styles = (props = null) =>
       justifyContent: 'center',
       alignItems: 'center',
       width: scale(30),
-      height: scale(30)
+      height: scale(30),
     },
     favouriteOverlay: {
       position: 'absolute',
@@ -46,16 +46,16 @@ const styles = (props = null) =>
       alignItems: 'center',
       zIndex: 1,
       ...alignment.PLmedium,
-      ...alignment.PRmedium
+      ...alignment.PRmedium,
     },
     fixedIcons: {
       flexDirection: 'row',
       justifyContent: 'flex-end',
       alignItems: 'center',
-      gap: 12
+      gap: 12,
     },
     restaurantDetails: {
-      top: -scale(85)
+      top: -scale(85),
     },
     mainRestaurantImg: {
       height: scale(250),
@@ -79,26 +79,26 @@ const styles = (props = null) =>
       alignItems: 'center',
       borderRadius: scale(50),
       padding: scale(5),
-      marginVertical: scale(3)
+      marginVertical: scale(3),
     },
     subContainer: {
       flexDirection: props?.isRTL ? 'row-reverse' : 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
-      minHeight: scale(60)
+      minHeight: scale(60),
     },
     titleContainer: {
-      flexDirection: props?.isRTL ? 'row-reverse' : 'row',
+      flexDirection: props?.isRTL ? 'row-reverse' : 'row', 
       alignItems: 'center',
       gap: scale(10),
       flex: 1,
       marginRight: props?.isRTL ? 0 : scale(10),
-      marginLeft: props?.isRTL ? scale(10) : 0
+      marginLeft: props?.isRTL ? scale(10) : 0,
     },
     timingRow: {
       flexDirection: props?.isRTL ? 'row-reverse' : 'row',
       alignItems: 'center',
-      gap: scale(5)
+      gap: scale(5),
     },
     timingRowMain: {
       flexDirection: 'row',
@@ -139,7 +139,7 @@ const styles = (props = null) =>
       gap: scale(10),
       alignItems: 'center',
       ...alignment.PLmedium,
-      ...alignment.PRmedium
+      ...alignment.PRmedium,
     },
     seeReviewsBtn: {
       backgroundColor: props != null ? props.newButtonBackground : '#F3FFEE',
@@ -167,7 +167,7 @@ const styles = (props = null) =>
     },
     activeHeader: {
       backgroundColor: props != null ? props.newButtonBackground : '#F3FFEE',
-      borderRadius: scale(50)
+      borderRadius: scale(50),
     },
     heading: {
       fontWeight: 'bold'
@@ -176,7 +176,7 @@ const styles = (props = null) =>
       position: 'absolute',
       top: 0,
       width: '100%',
-      height: '100%'
+      height: '100%',
     },
     headerTitle: {
       ...textStyles.H5,

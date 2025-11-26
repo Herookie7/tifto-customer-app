@@ -151,12 +151,8 @@ function Favourite() {
     )
   }
 
-  if (loading) {
-    return (<Spinner />);
-  }
-  if (error) {
-    return (<TextError text={error.message} />);
-  }
+  if (loading) return <Spinner />
+  if (error) return <TextError text={error.message} />
   return (
     <SafeAreaView edges={['bottom']} style={styles(currentTheme).flex}>
       <FlatList

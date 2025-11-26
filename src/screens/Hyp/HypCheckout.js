@@ -46,23 +46,24 @@ function HypCheckout(props) {
   const [createActivityMutation] = useMutation(CREATE_ACTIVITY)
 
   // Handlers
-  const onNotifiyUsers = async() => {
+  const onNotifiyUsers = async () => {
     try {
       // Notification
       await mutateOrderCreatedAndPaid({
         variables: {
           orderId: _id,
           restaurant: restaurantId,
-          orderInput
+          orderInput: orderInput
         }
       })
+      return
     } catch (err) {
       console.log('onNotifiyUsers failed')
       throw new Error(err)
     }
   }
 
-  const onCreateActivityHandler = async(type, details) => {
+  const onCreateActivityHandler = async (type, details) => {
     try {
       let tries = 0
       let success = false
@@ -72,7 +73,7 @@ function HypCheckout(props) {
             variables: {
               groupId: await AsyncStorage.getItem('hyp-session-id'),
               module: 'HypCheckout',
-              screenPath: '/Users/umarkhalid/Projects/Yalla/yalla-apps/tifto-app/src/screens/Hyp/HypCheckout.js',
+              screenPath: '/Users/umarkhalid/Projects/Yalla/yalla-apps/tifto-multivendor-app/src/screens/Hyp/HypCheckout.js',
               type,
               details
             }
@@ -156,7 +157,7 @@ function HypCheckout(props) {
         domStorageEnabled={true}
         bounces={false}
         originWhitelist={['*']}
-        onLoadStart={async(e) => {
+        onLoadStart={async (e) => {
           await onCreateActivityHandler('onLoadStart:HYP', e?.description ?? '-')
           loadingSetter(true)
         }}
@@ -164,15 +165,15 @@ function HypCheckout(props) {
         source={{
           uri: `${SERVER_URL}hyp/create-hyp-api-sign?id=${_id}`
         }}
-        onHttpError={async(e) => {
+        onHttpError={async (e) => {
           await onCreateActivityHandler('onHttpError:HYP', e?.description ?? '-')
           loadingSetter(false)
         }}
-        onError={async(e) => {
+        onError={async (e) => {
           await onCreateActivityHandler('onError:HYP', e?.description ?? '-')
           loadingSetter(false)
         }}
-        onLoadEnd={async(e) => {
+        onLoadEnd={async (e) => {
           await onCreateActivityHandler('onLoadEnd:HYP', e?.description ?? '-')
           loadingSetter(false)
 

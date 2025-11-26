@@ -13,7 +13,7 @@ const styles = (props = null) =>
       width: '100%'
     },
     ItemTitle: {
-      ...alignment.MRmedium
+      ...alignment.MRmedium,
     },
     ItemDescription: {
       fontWeight: '400',
@@ -22,7 +22,7 @@ const styles = (props = null) =>
       ...alignment.MRmedium
     },
     orderAgainSec: {
-      marginHorizontal: scale(10)
+      marginHorizontal: scale(10),
       // ...alignment.MLmedium,
       // ...alignment.MRmedium
     },
@@ -53,7 +53,7 @@ const styles = (props = null) =>
     header: {
       flexDirection: props?.isRTL ? 'row-reverse' : 'row',
       alignItems: 'center',
-      justifyContent: 'space-between'
+      justifyContent: 'space-between',
       // ...alignment.MRmedium,
       // marginBottom: scale(8),
     },
@@ -68,8 +68,8 @@ const styles = (props = null) =>
       paddingTop: 8,
       paddingBottom: 8,
       paddingLeft: 16,
-      paddingRight: 16
-
+      paddingRight: 16,
+      
     }
   })
 

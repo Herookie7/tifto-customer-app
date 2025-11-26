@@ -15,7 +15,6 @@ import {
   FlatList,
   ScrollView,
   SafeAreaView
-  , I18nManager
 } from 'react-native'
 
 import gql from 'graphql-tag'
@@ -41,10 +40,12 @@ import ButtonContainer from '../../components/Profile/ButtonContainer/ButtonCont
 import OrderAgainCard from '../../components/Profile/OrderAgainCard/OrderAgainCard'
 import OrdersContext from '../../context/Orders'
 import useHomeRestaurants from '../../ui/hooks/useRestaurantOrderInfo'
+import { I18nManager } from 'react-native'
 import { isOpen, sortRestaurantsByOpenStatus } from '../../utils/customFunctions'
 
 import useNetworkStatus from '../../utils/useNetworkStatus'
 import ErrorView from '../../components/ErrorView/ErrorView'
+
 
 const RESTAURANTS = gql`
   ${FavouriteRestaurant}
@@ -59,9 +60,11 @@ function Profile(props) {
   const [showPass, setShowPass] = useState(false)
   const { location } = useContext(LocationContext)
 
+ 
+
   const { profile } = useContext(UserContext)
   const themeContext = useContext(ThemeContext)
-  const currentTheme = { isRTL: i18n.dir() === 'rtl', ...theme[themeContext.ThemeValue] }
+  const currentTheme = { isRTL: i18n.dir() === "rtl", ...theme[themeContext.ThemeValue] }
   const { orders } = useContext(OrdersContext)
 
   const activeOrders = useMemo(() => {
@@ -75,7 +78,7 @@ function Profile(props) {
       latitude: location.latitude || null
     },
     fetchPolicy: 'network-only',
-    errorPolicy: 'all'
+    errorPolicy : "all"
   })
   const { orderLoading, orderData } = useHomeRestaurants()
 
@@ -85,12 +88,12 @@ function Profile(props) {
     useCallback(() => {
       // Only refetch if we're coming back from a screen that might have updated data
       const timeoutId = setTimeout(() => {
-        refetch()
-      }, 100) // Small delay to prevent immediate refetch
-
-      return () => clearTimeout(timeoutId)
+        refetch();
+      }, 100); // Small delay to prevent immediate refetch
+      
+      return () => clearTimeout(timeoutId);
     }, [refetch])
-  )
+  );
 
   useFocusEffect(() => {
     if (Platform.OS === 'android') {
@@ -130,10 +133,8 @@ function Profile(props) {
     })
   }, [props?.navigation, showPass, toggleView, themeContext.ThemeValue])
 
-  const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
-  if (!connect) {
-    return (<ErrorView refetchFunctions={[refetch]} />);
-  }
+  const { isConnected:connect,setIsConnected :setConnect} = useNetworkStatus();
+  if (!connect) return <ErrorView refetchFunctions={[refetch]} />
   return (
     <SafeAreaView
       style={{ flex: 1, backgroundColor: currentTheme.themeBackground }}
@@ -197,16 +198,14 @@ function Profile(props) {
               <View style={styles(currentTheme).line} />
 
               {/* favourite section */}
-              {loading
-                ? (
+              {loading ? (
                 <Spinner
                   size={'small'}
                   backColor={currentTheme.themeBackground}
                   spinnerColor={currentTheme.main}
                 />
-                  )
-                : (
-                    data?.userFavourite?.length >= 1 && (
+              ) : (
+                data?.userFavourite?.length >= 1 && (
                   <View style={styles().padding}>
                     <View
                       style={[
@@ -251,10 +250,12 @@ function Profile(props) {
                       data={sortRestaurantsByOpenStatus(data?.userFavourite || [])}
                       keyExtractor={(item) => item._id}
                       renderItem={({ item }) => {
+
+                        
                         const averageRating = item?.reviewData?.ratings
                         const numberOfReviews = item?.reviewData?.total
 
-                        const restaurantOpen = isOpen(item)
+                        const restaurantOpen = isOpen(item);
                         return (
                           <NewRestaurantCard
                             {...item}
@@ -263,16 +264,16 @@ function Profile(props) {
                             isCategories
                             isOpen={restaurantOpen}
                             isAvailable={item.isAvailable || true}
-
+                            
                           />
                         )
                       }}
-                      inverted={!!currentTheme?.isRTL}
+                      inverted={currentTheme?.isRTL ? true : false}
 
                     />
                   </View>
-                    )
-                  )}
+                )
+              )}
 
               <View style={[styles().quickLinkView]}>
                 <TextDefault
@@ -345,7 +346,7 @@ function Profile(props) {
                       renderItem={({ item }) => {
                         return <OrderAgainCard {...item} />
                       }}
-                      inverted={!!currentTheme?.isRTL}
+                      inverted={currentTheme?.isRTL ? true : false}
                     />
                   </View>
                 )

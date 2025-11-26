@@ -32,7 +32,7 @@ function About(props) {
   const { isConnected: connect } = useNetworkStatus()
   const configuration = useContext(ConfigurationContext)
 
-  console.log(JSON.stringify(restaurantObject, null, 2), 'restaurantObject')
+  console.log(JSON.stringify(restaurantObject, null, 2), "restaurantObject")
 
   const currentTheme = {
     isRTL: i18n.dir() === 'rtl',
@@ -49,7 +49,7 @@ function About(props) {
     isOpen: restaurantObject.IsOpen,
     phone: restaurantObject.phone,
     restaurantUrl: restaurantObject.restaurantUrl,
-    tax: restaurantObject.tax,
+    tax : restaurantObject.tax,
     map: {
       latitude: Number(restaurantObject.latitude) || 0,
       longitude: Number(restaurantObject.longitude) || 0,
@@ -67,12 +67,10 @@ function About(props) {
     Track()
   }, [])
 
-  const typeName = restaurantObject.__typename
+  const typeName = restaurantObject.__typename;
   console.log(RestAbout)
 
-  if (!connect) {
-    return (<ErrorView refetchFunctions={[]} />);
-  }
+  if (!connect) return <ErrorView refetchFunctions={[]} />
   return (
     <SafeAreaView style={styles(currentTheme).safeAreaViewStyles}>
       <StatusBar backgroundColor={currentTheme.themeBackground} barStyle={themeContext.ThemeValue === 'Dark' ? 'light-content' : 'dark-content'} />
@@ -103,7 +101,7 @@ function About(props) {
                   bolder
                   textColor={currentTheme.fontThirdColor}
                 >
-                  {typeName == 'RestaurantPreview' ? RestAbout.name : restaurantObject?.restaurantName}
+                  {typeName == "RestaurantPreview" ? RestAbout.name : restaurantObject?.restaurantName}
                 </TextDefault>
               </View>
               <FavoriteButton iconSize={scale(24)} restaurantId={RestAbout.id} />
@@ -123,19 +121,17 @@ function About(props) {
                   >
                     {t(todayOpeningTimes?.day)}{' '}
                   </TextDefault>
-                  {todayOpeningTimes?.times?.length < 1
-                    ? (
+                  {todayOpeningTimes?.times?.length < 1 ? (
                     <TextDefault isRTL small bold center>
                       {t('ClosedAllDay')}
                     </TextDefault>
-                      )
-                    : (
-                        todayOpeningTimes?.times?.map((timing, index) => (
+                  ) : (
+                    todayOpeningTimes?.times?.map((timing, index) => (
                       <TextDefault isRTL key={index} textColor={currentTheme.fontThirdColor} H5 bold>
                         {timing.startTime[0]}:{timing.startTime[1]} - {timing.endTime[0]}:{timing.endTime[1]}
                       </TextDefault>
-                        ))
-                      )}
+                    ))
+                  )}
                 </View>
               )}
             </View>
@@ -193,21 +189,19 @@ function About(props) {
                   <TextDefault isRTL style={styles().timingText} textColor={currentTheme.fontThirdColor} bolder large>
                     {t(v.day)}{' '}
                   </TextDefault>
-                  {v?.times?.length < 1
-                    ? (
+                  {v?.times?.length < 1 ? (
                     <TextDefault isRTL key={index + 8} small bold center>
                       {t('ClosedAllDay')}
                     </TextDefault>
-                      )
-                    : (
-                        v?.times?.map((t) => (
+                  ) : (
+                    v?.times?.map((t) => (
                       <TextDefault isRTL key={index + 8} textColor={currentTheme.fontThirdColor} large>
                         {t.startTime[0]}:{t.startTime[1]}
                         {' - '}
                         {t.endTime[0]}:{t.endTime[1]}
                       </TextDefault>
-                        ))
-                      )}
+                    ))
+                  )}
                 </View>
               ))}
             </View>
@@ -227,17 +221,17 @@ function About(props) {
             <View style={alignment.MTsmall}>
               <TextDefault isRTL H5 textColor={currentTheme.fontThirdColor} bold style={alignment.MTxSmall}>
                 {t('minimumOrder')} {configuration.currencySymbol}
-                {typeName == 'RestaurantPreview' ? RestAbout.minimumOrder : restaurantObject.restaurantMinOrder}
+                {typeName == "RestaurantPreview" ? RestAbout.minimumOrder :restaurantObject.restaurantMinOrder}
               </TextDefault>
 
               <TextDefault isRTL H5 textColor={currentTheme.fontThirdColor} bold style={alignment.MTxSmall}>
-                {t('delivery')} {typeName == 'RestaurantPreview' ? RestAbout.deliveryTime : restaurantObject.deliveryTime} {t('Min')}
+                {t('delivery')} {typeName == "RestaurantPreview" ? RestAbout.deliveryTime : restaurantObject.deliveryTime} {t('Min')}
               </TextDefault>
 
               <TextDefault isRTL H5 textColor={currentTheme.fontThirdColor} bold style={alignment.MTxSmall}>
 
                 {t('salesTax')} {configuration.currencySymbol}
-                {typeName == 'RestaurantPreview' ? RestAbout.tax : restaurantObject.restaurantTax}
+                {typeName == "RestaurantPreview" ? RestAbout.tax : restaurantObject.restaurantTax}
               </TextDefault>
             </View>
           </View>
@@ -273,8 +267,7 @@ function About(props) {
                   {t('restaurant')}
                 </TextDefault>
               </View>
-              {RestAbout?.phone
-                ? (
+              {RestAbout?.phone ? (
                 <TouchableOpacity
                   onPress={() => {
                     Linking.openURL(`tel:${RestAbout?.phone}`)
@@ -284,15 +277,15 @@ function About(props) {
                     {RestAbout?.phone}
                   </TextDefault>
                 </TouchableOpacity>
-                  )
-                : (
+              ) : (
                 <TextDefault isRTL H5 bold textColor={currentTheme.linkColor}>
                   {t('none')}
                 </TextDefault>
-                  )}
+              )}
             </View>
 
             <View style={styles().line} />
+
 
             <View style={[styles(currentTheme).subContainer, alignment.MTsmall]}>
               <View>
@@ -300,8 +293,7 @@ function About(props) {
                   {t('website')}
                 </TextDefault>
               </View>
-              {RestAbout?.restaurantUrl
-                ? (
+              {RestAbout?.restaurantUrl ? (
                 <TouchableOpacity
                   onPress={() => {
                     Linking.openURL(RestAbout?.restaurantUrl)
@@ -311,12 +303,11 @@ function About(props) {
                     {t('viewWebsite')}
                   </TextDefault>
                 </TouchableOpacity>
-                  )
-                : (
+              ) : (
                 <TextDefault isRTL H5 bold textColor={currentTheme.linkColor}>
                   {t('none')}
                 </TextDefault>
-                  )}
+              )}
             </View>
           </View>
 

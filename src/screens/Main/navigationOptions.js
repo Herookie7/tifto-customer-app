@@ -7,7 +7,7 @@ const navigationOptions = (props) => ({
   headerStyle: {
     shadowColor: 'transparent',
     shadowRadius: 0,
-    backgroundColor: props?.headerMenuBackground
+    backgroundColor:props?.headerMenuBackground
   },
   headerTitleStyle: {
     color: props?.fontMainColor,

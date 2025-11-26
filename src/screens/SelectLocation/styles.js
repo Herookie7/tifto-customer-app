@@ -18,9 +18,9 @@ const styles = (props = null) =>
       justifyContent: 'space-around',
       borderTopLeftRadius: scale(30),
       borderTopRightRadius: scale(30),
-      backgroundColor: props !== null ? props?.cardBackground : '#f5f5f5',
+      backgroundColor: props !==null ? props?.cardBackground : '#f5f5f5',
       borderWidth: scale(1),
-      borderColor: props !== null ? props?.customBorder : 'transparent',
+      borderColor: props !==null ? props?.customBorder : 'transparent',
       paddingTop: scale(20),
       paddingBottom: scale(20)
     },
@@ -31,14 +31,14 @@ const styles = (props = null) =>
       justifyContent: 'space-around',
       borderTopLeftRadius: scale(30),
       borderTopRightRadius: scale(30),
-      backgroundColor: props !== null ? props?.cardBackground : '#f5f5f5',
+      backgroundColor:props !==null ? props?.cardBackground : '#f5f5f5',
       borderWidth: scale(1),
-      borderColor: props !== null ? props?.customBorder : 'transparent',
+      borderColor: props !==null ? props?.customBorder : 'transparent',
       padding: scale(25)
     },
     heading: {
       ...alignment.MBlarge,
-      ...props?.isRTL ? { paddingRight: scale(20) } : { paddingLeft: scale(20) }
+      ...props?.isRTL ? {paddingRight: scale(20)} : {paddingLeft: scale(20)}
     },
     addressHeading: {
       marginBottom: scale(30)
@@ -69,7 +69,7 @@ const styles = (props = null) =>
       padding: 10
     },
     cityField: {
-      color: props != null ? props?.newFontcolor : '#E5E7EB'
+      color:props != null ? props?.newFontcolor : '#E5E7EB',
     },
     icon1: {
       marginLeft: 10
@@ -97,7 +97,7 @@ const styles = (props = null) =>
       width: scale(36),
       justifyContent: 'center',
       alignItems: 'center',
-      borderRadius: scale(18)
+      borderRadius: scale(18),
       // marginRight: scale(16)
     },
     line: {

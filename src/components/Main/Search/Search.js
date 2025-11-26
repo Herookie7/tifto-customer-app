@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next'
 function Search(props) {
   const { t, i18n } = useTranslation()
   const themeContext = useContext(ThemeContext)
-  const currentTheme = { isRTL: i18n.dir() == 'rtl', ...theme[themeContext.ThemeValue] }
+  const currentTheme = {isRTL: i18n.dir() == 'rtl', ...theme[themeContext.ThemeValue]}
   return (
     <View style={styles(currentTheme, props?.newheaderColor).mainContainerHolder}>
       <View style={styles(currentTheme, props?.cartContainer).mainContainer}>
@@ -32,7 +32,7 @@ function Search(props) {
                     paddingVertical: 0, // Remove default padding
                     height: '100%', // Take full height of container
                     flex: 1,
-                    includeFontPadding: false
+                    includeFontPadding: false,
                   }
                 ]}
                 placeholder={props?.placeHolder}
@@ -43,8 +43,7 @@ function Search(props) {
             </View>
           </View>
           <View style={styles(currentTheme).filterContainer}>
-            {props?.search
-              ? (
+            {props?.search ? (
               <TouchableOpacity
                 onPress={() => {
                   props?.setSearch('')
@@ -55,10 +54,9 @@ function Search(props) {
                   color={currentTheme.fontSecondColor}
                 />
               </TouchableOpacity>
-                )
-              : (
+            ) : (
               <></>
-                )}
+            )}
           </View>
         </View>
       </View>

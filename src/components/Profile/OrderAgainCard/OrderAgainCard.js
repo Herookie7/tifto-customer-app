@@ -7,7 +7,7 @@ import TextDefault from '../../Text/TextDefault/TextDefault'
 import ConfigurationContext from '../../../context/Configuration'
 import styles from './styles'
 import {
-  FontAwesome5
+  FontAwesome5,
 } from '@expo/vector-icons'
 import { useTranslation } from 'react-i18next'
 
@@ -19,7 +19,7 @@ function OrderAgainCard(props) {
   const configuration = useContext(ConfigurationContext)
 
   return (
-
+    
       <TouchableOpacity
         style={styles(currentTheme).offerContainer}
         activeOpacity={1}
@@ -50,7 +50,7 @@ function OrderAgainCard(props) {
             bold
             Normal
             style={styles().offerCategoty}>
-            {props?.tags?.slice(0, 2)?.join(', ')}
+            {props?.tags?.slice(0,2)?.join(', ')}
           </TextDefault>
           <View style={styles().deliveryInfo}>
             <View style={styles().deliveryTime}>
@@ -62,7 +62,7 @@ function OrderAgainCard(props) {
                 {props.deliveryTime + ' '}
                 {t('min')}
               </TextDefault>
-
+            
             </View>
             <View style={styles().deliveryTime}>
               <TextDefault
@@ -89,7 +89,7 @@ function OrderAgainCard(props) {
           </View>
         </View>
       </TouchableOpacity>
-
+   
   )
 }
 

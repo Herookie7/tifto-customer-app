@@ -8,16 +8,16 @@ const styles = (props = null) =>
       width: scale(330),
       alignItems: 'center',
       backgroundColor: 'white',
-      shadowColor: 'gray',
+      shadowColor: "gray",
       shadowOffset: {
         width: 0,
-        height: 2
+        height: 2,
       },
       shadowOpacity: 0.25,
       shadowRadius: 3.84,
 
-      elevation: 5
-
+      elevation: 5,
+    
     },
     restaurantContainer: {
       backgroundColor: props != null ? props?.newheaderBG : 'white',
@@ -26,6 +26,7 @@ const styles = (props = null) =>
       borderRadius: scale(8),
       height: scale(280),
       width: '100%',
+
 
       ...alignment.MBsmall
     },

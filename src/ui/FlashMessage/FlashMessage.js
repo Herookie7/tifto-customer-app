@@ -11,5 +11,5 @@ export const FlashMessage = props => {
 }
 FlashMessage.propTypes = {
   message: PropTypes.string.isRequired,
-  duration: PropTypes.number
+  duration: PropTypes.number,
 }

@@ -21,7 +21,7 @@ export default function Row({ id, restaurant }) {
   const navigation = useNavigation()
   const client = useApolloClient()
   const themeContext = useContext(ThemeContext)
-  const currentTheme = { isRTL: i18n.dir() === 'rtl', ...theme[themeContext.ThemeValue] }
+  const currentTheme = {isRTL: i18n.dir() === 'rtl', ...theme[themeContext.ThemeValue]}
   const styles = getStyles(currentTheme)
 
   const food = client.readFragment({ id: `Food:${id}`, fragment: FOOD })
@@ -45,7 +45,7 @@ export default function Row({ id, restaurant }) {
       </View>}
 
       <View mainContainer style={{ flex: 3, alignSelf: 'center', alignContent: 'center', paddingHorizontal: scale(10) }}>
-        <TextDefault bolder small textColor={currentTheme.newFontcolor} style={{ marginBottom: scale(10) }} isRTL>{food?.title}</TextDefault>
+        <TextDefault bolder small textColor={currentTheme.newFontcolor} style={{ marginBottom: scale(10), }} isRTL>{food?.title}</TextDefault>
         <TextDefault bolder small textColor={currentTheme.newFontcolor} isRTL>{`${configuration.currencySymbol}${food?.variations[0].price}`}</TextDefault>
       </View>
       <View rightContainer style={{ flex: 1, justifyContent: 'center', alignItems: currentTheme?.isRTL ? 'flex-start' : 'flex-end' }}>

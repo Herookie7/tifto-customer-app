@@ -43,12 +43,10 @@ const navigationOptions = (props) => ({
       navigation={props?.navigation}
     />
   ),
-  headerLeft: props?.haveBackBtn
-    ? () => (
-    <TouchableOpacity onPress={props?.onPressBack} style={{ ...alignment.MLsmall }}>
+  headerLeft: props?.haveBackBtn ? () => (
+    <TouchableOpacity onPress={props?.onPressBack} style={{...alignment.MLsmall}}>
           <Ionicons name="arrow-back" size={24} color={props?.iconColorPink} />
         </TouchableOpacity>
-      )
-    : null
+  ) : null
 })
 export default navigationOptions

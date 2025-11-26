@@ -1,6 +1,7 @@
 import { StyleSheet, Dimensions } from 'react-native'
-import { scale, verticalScale } from '../../utils/scaling'
+import { scale } from '../../utils/scaling'
 import { alignment } from '../../utils/alignment'
+import { verticalScale } from '../../utils/scaling'
 import { textStyles } from '../../utils/textStyles'
 
 const { width } = Dimensions.get('window')
@@ -29,7 +30,7 @@ const styles = (props = null) =>
     topSectionColor: props?.subCategoryTopSection,
     animatedContainer: {
       flex: 1,
-      width
+      width: width
     },
     scrollContent: {
       paddingBottom: scale(20)
@@ -160,22 +161,22 @@ const styles = (props = null) =>
     // Skeleton styles
     categoryTabsContainer: {
       paddingHorizontal: 16,
-      paddingVertical: 12
+      paddingVertical: 12,
     },
     categoryTabSkeleton: {
       width: 80,
       height: 32,
       borderRadius: 16,
-      marginRight: 12
+      marginRight: 12,
     },
     foodItemContainer: {
       flex: 1,
-      margin: 5
+      margin: 5,
     },
     foodItemCard: {
       borderRadius: 12,
       padding: 12,
-      minHeight: 200
+      minHeight: 200,
     },
     addButton: {
       position: 'absolute',
@@ -184,31 +185,31 @@ const styles = (props = null) =>
       width: 24,
       height: 24,
       borderRadius: 12,
-      zIndex: 1
+      zIndex: 1,
     },
     imageContainer: {
       width: '100%',
       height: 120,
       borderRadius: 8,
-      marginBottom: 8
+      marginBottom: 8,
     },
     detailsContainer: {
-      gap: 6
+      gap: 6,
     },
     priceSkeleton: {
       width: '40%',
       height: 16,
-      borderRadius: 4
+      borderRadius: 4,
     },
     titleSkeleton: {
       width: '80%',
       height: 14,
-      borderRadius: 4
+      borderRadius: 4,
     },
     foodList: {
       flex: 1,
       paddingHorizontal: 16,
-      paddingTop: 16
+      paddingTop: 16,
     }
   })
 

@@ -1,48 +1,53 @@
-import React, { useState, useEffect } from 'react'
-import { View, TextInput, Text, StyleSheet } from 'react-native'
+import React, { useState, useEffect } from 'react';
+import { View, TextInput, Text, StyleSheet } from 'react-native';
 
 const PhoneNumberInput = ({
-  setError,
-  placeholder,
-  placeholderTextColor,
-  style,
-  countryCode,
-  value,
-  onChange
-
+    setError,
+    placeholder,
+    placeholderTextColor,
+    style,
+    countryCode,
+    value,
+    onChange,
+    
 }) => {
-  const cleanNumber = (input) => {
-    return input.replace(/[^\d+]/g, '')
-  }
+    
 
-  const handleChange = (text) => {
-    let input = cleanNumber(text)
+    const cleanNumber = (input) => {
+        return input.replace(/[^\d+]/g, '');
+    };
 
-    const countryCodeDigits = countryCode.replace('+', '')
-    if (input.startsWith('+' + countryCodeDigits)) {
-      input = input.replace('+' + countryCodeDigits, '')
-    } else if (input.startsWith(countryCodeDigits)) {
-      input = input.replace(countryCodeDigits, '')
-    }
+    const handleChange = (text) => {
+        let input = cleanNumber(text);
 
-    input = input.replace(/\s+/g, '')
 
-    // Uncomment if you want to remove leading zero
-    // if (input.startsWith('0')) {
-    //     input = input.substring(1);
-    // }
+        const countryCodeDigits = countryCode.replace('+', '');
+        if (input.startsWith('+' + countryCodeDigits)) {
+            input = input.replace('+' + countryCodeDigits, '');
+        } else if (input.startsWith(countryCodeDigits)) {
+            input = input.replace(countryCodeDigits, '');
+        }
 
-    if (!/^\d*$/.test(input)) {
-      setError('This number doesn’t seem right. Try again.')
-    } else {
-      setError('')
-    }
 
-    onChange(input)
-  }
+        input = input.replace(/\s+/g, '');
 
-  return (
+        // Uncomment if you want to remove leading zero
+        // if (input.startsWith('0')) {
+        //     input = input.substring(1);
+        // }
 
+
+        if (!/^\d*$/.test(input)) {
+            setError('This number doesn’t seem right. Try again.');
+        } else {
+            setError('');
+        }
+
+        onChange(input);
+    };
+
+    return (
+      
              <TextInput
               style={style}
               placeholder={placeholder}
@@ -52,8 +57,10 @@ const PhoneNumberInput = ({
               onChangeText={handleChange}
               maxLength={15}
             />
+       
+    );
+};
 
-  )
-}
 
-export default PhoneNumberInput
+
+export default PhoneNumberInput;

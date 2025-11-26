@@ -40,13 +40,12 @@ export default function CurrentLocation() {
   const [citiesModalVisible, setCitiesModalVisible] = useState(false)
   const [currentLocation, setCurrentLocation] = useState(null)
   const [isInitialLoading, setIsInitialLoading] = useState(true)
-  const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
 
   const { getAddress } = useGeocoding()
 
   const { cities, setLocation, permissionState, setPermissionState } = useContext(LocationContext)
 
-  const checkLocationPermission = async() => {
+  const checkLocationPermission = async () => {
     setLoading(true)
     const { status, canAskAgain } = await getLocationPermission()
 
@@ -66,25 +65,23 @@ export default function CurrentLocation() {
       if (status !== 'granted' && !canAskAgain) {
         FlashMessage({
           message: t('locationPermissionMessage'),
-          onPress: async() => {
+          onPress: async () => {
             await Linking.openSettings()
           }
         })
         setLoading(false)
+        return
       }
     }
   }
 
   const filterCities = () => {
-    const newCities = cities?.filter((city) => !isNaN(city.latitude) && !isNaN(city.longitude))
+    let newCities = cities?.filter((city) => !isNaN(city.latitude) && !isNaN(city.longitude))
     return newCities
   }
 
-  const handleMarkerPress = async(coordinates) => {
+  const handleMarkerPress = async (coordinates) => {
     setCitiesModalVisible(false)
-    if (!coordinates || !coordinates.latitude || !coordinates.longitude) {
-      return
-    }
     setIsCheckingZone(true)
     const response = await getAddress(coordinates.latitude, coordinates.longitude)
     setLocation({
@@ -112,10 +109,6 @@ export default function CurrentLocation() {
     const matchingCity = checkLocationInCities(cl_p, filterCities())
     if (matchingCity) {
       try {
-        if (!cl_p || !cl_p.latitude || !cl_p.longitude) {
-          setIsCheckingZone(false)
-          return
-        }
         const response = await getAddress(cl_p.latitude, cl_p.longitude)
         // console.log("Fetched Address Data:", response);
         const locationData = {
@@ -162,11 +155,6 @@ export default function CurrentLocation() {
       return
     }
 
-    if (!coords || !coords.latitude || !coords.longitude) {
-      setLoading(false)
-      return
-    }
-
     // console.log("Fetched Location:", coords);
     const userLocation = {
       latitude: coords.latitude,
@@ -183,6 +171,7 @@ export default function CurrentLocation() {
 
     setPermissionState(permission_response)
 
+
     // ❌ Permanently denied (cannot ask again)
     if (!permission_response?.canAskAgain) {
       // Optionally prompt user to open settings
@@ -191,6 +180,8 @@ export default function CurrentLocation() {
       } else {
         Linking.openSettings() // Android
       }
+
+      return
     }
   }
 
@@ -233,23 +224,18 @@ export default function CurrentLocation() {
     longitudeDelta: 130
   }
 
-  if (!connect) {
-    return <ErrorView refetchFunctions={[]} />
-  }
+  const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
+  if (!connect) return <ErrorView refetchFunctions={[]} />
 
-  if (!currentLocation && !isInitialLoading) {
-    return (
-      <View style={[allowedLocationStyles.container, { backgroundColor: currentTheme.themeBackground }]}>
-        <Text style={allowedLocationStyles.title}>Enable Location Services</Text>
-        <Text style={allowedLocationStyles.description}>We need access to your location to show nearby restaurants and provide accurate delivery services.</Text>
-        <TouchableOpacity style={allowedLocationStyles.button} onPress={onRequestPermissionHandler}>
-          <Text style={allowedLocationStyles.buttonText}>Allow Location Access</Text>
-        </TouchableOpacity>
-      </View>
-    )
-  }
-
-  return (
+  return !currentLocation && !isInitialLoading ? (
+    <View style={[allowedLocationStyles.container, { backgroundColor: currentTheme.themeBackground }]}>
+      <Text style={allowedLocationStyles.title}>Enable Location Services</Text>
+      <Text style={allowedLocationStyles.description}>We need access to your location to show nearby restaurants and provide accurate delivery services.</Text>
+      <TouchableOpacity style={allowedLocationStyles.button} onPress={onRequestPermissionHandler}>
+        <Text style={allowedLocationStyles.buttonText}>Allow Location Access</Text>
+      </TouchableOpacity>
+    </View>
+  ) : (
     <View
       style={[
         styles().flex,
@@ -344,7 +330,7 @@ const allowedLocationStyles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20
+    padding: 20,
   },
   title: {
     fontSize: 24,

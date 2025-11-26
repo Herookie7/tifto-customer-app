@@ -6,17 +6,18 @@ import ThemeContext from '../../../ui/ThemeContext/ThemeContext'
 import { useTranslation } from 'react-i18next'
 import { theme } from '../../../utils/themeColors'
 
+
 function TextDefault(props, ref) {
   const { i18n } = useTranslation()
   const themeContext = useContext(ThemeContext)
-  const currentTheme = { isRTL: i18n.dir() === 'rtl', ...theme[themeContext.ThemeValue] }
+  const currentTheme = { isRTL: i18n.dir() === "rtl", ...theme[themeContext.ThemeValue] }
   const textColor = props.textColor ? props.textColor : themeContext.ThemeValue === 'Dark' ? 'white' : 'black'
   const defaultStyle = StyleSheet.flatten([
     color(textColor).color,
     textStyles.Regular,
     textStyles.Normal
   ])
-  let customStyles = [defaultStyle]
+  var customStyles = [defaultStyle]
 
   if (props.bold) customStyles.push(textStyles.Bold)
   if (props.bolder) customStyles.push(textStyles.Bolder)

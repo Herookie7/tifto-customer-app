@@ -38,19 +38,19 @@ const FavoriteButton = ({ restaurantId, iconSize }) => {
 
   const handleAddToFavorites = () => {
     console.log('FavoriteButton pressed!', { restaurantId, loadingMutation, profile: !!profile })
-
+    
     if (loadingMutation) {
       console.log('Button disabled due to loading state')
       return
     }
-
+    
     if (profile) {
       console.log('Adding to favorites...')
       mutate({ variables: { id: restaurantId } })
     } else {
       console.log('User not logged in, showing login message')
-      FlashMessage({ message: t('loginRequired') })
-      navigation.navigate('CreateAccount')
+      FlashMessage({ message: t('loginRequired') }) 
+      navigation.navigate('CreateAccount') 
     }
   }
 
@@ -73,21 +73,19 @@ const FavoriteButton = ({ restaurantId, iconSize }) => {
         position: 'relative'
       }}
     >
-      {loadingMutation
-        ? (
+      {loadingMutation ? (
         <Spinner
           size={'small'}
           backColor={'transparent'}
           spinnerColor={currentTheme.iconColorDark}
         />
-          )
-        : (
+      ) : (
         <AntDesign
           name={heart ? 'heart' : 'hearto'}
           size={iconSize}
           color={currentTheme.newIconColor}
         />
-          )}
+      )}
     </TouchableOpacity>
   )
 }

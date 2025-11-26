@@ -1,6 +1,6 @@
 // SubcategoryList/styles.js
-import { StyleSheet } from 'react-native'
-import { scale } from '../../../utils/scaling'
+import { StyleSheet } from 'react-native';
+import { scale } from '../../../utils/scaling';
 
 const styles = (props = null) => StyleSheet.create({
   container: {
@@ -28,6 +28,6 @@ const styles = (props = null) => StyleSheet.create({
   selectedSubcategoryText: {
     color: props?.buttonText
   }
-})
+});
 
-export default styles
+export default styles;

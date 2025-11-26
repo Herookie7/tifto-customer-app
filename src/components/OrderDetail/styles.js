@@ -18,8 +18,8 @@ export default StyleSheet.create({
     borderColor: theme.newIconColor
   }),
   modalContainer: theme => ({
-    borderWidth: scale(1),
-    borderColor: theme.white,
+    borderWidth:scale(1),
+    borderColor:theme.white,
     margin: 10,
     backgroundColor: theme.themeBackground,
     borderRadius: 20,

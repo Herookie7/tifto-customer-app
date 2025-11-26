@@ -1,8 +1,8 @@
-import * as React from 'react'
-import Svg, { G, Path, Defs, ClipPath } from 'react-native-svg'
+import * as React from "react"
+import Svg, { G, Path, Defs, ClipPath } from "react-native-svg"
 
 function Bicycle(props) {
-  const iconSize = props?.size ? props?.size : 18
+  const iconSize  = props?.size ? props?.size : 18
 
   return (
     <Svg
@@ -19,7 +19,7 @@ function Bicycle(props) {
       <Defs>
         <ClipPath id="clip0_2751_20635">
           <Path
-            fill={props?.color ?? '#fff'}
+            fill={props?.color ?? "#fff"}
             transform="translate(.125 .594)"
             d="M0 0H14.5V14.5H0z"
           />

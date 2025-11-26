@@ -26,22 +26,16 @@ const Section = ({ itemId, restaurantId }) => {
   const configuration = useContext(ConfigurationContext)
   const currentTheme = theme[themeContext.ThemeValue]
   const { loading, error, data } = useQuery(RELATED_ITEMS, { variables: { itemId, restaurantId } })
-  if (loading) {
-    return (<View />);
-  }
-  if (error) {
-    return (<View />);
-  }
+  if (loading) return <View />
+  if (error) return <View />
   const { relatedItems } = data
-  if (relatedItems.length < 1) {
-    return (<View />);
-  }
+  if (relatedItems.length < 1) return <View />
   const result = client.readQuery({ query: RESTAURANT, variables: { id: restaurantId } })
   const slicedItems = relatedItems.length > 3 ? relatedItems.slice(0, 3) : relatedItems
   const restaurant = result?.restaurant
   const renderItem = ({ item }) => {
     const food = client.readFragment({ id: `Food:${item}`, fragment: FOOD })
-    const imageUrl = food?.image && food?.image.trim() !== '' ? food?.image : IMAGE_LINK
+    const imageUrl = food?.image && food?.image.trim() !== '' ? food?.image : IMAGE_LINK;
 
     const onAdd = () => {
       navigation.push('ItemDetail', {
@@ -95,6 +89,7 @@ const Section = ({ itemId, restaurantId }) => {
       </View>
     </View>
   }
+
 
   return (
     <View>

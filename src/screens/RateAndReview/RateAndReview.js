@@ -95,8 +95,8 @@ function RateAndReview(props) {
       mutate({
         variables: {
           order: id,
-          rating,
-          description
+          rating: rating,
+          description: description
         }
       })
     } else {
@@ -119,9 +119,7 @@ function RateAndReview(props) {
 
   const { isConnected: connect, setIsConnected: setConnect } =
     useNetworkStatus()
-  if (!connect) {
-    return (<ErrorView refetchFunctions={[]} />);
-  }
+  if (!connect) return <ErrorView refetchFunctions={[]} />
   return (
     <>
       <View

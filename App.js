@@ -1,6 +1,6 @@
 import { ApolloProvider } from '@apollo/client'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import 'react-native-get-random-values'
+import 'react-native-get-random-values';
 // import 'expo-dev-client'
 import * as Device from 'expo-device'
 import * as Font from 'expo-font'
@@ -10,6 +10,7 @@ import React, { useEffect, useReducer, useRef, useState } from 'react'
 import { ActivityIndicator, BackHandler, I18nManager, LogBox, Platform, SafeAreaView, StatusBar, StyleSheet, Text, View, useColorScheme } from 'react-native'
 import FlashMessage from 'react-native-flash-message'
 import 'react-native-gesture-handler'
+// import * as Sentry from '@sentry/react-native';
 import useEnvVars, { isProduction } from './environment'
 import setupApolloClient from './src/apollo/index'
 import { MessageComponent } from './src/components/FlashMessage/MessageComponent'
@@ -33,20 +34,23 @@ import './i18next'
 import * as SplashScreen from 'expo-splash-screen'
 import TextDefault from './src/components/Text/TextDefault/TextDefault'
 import { ErrorBoundary } from './src/components/ErrorBoundary'
-import * as Clarity from '@microsoft/react-native-clarity'
+import * as Clarity from '@microsoft/react-native-clarity';
+
 
 // LogBox.ignoreLogs([
 //   // 'Warning: ...',
+//   // 'Sentry Logger ',
 //   'Constants.deviceYearClass'
 // ]) // Ignore log notification by message
 // LogBox.ignoreAllLogs() // Ignore all log notifications
 
+
 Clarity.initialize('mcdyi6urgs', {
-  logLevel: Clarity.LogLevel.Verbose // Note: Use "LogLevel.Verbose" value while testing to debug initialization issues.
-})
+  logLevel: Clarity.LogLevel.Verbose, // Note: Use "LogLevel.Verbose" value while testing to debug initialization issues.
+});
 
 Notifications.setNotificationHandler({
-  handleNotification: async(notification) => {
+  handleNotification: async (notification) => {
     return {
       shouldShowAlert: notification?.request?.content?.data?.type !== NOTIFICATION_TYPES.REVIEW_ORDER,
       shouldPlaySound: false,
@@ -62,6 +66,7 @@ export default function App() {
   // const responseListener = useRef()
   const [orderId, setOrderId] = useState()
   const [isUpdating, setIsUpdating] = useState(false)
+  // const { SENTRY_DSN } = useEnvVars()
   const client = setupApolloClient()
 
   useKeepAwake()
@@ -81,7 +86,7 @@ export default function App() {
 
   // For Fonts, etc
   useEffect(() => {
-    const loadAppData = async() => {
+    const loadAppData = async () => {
       // try {
       //   await SplashScreen.preventAutoHideAsync()
       // } catch (e) {
@@ -101,7 +106,8 @@ export default function App() {
     }
 
     loadAppData()
-    const backHandler = BackHandler.addEventListener('hardwareBackPress', exitAlert)
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', exitAlert);
+
 
     return () => {
       backHandler.remove()
@@ -111,7 +117,7 @@ export default function App() {
   useEffect(() => {
     if (!appIsReady) return
 
-    const hideSplashScreen = async() => {
+    const hideSplashScreen = async () => {
       await SplashScreen.hideAsync()
     }
 
@@ -121,22 +127,37 @@ export default function App() {
   // For Location
   useEffect(() => {
     if (!location) return
-    const saveLocation = async() => {
+    const saveLocation = async () => {
       await AsyncStorage.setItem('location', JSON.stringify(location))
     }
     saveLocation()
   }, [location])
 
   // For Permission
-  /*   useEffect(() => {
+/*   useEffect(() => {
     requestTrackingPermissions()
   }, []) */
+
+  // For Sentry
+  // useEffect(() => {
+  //   // if (SENTRY_DSN) {
+  //   if (false) {
+  //     Sentry.init({
+  //       dsn: SENTRY_DSN,
+  //       enableInExpoDevelopment: !isProduction ? true : false,
+  //       environment: isProduction ? 'production' : 'development',
+  //       debug: !isProduction,
+  //       tracesSampleRate: 1.0,
+  //       enableTracing: true
+  //     })
+  //   }
+  // }, [SENTRY_DSN])
 
   // For App Update
   useEffect(() => {
     // eslint-disable-next-line no-undef
     if (__DEV__) return
-    ;(async() => {
+    ;(async () => {
       const { isAvailable } = await Updates.checkForUpdateAsync()
       if (isAvailable) {
         try {
@@ -158,7 +179,7 @@ export default function App() {
   useEffect(() => {
     // registerForPushNotificationsAsync()
 
-    const notifSub = Notifications.addNotificationReceivedListener((notification) => {
+    const notifSub  = Notifications.addNotificationReceivedListener((notification) => {
       if (notification?.request?.content?.data?.type === NOTIFICATION_TYPES.REVIEW_ORDER) {
         const id = notification?.request?.content?.data?._id
         if (id) {
@@ -213,7 +234,7 @@ export default function App() {
   // }
 
   // set stored theme
-  const setStoredTheme = async(newTheme) => {
+  const setStoredTheme = async (newTheme) => {
     try {
       await AsyncStorage.setItem('appTheme', newTheme)
     } catch (error) {
@@ -312,10 +333,11 @@ async function registerForPushNotificationsAsync() {
 // async function schedulePushNotification() {
 //   await Notifications.scheduleNotificationAsync({
 //     content: {
-//       title: "You've got mail! ",
+//       title: "You've got mail! 📬",
 //       body: 'Here is the notification body',
 //       data: { type: NOTIFICATION_TYPES.REVIEW_ORDER, _id: '65e068b2150aab288f2b821f' }
 //     },
 //     trigger: { seconds: 10 }
 //   })
 // }
+

@@ -15,7 +15,7 @@ function HeadingComponent(props) {
   const configuration = useContext(ConfigurationContext)
   const themeContext = useContext(ThemeContext)
   const currentTheme = { isRTL: i18n.dir() === 'rtl', ...theme[themeContext.ThemeValue] }
-  console.log(props?.price, props?.discountedPrice)
+  console.log(props?.price, props?.discountedPrice);
 
   const withoutDiscountPrice = calculateDiscountedPrice(props?.price, props?.discountedPrice)
 
@@ -32,7 +32,7 @@ function HeadingComponent(props) {
             {configuration.currencySymbol} {props?.price}
           </TextDefault>
           {props?.discountedPrice && props?.discountedPrice > 0 && (
-            <TextDefault small bold textColor={currentTheme.fontSecondColor} style={{ textDecorationLine: 'line-through' }}>
+            <TextDefault small bold textColor={currentTheme.fontSecondColor} style={{textDecorationLine:  'line-through' }}>
               {configuration.currencySymbol} {withoutDiscountPrice}
             </TextDefault>
           )}

@@ -32,7 +32,7 @@ const styles = (props = null) =>
     mainContainer: {
       flex: 1,
       backgroundColor: props !== null ? props?.themeBackground : 'transparent'
-      // ...alignment.PTsmall
+      //...alignment.PTsmall
     },
     paymentSecInner: {
       flexDirection: props?.isRTL ? 'row-reverse' : 'row',
@@ -419,7 +419,7 @@ const styles = (props = null) =>
       textAlign: props?.isRTL ? 'right' : 'left'
     },
     labelContainer: {
-      width: '80%'
+      width: '80%',
     },
     iconContainer: {
       flex: 1,
@@ -431,7 +431,7 @@ const styles = (props = null) =>
       height: scale(24),
       borderRadius: scale(24),
       justifyContent: 'center',
-      alignItems: 'center'
+      alignItems: 'center',
     },
     pickupButton: {
       backgroundColor: props !== null ? props?.color3 : 'transparent',

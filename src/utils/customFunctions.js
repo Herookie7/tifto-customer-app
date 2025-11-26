@@ -1,15 +1,15 @@
 import { ORDER_STATUS_ENUM } from './enums'
 
 function calculateDistance(latS, lonS, latD, lonD) {
-  const R = 6371 // km
-  const dLat = toRad(latD - latS)
-  const dLon = toRad(lonD - lonS)
-  const lat1 = toRad(latS)
-  const lat2 = toRad(latD)
+  var R = 6371 // km
+  var dLat = toRad(latD - latS)
+  var dLon = toRad(lonD - lonS)
+  var lat1 = toRad(latS)
+  var lat2 = toRad(latD)
 
-  const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2)
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-  const d = R * c
+  var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2)
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+  var d = R * c
   return d
 }
 
@@ -19,6 +19,8 @@ function toRad(Value) {
 }
 
 /* const calulateRemainingTime = (order) => {
+
+
 
   // console.log({id: order?._id, preparationTime: order.preparationTime, completionTime: order?.completionTime})
 
@@ -113,14 +115,10 @@ const isOpen = (restaurant) => {
 
   // Check all time slots for today's timings
   return todaysTimings.times.some((t) => {
-    // Parse time string "HH:MM" format - split by colon
-    const startTimeParts = String(t.startTime).split(':')
-    const endTimeParts = String(t.endTime).split(':')
-    
-    const startHour = Number(startTimeParts[0]) || 0
-    const startMinute = Number(startTimeParts[1]) || 0
-    const endHour = Number(endTimeParts[0]) || 0
-    const endMinute = Number(endTimeParts[1]) || 0
+    const startHour = Number(t.startTime[0])
+    const startMinute = Number(t.startTime[1])
+    const endHour = Number(t.endTime[0])
+    const endMinute = Number(t.endTime[1])
 
     const startTime = startHour * 60 + startMinute // Convert to minutes
     const endTime = endHour * 60 + endMinute // Convert to minutes
@@ -139,9 +137,10 @@ const sortRestaurantsByOpenStatus = (restaurants) => {
   })
 }
 
+
 const truncateText = (limit, text) => {
-  if (typeof text !== 'string') return ''
-  if (text.length <= limit) return text
-  return text.slice(0, limit) + '...'
+  if (typeof text !== "string") return "";
+  if (text.length <= limit) return text;
+  return text.slice(0, limit) + "...";
 }
 export { calculateDistance, calulateRemainingTime, calculateDaysAgo, groupAndCount, sortReviews, calculateAmount, isOpen, sortRestaurantsByOpenStatus, truncateText }

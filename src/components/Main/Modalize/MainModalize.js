@@ -1,14 +1,15 @@
-import React, { useContext, useRef } from 'react'
-import { View, TouchableOpacity, Dimensions } from 'react-native'
-import { Modalize } from 'react-native-modalize'
-import { MaterialIcons, AntDesign, SimpleLineIcons } from '@expo/vector-icons'
-import TextDefault from '../../Text/TextDefault/TextDefault'
-import { alignment } from '../../../utils/alignment'
-import { scale } from '../../../utils/scaling'
-import styles from './styles'
-import { useTranslation } from 'react-i18next'
+import React, { useContext, useRef } from 'react';
+import { View, TouchableOpacity, Dimensions } from 'react-native';
+import { Modalize } from 'react-native-modalize';
+import { MaterialIcons, AntDesign, SimpleLineIcons } from '@expo/vector-icons';
+import TextDefault from '../../Text/TextDefault/TextDefault';
+import { alignment } from '../../../utils/alignment';
+import { scale } from '../../../utils/scaling';
+import styles from './styles';
+import { useTranslation } from'react-i18next';
 
 const { height: HEIGHT } = Dimensions.get('window')
+
 
 const MainModalize = ({
   modalRef,
@@ -19,9 +20,9 @@ const MainModalize = ({
   modalFooter,
   setAddressLocation,
   profile,
-  location
+  location,
 }) => {
-  const { t } = useTranslation()
+  const { t} = useTranslation()
   return (
     <Modalize
       ref={modalRef}
@@ -34,11 +35,11 @@ const MainModalize = ({
       modalPosition='top'
       openAnimationConfig={{
         timing: { duration: 400 },
-        spring: { speed: 20, bounciness: 10 }
+        spring: { speed: 20, bounciness: 10 },
       }}
       closeAnimationConfig={{
         timing: { duration: 400 },
-        spring: { speed: 20, bounciness: 10 }
+        spring: { speed: 20, bounciness: 10 },
       }}
       flatListProps={{
         data: isLoggedIn && profile ? profile.addresses : '',
@@ -56,11 +57,11 @@ const MainModalize = ({
                 <View style={[styles(currentTheme).homeIcon]}>
                   {addressIcons[address.label]
                     ? React.createElement(addressIcons[address.label], {
-                      fill: currentTheme.darkBgFont
-                    })
-                    : React.createElement(addressIcons.Other, {
-                      fill: currentTheme.darkBgFont
-                    })}
+                        fill: currentTheme.darkBgFont,
+                      })
+                    : React.createElement(addressIcons['Other'], {
+                        fill: currentTheme.darkBgFont,
+                      })}
                 </View>
                 <View style={[styles().titleAddress]}>
                   <TextDefault
@@ -71,7 +72,7 @@ const MainModalize = ({
                   </TextDefault>
                 </View>
               </View>
-
+              
               <View style={styles(currentTheme).addressTextContainer}>
                   <TextDefault
                     // style={{ ...alignment.PLlarge }}
@@ -92,13 +93,13 @@ const MainModalize = ({
                     size={scale(25)}
                     color={currentTheme.iconColorPink}
                   />
-              )}
+                )}
             </View>
           </View>
-        )
+        ),
       }}
     ></Modalize>
-  )
-}
+  );
+};
 
-export default MainModalize
+export default MainModalize;

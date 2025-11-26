@@ -12,7 +12,7 @@ import { formatNumber } from '../../../utils/formatNumber'
 export default function Detail({ theme, from, orderNo, deliveryAddress, items, currencySymbol, subTotal, tip, tax, deliveryCharges, total, navigation, id, rider, orderStatus }) {
   const riderPhone = rider?.phone
   const { t } = useTranslation()
-  console.log(JSON.stringify(items, null, 2))
+ console.log(JSON.stringify(items, null, 2))
   return (
     <View style={styles.container(theme)}>
       {rider && orderStatus !== ORDER_STATUS_ENUM.DELIVERED && orderStatus !== ORDER_STATUS_ENUM.CANCELLED && <ChatButton onPress={() => navigation.navigate('ChatWithRider', { id, orderNo, total, riderPhone })} title={t('chatWithRider')} description={t('askContactlessDelivery')} theme={theme} />}
@@ -47,18 +47,18 @@ export default function Detail({ theme, from, orderNo, deliveryAddress, items, c
             }, 0)
           }, 0)
           const totalItemPrice = basePrice + addonPrice
-
+          
           return (
-            <ItemRow
-              key={item._id}
-              theme={theme}
-              quantity={item.quantity}
-              variationTitle={item.variation.title}
-              title={`${item.title}`}
-              currency={currencySymbol}
-              price={totalItemPrice}
-              options={item.addons.map((addon) => addon.options.map(({ title }) => title))}
-              image={item?.image}
+            <ItemRow 
+              key={item._id} 
+              theme={theme} 
+              quantity={item.quantity} 
+              variationTitle={item.variation.title} 
+              title={`${item.title}`} 
+              currency={currencySymbol} 
+              price={totalItemPrice} 
+              options={item.addons.map((addon) => addon.options.map(({ title }) => title))} 
+              image={item?.image} 
             />
           )
         })}

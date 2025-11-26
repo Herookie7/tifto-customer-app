@@ -1,42 +1,38 @@
-import { useContext } from 'react'
-import ConfigurationContext from './src/context/Configuration'
+/*****************************
+* environment.js
+* path: '/environment.js' (root of your project)
+******************************/
 
-const ensureTrailingSlash = (value) =>
-  value.endsWith('/') ? value : `${value}/`
+import Constants from 'expo-constants';
 
-const deriveHttpOrigin = (restUrl) =>
-  ensureTrailingSlash(restUrl.replace(/\/api(?:\/v\d+)?\/?$/, '/'))
+const ENV = {
+    development: {
+        GRAPHQL_URL:'' ,
+        SERVER_URL: '', // put / at the end of server url
+        IOS_CLIENT_ID_GOOGLE: "",
+        ANDROID_CLIENT_ID_GOOGLE: "",
+        AMPLITUDE_API_KEY: "",
+    },
+    production: {
+       GRAPHQL_URL:'' ,
+        SERVER_URL: '', // put / at the end of server url
+        IOS_CLIENT_ID_GOOGLE: "",
+        ANDROID_CLIENT_ID_GOOGLE: "",
+        AMPLITUDE_API_KEY: "",
+    }
+};
 
-const REST_BASE_URL = 'https://ftifto-backend.onrender.com/api/v1'
-const GRAPHQL_URL = 'https://ftifto-backend.onrender.com/graphql'
-const WS_GRAPHQL_URL = 'wss://ftifto-backend.onrender.com/graphql'
+const getEnvVars = (env = Constants.manifest.releaseChannel) => {
+    // What is __DEV__ ?
+    // This variable is set to true when react-native is running in Dev mode.
+    // __DEV__ is true when run locally, but false when published.
+    if (__DEV__) {
+        return ENV.development;
+    } else if (env === 'production') {
+        return ENV.production;
+    } else {
+        return ENV.development;
+    }
+};
 
-/**
- * Rename this file to `environment.js` to override the defaults.
- * All URLs point to production backend - no localhost configuration.
- */
-const useEnvVars = () => {
-  const configuration = useContext(ConfigurationContext)
-
-  const shared = {
-    IOS_CLIENT_ID_GOOGLE: configuration?.iOSClientID,
-    ANDROID_CLIENT_ID_GOOGLE: configuration?.androidClientID,
-    GOOGLE_MAPS_KEY: configuration?.googleApiKey,
-    EXPO_CLIENT_ID: configuration?.expoClientID,
-    TERMS_AND_CONDITIONS: configuration?.termsAndConditions,
-    PRIVACY_POLICY: configuration?.privacyPolicy,
-    TEST_OTP: configuration?.testOtp
-  }
-
-  // Always use production URLs - no localhost fallback
-  return {
-    GRAPHQL_URL: GRAPHQL_URL,
-    WS_GRAPHQL_URL: WS_GRAPHQL_URL,
-    SERVER_URL: GRAPHQL_URL,
-    SERVER_REST_URL: REST_BASE_URL,
-    REST_BASE_URL: REST_BASE_URL,
-    ...shared
-  }
-}
-
-export default useEnvVars
+export default getEnvVars;

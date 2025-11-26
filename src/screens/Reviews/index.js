@@ -102,6 +102,7 @@ const Reviews = ({ navigation, route }) => {
   }, [navigation])
   const sorted = reviews && reviews?.length ? sortReviews([...reviews], sortBy) : []
 
+
   const calculatePercentages = (groups, total) => {
     // Calculate raw percentages
     const rawPercentages = {}
@@ -145,10 +146,8 @@ const Reviews = ({ navigation, route }) => {
   // Calculate percentages once before rendering
   const percentages = calculatePercentages(reviewGroups, total)
 
-  const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
-  if (!connect) {
-    return (<ErrorView refetchFunctions={[refetch]}/>);
-  }
+  const { isConnected:connect,setIsConnected :setConnect} = useNetworkStatus();
+  if (!connect) return <ErrorView refetchFunctions={[refetch]}/>
   return (
     <View style={{ flex: 1, backgroundColor: currentTheme.themeBackground }}>
       <ScrollView style={[styles.container]}>
@@ -284,13 +283,11 @@ const Reviews = ({ navigation, route }) => {
             ))}
           </View>
           <View style={{ ...alignment.MTlarge }}>
-            {sorted.length === 0
-              ? (
+            {sorted.length === 0 ? (
               <TextDefault center H4 bold>
                 {t('unReadReviews')}
               </TextDefault>
-                )
-              : null}
+            ) : null}
           </View>
         </View>
       </ScrollView>

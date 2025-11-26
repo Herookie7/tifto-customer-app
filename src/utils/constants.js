@@ -122,6 +122,7 @@ export const AIMATE_FROM_CENTER = {
   }
 }
 
+
 // NEW: Cart-specific animation - same as SLIDE_UP_RIGHT but with fixed header opacity
 export const SLIDE_UP_RIGHT_ANIMATION_FIXED_HEADER = {
   cardStyleInterpolator: ({ current, layouts }) => {
@@ -144,8 +145,8 @@ export const SLIDE_UP_RIGHT_ANIMATION_FIXED_HEADER = {
   // This is the key addition - prevents header from fading during transition
   headerStyleInterpolator: ({ current }) => ({
     headerStyle: {
-      opacity: 1 // Keep header fully opaque throughout the animation
-    }
+      opacity: 1, // Keep header fully opaque throughout the animation
+    },
   }),
   transitionSpec: {
     open: {

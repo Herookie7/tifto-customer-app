@@ -19,7 +19,7 @@ export const CancelModal = ({ theme, modalVisible, setModalVisible, cancelOrder,
     }
   }, [orderStatus])
 
-  const handleCancelOrder = async() => {
+  const handleCancelOrder = async () => {
     setIsCancelling(true)
     await cancelOrder()
     setIsCancelling(false)
@@ -28,8 +28,7 @@ export const CancelModal = ({ theme, modalVisible, setModalVisible, cancelOrder,
   return (
     <Modal animationType='slide' visible={modalVisible} transparent={true}>
       <Pressable style={styles.container(theme)} onPress={setModalVisible}>
-        {orderStatus === ORDER_STATUS_ENUM.CANCELLED
-          ? (
+        {orderStatus === ORDER_STATUS_ENUM.CANCELLED ? (
           <View style={styles.modalContainer(theme)}>
             <View style={{ ...alignment.MBsmall }}>
               <TextDefault H4 bolder textColor={theme.gray900}>
@@ -42,8 +41,7 @@ export const CancelModal = ({ theme, modalVisible, setModalVisible, cancelOrder,
               </TextDefault>
             </View>
           </View>
-            )
-          : (
+        ) : (
           <View style={styles.modalContainer(theme)}>
             <View style={{ ...alignment.MBsmall }}>
               <TextDefault H4 bolder textColor={theme.gray900}>
@@ -55,13 +53,11 @@ export const CancelModal = ({ theme, modalVisible, setModalVisible, cancelOrder,
                 {t('cancelAnyway')}
               </TextDefault>
             </View>
-            {isCancelling
-              ? (
+            {isCancelling ? (
               <View style={{ height: scale(20), marginTop: scale(15) }}>
                 <Spinner spinnerColor={theme.main} backColor='transparent' size='small' />
               </View>
-                )
-              : (
+            ) : (
               <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                 <View style={{ ...alignment.MTlarge }}>
                   <Button text={t('cancelOrder')} buttonProps={{ onPress: handleCancelOrder, disabled: isCancelling }} buttonStyles={[styles.cancelButtonContainer(theme), { backgroundColor: theme.red600 }]} textProps={{ textColor: theme.white }} textStyles={{ ...alignment.Pmedium }} />
@@ -70,9 +66,9 @@ export const CancelModal = ({ theme, modalVisible, setModalVisible, cancelOrder,
                   <Button text={t('waitForOrder')} buttonProps={{ onPress: setModalVisible }} buttonStyles={styles.dismissButtonContainer(theme)} textStyles={{ ...alignment.Pmedium, color: theme.newIconColor }} />
                 </View>
               </View>
-                )}
-          </View>
             )}
+          </View>
+        )}
       </Pressable>
     </Modal>
   )

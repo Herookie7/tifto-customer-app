@@ -6,7 +6,7 @@ import Rider from '../../../assets/SVG/rider'
 import ArrowsLoading from '../../../assets/SVG/arrows-loading'
 import RestaurantPreparing from '../../../assets/SVG/restaurant-preparing'
 import OrderDelivered from '../../../assets/SVG/order-delivered'
-import { useTranslation } from 'react-i18next'
+import {useTranslation} from 'react-i18next'
 
 const STATUS_MESSAGES = {
   PENDING: 'PENDINGStatusMessage',
@@ -14,9 +14,9 @@ const STATUS_MESSAGES = {
   ASSIGNED: 'ASSIGNEDStatusMessage',
   PICKED: 'PICKEDStatusMessage',
   DELIVERED: 'DELIVEREDStatusMessage',
-  CANCELLED: 'CANCELLEDStatusMessage',
-  CANCELLEDBYREST: 'CANCELLEDStatusMessage'
-
+  CANCELLED: "CANCELLEDStatusMessage",
+  CANCELLEDBYREST:"CANCELLEDStatusMessage"
+  
 }
 const STATUS_ORDER = [
   'PENDING',
@@ -41,7 +41,7 @@ export default function Status({
   cancelledAt,
   assignedAt
 }) {
-  const { t } = useTranslation()
+  const {t} = useTranslation()
   return (
     <View style={styles.container(theme)}>
       <View style={styles.statusBox(theme)}>
@@ -70,7 +70,7 @@ export default function Status({
         </View>
       </View>
       <View style={styles.statusList(theme)}>
-        {orderStatus === 'CANCELLED' && (
+        {orderStatus === 'CANCELLED'  && (
           <StatusRow
             theme={theme}
             isEta={false}
@@ -80,7 +80,7 @@ export default function Status({
             showLine={false}
           />
         )}
-        {orderStatus === 'CANCELLEDBYREST' && (
+        {orderStatus ===  'CANCELLEDBYREST' && (
           <StatusRow
             theme={theme}
             isEta={false}
@@ -158,10 +158,11 @@ const Circle = ({ children, color, size, style }) => {
 }
 
 const StatusRow = ({ theme, number, status, time, isEta, showLine }) => {
-  const { t } = useTranslation()
+
+  const {t} = useTranslation()
 
   return (
-    <View style={{ backgroundColor: theme.themeBackground }}>
+    <View style={{backgroundColor: theme.themeBackground}}>
       <View style={styles.statusRow}>
         <Circle
           style={styles.icon}
@@ -176,7 +177,7 @@ const StatusRow = ({ theme, number, status, time, isEta, showLine }) => {
             bolder>
             {status}
           </TextDefault> */}
-
+          
           {/* <TextDefault textColor={theme.secondaryText} bold>
             {isEta ? t('ETA') : ''}
             {time}

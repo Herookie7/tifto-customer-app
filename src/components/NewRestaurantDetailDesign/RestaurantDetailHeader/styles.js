@@ -1,6 +1,7 @@
-import { StyleSheet, Platform, StatusBar } from 'react-native'
+import { StyleSheet, Platform } from 'react-native'
 import { scale } from '../../../utils/scaling'
 import { alignment } from '../../../utils/alignment'
+import { StatusBar } from 'react-native'
 
 const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 44 : StatusBar.currentHeight
 

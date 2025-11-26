@@ -2,7 +2,7 @@ export default {
   expo: {
     name: 'Tifto Customer',
     scheme: 'tifto-customer',
-    version: '1.0.97',
+    version: '1.1.2',
     description: 'Tifto is a starter kit food ordering app built in React Native using Expo for IOS and Android. It\'s made keeping good aesthetics in mind as well keeping the best coding practices in mind. Its fully customisable to easily help you in your next food delivery project. https://market.nativebase.io/view/react-native-food-delivery-backend-app',
     slug: 'tifto',
     owner: 'herookie07',
@@ -61,7 +61,7 @@ export default {
       androidCollapsedTitle: 'Tifto Customer'
     },
     android: {
-      versionCode: 97,
+      versionCode: 102,
       package: 'com.tifto.customer',
       userInterfaceStyle: 'automatic',
       googleServicesFile: './google-services.json',
@@ -110,13 +110,13 @@ export default {
       [
         'expo-updates',
         {
-          username: 'herookie7'
+          username: 'herookie07'
         }
       ],
       [
         'expo-location',
         {
-          locationAlwaysAndWhenInUsePermission: 'Allow $Tifto to use your location.'
+          locationAlwaysAndWhenInUsePermission: 'Allow Tifto Customer to use your location.'
         }
       ],
       'expo-font',

@@ -67,26 +67,18 @@ export default function AddNewAddress(props) {
   const navigation = useNavigation()
   const { getCurrentLocation } = useLocation()
 
-  const setCurrentLocation = async() => {
+  const setCurrentLocation = async () => {
     try {
       const { coords, error } = await getCurrentLocation()
       if (!error && coords) {
-        if (!coords || !coords.latitude || !coords.longitude) {
-          Alert.alert(
-            t('locationError'),
-            'LocationUnavailable',
-            [{ text: t('ok') }]
-          )
-          return
-        }
         // Update initial location and map view
         const newLocation = {
           latitude: coords.latitude,
           longitude: coords.longitude
         }
-
+        
         setInitialLocation(newLocation)
-
+        
         // Update selected value with geocoded address
         const response = await getAddress(coords.latitude, coords.longitude)
         setSelectedValue({
@@ -146,11 +138,11 @@ export default function AddNewAddress(props) {
     setCoordinates({
       latitude: +item.latitude,
       longitude: +item.longitude
-    }, false) // Don't tilt when selecting city
+    }, false)  // Don't tilt when selecting city
     setCityModalVisible(false)
   }
 
-  const onRegionChangeComplete = useCallback(async(coordinates) => {
+  const onRegionChangeComplete = useCallback(async (coordinates) => {
     try {
       const response = await getAddress(
         coordinates.latitude,
@@ -177,7 +169,7 @@ export default function AddNewAddress(props) {
           latitudeDelta: 0.01, // Closer zoom, but not too close
           longitudeDelta: 0.01
         }, 500)
-      }
+      } 
       // Optional 3D view with tilt
       else {
         mapRef.current.animateCamera({
@@ -236,8 +228,8 @@ export default function AddNewAddress(props) {
               longitudeDelta: LONGITUDE_DELTA
             }}
             customMapStyle={
-              themeContext.ThemeValue === 'Dark'
-                ? darkMapStyle
+              themeContext.ThemeValue === 'Dark' 
+                ? darkMapStyle 
                 : customMapStyle
             }
             onRegionChangeComplete={onRegionChangeComplete}
@@ -258,7 +250,7 @@ export default function AddNewAddress(props) {
             mapType='standard'
             onMapReady={() => setMapReady(true)}
           />
-
+          
           {/* Marker overlay with pointer events disabled */}
           <View style={styles().mainContainer} pointerEvents='none'>
             <Image
@@ -271,7 +263,7 @@ export default function AddNewAddress(props) {
               }}
             />
           </View>
-
+          
           {/* Zoom buttons for easier control */}
           <View style={styles().zoomButtonsContainer}>
             <TouchableOpacity
@@ -293,7 +285,7 @@ export default function AddNewAddress(props) {
             >
               <TextDefault center bold textColor={currentTheme.fontMainColor}>3D</TextDefault>
             </TouchableOpacity>
-
+            
             <TouchableOpacity
               style={styles(currentTheme).zoomButton}
               onPress={() => {
@@ -315,7 +307,7 @@ export default function AddNewAddress(props) {
             </TouchableOpacity>
           </View>
         </View>
-
+        
         <View style={styles(currentTheme).container2}>
           <TextDefault
             textColor={currentTheme.newFontcolor}

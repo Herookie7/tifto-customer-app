@@ -21,7 +21,7 @@ import analytics from '../../utils/analytics'
 import { useTranslation } from 'react-i18next'
 
 function calculatePrice(food) {
-  let foodPrice = food.variation.price
+  var foodPrice = food.variation.price
   food.addons.forEach((addons) => {
     addons.options.forEach((addon) => {
       foodPrice += addon.price
@@ -81,11 +81,11 @@ function OrderDetail(props) {
   })
 
   function timeConvert(n) {
-    const num = n
-    const hours = num / 60
-    const rhours = Math.floor(hours)
-    const minutes = (hours - rhours) * 60
-    const rminutes = Math.round(minutes)
+    var num = n
+    var hours = num / 60
+    var rhours = Math.floor(hours)
+    var minutes = (hours - rhours) * 60
+    var rminutes = Math.round(minutes)
     return (rhours > 0 ? rhours + ' hr(s) ' + rminutes : rminutes) + ' min(s) '
   }
   function lastTime() {
@@ -103,12 +103,8 @@ function OrderDetail(props) {
       </View>
     )
   }
-  if (loadingOrders || !order) {
-    return (<Spinner />);
-  }
-  if (errorOrders) {
-    return (<TextError text={t('error')} />);
-  }
+  if (loadingOrders || !order) return <Spinner />
+  if (errorOrders) return <TextError text={t('error')} />
   // const remainingTime = Math.floor((order.completionTime - Date.now()) / 1000 / 60)
   return (
     <>
@@ -151,16 +147,14 @@ function OrderDetail(props) {
           <TextDefault textColor={currentTheme.fontMainColor} bolder B700 style={alignment.MBsmall}>
             {order.orderId}
           </TextDefault>
-          {order.isPickedUp
-            ? (
+          {order.isPickedUp ? (
             <>
               <TextDefault textColor={currentTheme.fontSecondColor} bold>
                 Pickup address:
               </TextDefault>
               <PickUpMap deliveryAddress={order.deliveryAddress} pickupAddress={order.restaurant} />
             </>
-              )
-            : (
+          ) : (
             <>
               <TextDefault textColor={currentTheme.fontSecondColor} bold>
                 Delivery address:
@@ -172,7 +166,7 @@ function OrderDetail(props) {
                 {order.deliveryAddress.details}
               </TextDefault>
             </>
-              )}
+          )}
           {squareLine()}
         </View>
         <View style={[styles().marginBottom10, styles().orderReceipt]}>
@@ -260,8 +254,8 @@ function OrderDetail(props) {
               onPress={() =>
                 props?.navigation.navigate('RateAndReview', {
                   _id: order._id,
-                  restaurant,
-                  user
+                  restaurant: restaurant,
+                  user: user
                 })
               }
             >

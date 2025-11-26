@@ -16,7 +16,7 @@ import SignUpSvg from '../../assets/SVG/imageComponents/SignUpSvg'
 import PhoneNumberInput from '../../components/PhoneNumberInput'
 
 function PhoneNumber(props) {
-  const { phone, setPhone, phoneError, country, countryCode, registerAction, onCountrySelect, currentTheme, loading, setPhoneError, isCountryLoading } = usePhoneNumber()
+  const { phone, setPhone, phoneError, country, countryCode, registerAction, onCountrySelect, currentTheme, loading, setPhoneError ,isCountryLoading} = usePhoneNumber()
 
   const { t } = useTranslation()
 
@@ -73,10 +73,11 @@ function PhoneNumber(props) {
                 <View style={styles(currentTheme).number}>
                   <View style={[styles(currentTheme).textField, styles().countryCode, { padding: Platform.OS === 'ios' ? scale(5) : scale(12) }]}>
                     {
-                      isCountryLoading
+                      isCountryLoading ?
 
-                        ? <ActivityIndicator size='small' color={currentTheme.white} />
-                        : <>
+                        <ActivityIndicator size='small' color={currentTheme.white} />
+                        :
+                        <>
                           <CountryPicker countryCode={countryCode} onSelect={(country) => onCountrySelect(country)} withAlphaFilter withFilter />
                           <TextDefault textColor={currentTheme.newFontcolor} style={{ marginTop: Platform.OS === 'android' ? 8 : 10 }}>
                             {/* {country?.cca2} */}+{country?.callingCode[0]}

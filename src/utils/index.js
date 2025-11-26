@@ -1,1 +1,1 @@
-export * from './calculateDiscountedPrice'
+export * from './calculateDiscountedPrice';

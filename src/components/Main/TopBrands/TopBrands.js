@@ -15,7 +15,6 @@ import { useNavigation } from '@react-navigation/native'
 import TopBrandsLoadingUI from '../LoadingUI/TopBrandsLoadingUI'
 import NewRestaurantCard from '../RestaurantCard/NewRestaurantCard'
 import { isOpen, sortRestaurantsByOpenStatus } from '../../../utils/customFunctions'
-import { scale } from '../../../utils/scaling'
 
 const { height } = Dimensions.get('window')
 function TopBrands(props) {
@@ -29,8 +28,7 @@ function TopBrands(props) {
     variables: {
       latitude: location?.latitude,
       longitude: location?.longitude
-    },
-    skip: !location || !location.latitude || !location.longitude
+    }
   })
   const RenderItem = ({ item }) => (
     <TouchableOpacity style={styles().topbrandsContainer} onPress={() => navigation.navigate('Restaurant', { ...item })}>
@@ -54,12 +52,8 @@ function TopBrands(props) {
     </TouchableOpacity>
   )
 
-  if (loading) {
-    return (<TopBrandsLoadingUI />);
-  }
-  if (error) {
-    return (<Text style={styles().margin}>Error: {error.message}</Text>);
-  }
+  if (loading) return <TopBrandsLoadingUI />
+  if (error) return <Text style={styles().margin}>Error: {error.message}</Text>
 
   const restaurantBrands = data?.topRatedVendorsPreview?.filter((item) => item.shopType === 'restaurant')
 
@@ -67,7 +61,7 @@ function TopBrands(props) {
 
   return (
     <View style={styles().mainContainer}>
-      {/* Our brands section - always show */}
+      {data?.topRatedVendorsPreview?.length > 0 && (
         <View style={styles().topbrandsSec}>
           <View style={styles(currentTheme).header}>
             <TextDefault numberOfLines={1} textColor={currentTheme.fontFourthColor} bolder H4>
@@ -88,10 +82,9 @@ function TopBrands(props) {
               </TextDefault>
             </TouchableOpacity>
           </View>
-        {data?.topRatedVendorsPreview && data.topRatedVendorsPreview.length > 0 ? (
           <View style={{ ...alignment.PRsmall }}>
             <FlatList
-              data={data.topRatedVendorsPreview}
+              data={data?.topRatedVendorsPreview}
               renderItem={({ item }) => {
                 return <RenderItem item={item} />
               }}
@@ -100,19 +93,13 @@ function TopBrands(props) {
               showsVerticalScrollIndicator={false}
               showsHorizontalScrollIndicator={false}
               horizontal={true}
-              inverted={!!currentTheme?.isRTL}
+              inverted={currentTheme?.isRTL ? true : false}
             />
           </View>
-        ) : (
-          <View style={{ padding: scale(10), ...alignment.PRsmall }}>
-            <TextDefault textColor={currentTheme.fontFifthColor} Normal>
-              {t('No brands available')}
-            </TextDefault>
         </View>
       )}
-      </View>
 
-      {/* Top Restaurant Brands section - always show */}
+      {restaurantBrands?.length > 0 && (
         <View style={styles().topbrandsSec}>
           <View style={styles(currentTheme).header}>
             <TextDefault numberOfLines={1} textColor={currentTheme.fontFourthColor} bolder H4>
@@ -134,10 +121,9 @@ function TopBrands(props) {
               </TextDefault>
             </TouchableOpacity>
           </View>
-        {restaurantBrands && restaurantBrands.length > 0 ? (
           <View style={{ ...alignment.PRsmall, height: height * 0.384 }}>
             <FlatList
-              data={sortRestaurantsByOpenStatus(restaurantBrands)}
+              data={sortRestaurantsByOpenStatus(restaurantBrands || [])}
               renderItem={({ item }) => {
                 const restaurantOpen = isOpen(item)
                 return <NewRestaurantCard {...item} isOpen={restaurantOpen} />
@@ -147,19 +133,13 @@ function TopBrands(props) {
               showsVerticalScrollIndicator={false}
               showsHorizontalScrollIndicator={false}
               horizontal={true}
-              inverted={!!currentTheme?.isRTL}
+              inverted={currentTheme?.isRTL ? true : false}
             />
           </View>
-        ) : (
-          <View style={{ padding: scale(10), ...alignment.PRsmall }}>
-            <TextDefault textColor={currentTheme.fontFifthColor} Normal>
-              {t('No restaurant brands available')}
-            </TextDefault>
         </View>
       )}
-      </View>
 
-      {/* Top Grocery Brands section - always show */}
+      {groceryBrands?.length > 0 && (
         <View style={styles().topbrandsSec}>
           <View style={styles(currentTheme).header}>
             <TextDefault numberOfLines={1} textColor={currentTheme.fontFourthColor} bolder H4>
@@ -181,10 +161,9 @@ function TopBrands(props) {
               </TextDefault>
             </TouchableOpacity>
           </View>
-        {groceryBrands && groceryBrands.length > 0 ? (
           <View style={{ ...alignment.PRsmall }}>
             <FlatList
-              data={sortRestaurantsByOpenStatus(groceryBrands)}
+              data={sortRestaurantsByOpenStatus(groceryBrands || [])}
               renderItem={({ item }) => {
                 const restaurantOpen = isOpen(item)
                 return <NewRestaurantCard {...item} isOpen={restaurantOpen} />
@@ -194,17 +173,11 @@ function TopBrands(props) {
               showsVerticalScrollIndicator={false}
               showsHorizontalScrollIndicator={false}
               horizontal={true}
-              inverted={!!currentTheme?.isRTL}
+              inverted={currentTheme?.isRTL ? true : false}
             />
           </View>
-        ) : (
-          <View style={{ padding: scale(10), ...alignment.PRsmall }}>
-            <TextDefault textColor={currentTheme.fontFifthColor} Normal>
-              {t('No grocery brands available')}
-            </TextDefault>
         </View>
       )}
-      </View>
     </View>
   )
 }

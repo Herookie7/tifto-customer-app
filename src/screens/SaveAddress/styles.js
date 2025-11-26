@@ -34,12 +34,12 @@ const styles = (props = null) =>
     },
     address: {
       ...alignment.MTxSmall
-      // ...alignment.MBsmall
-      // backgroundColor: '#112233'
+      //...alignment.MBsmall
+      //backgroundColor: '#112233'
     },
     addressContainer: {
       paddingTop: 0,
-      width: '100%'
+      width: '100%',
     },
     addressTag: {
       ...alignment.MTmedium
@@ -53,7 +53,7 @@ const styles = (props = null) =>
       borderRadius: scale(10),
       ...alignment.MTmedium,
       ...alignment.MBmedium,
-      backgroundColor: props !== null ? props?.cardBackground : '#D1D5DB'
+      backgroundColor: props !== null ? props?.cardBackground : '#D1D5DB',
     },
     locationRow: {
       flex: 1,

@@ -12,6 +12,7 @@ import { useNavigation } from '@react-navigation/native'
 import { MaterialIcons } from '@expo/vector-icons'
 import { scale } from '../../../utils/scaling'
 import { isOpen } from '../../../utils/customFunctions'
+import Ripple from 'react-native-material-ripple'
 
 const ICONS = {
   grocery: 'local-grocery-store',
@@ -29,56 +30,9 @@ function MainRestaurantCard(props) {
     ...theme[themeContext.ThemeValue]
   }
 
-  if (props?.loading) {
-    return (<MainLoadingUI />);
-  }
-  if (props?.error) {
-    return (<Text>Error: {props?.error?.message}</Text>);
-  }
-  // Always show the section header even if no orders
-  if (!props?.orders || props?.orders?.length <= 0) {
-    // Return section with header but no items
-    return (
-      <View style={styles().orderAgainSec}>
-        <View style={{ gap: scale(8) }}>
-          <View style={styles(currentTheme).header}>
-            <View style={styles(currentTheme).row}>
-              <TextDefault
-                numberOfLines={1}
-                textColor={currentTheme.fontFourthColor}
-                bolder
-                H4
-              >
-                {t(props?.title)}
-              </TextDefault>
-              {props?.icon && (
-                <MaterialIcons
-                  name={ICONS[props?.icon]}
-                  size={24}
-                  color={currentTheme.editProfileButton}
-                />
-              )}
-            </View>
-            <TouchableOpacity
-              style={styles(currentTheme).seeAllBtn}
-              activeOpacity={0.8}
-              onPress={() => {
-                navigation.navigate('Menu', {
-                  selectedType: props?.selectedType ?? 'restaurant',
-                  queryType: props?.queryType ?? 'restaurant',
-                  shopType: props?.shopType ?? 'restaurant'
-                })
-              }}
-            >
-              <TextDefault H5 bolder textColor={currentTheme.main}>
-                {t('SeeAll')}
-              </TextDefault>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View>
-    );
-  }
+  if (props?.loading) return <MainLoadingUI />
+  if (props?.error) return <Text>Error: {props?.error?.message}</Text>
+  if (props?.orders?.length <= 0) return <></>
   return (
     <View style={styles().orderAgainSec}>
       <View style={{ gap: scale(8) }}>
@@ -101,21 +55,23 @@ function MainRestaurantCard(props) {
               />
             )}
           </View>
-          <TouchableOpacity
+          <Ripple
             style={styles(currentTheme).seeAllBtn}
             activeOpacity={0.8}
             onPress={() => {
               navigation.navigate('Menu', {
                 selectedType: props?.selectedType ?? 'restaurant',
                 queryType: props?.queryType ?? 'restaurant',
-                shopType: props?.shopType ?? 'restaurant'
+                shopType: props?.shopType ?? 'restaurant',
               })
             }}
+            rippleColor={'#F5F5F5'}
+            rippleDuration={300}
           >
             <TextDefault H5 bolder textColor={currentTheme.main}>
               {t('SeeAll')}
             </TextDefault>
-          </TouchableOpacity>
+          </Ripple>
         </View>
         <FlatList
           style={styles().offerScroll}
@@ -129,7 +85,7 @@ function MainRestaurantCard(props) {
             const restaurantOpen = isOpen(item)
             return <NewRestaurantCard {...item} isOpen={restaurantOpen} />
           }}
-          inverted={!!currentTheme?.isRTL}
+          inverted={currentTheme?.isRTL ? true : false}
         />
       </View>
     </View>

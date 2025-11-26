@@ -79,7 +79,7 @@ const styles = (props = null) =>
     },
     eyeBtn: {
       elevation: scale(999),
-      ...props?.isRTL ? { marginRight: -40 } : { marginLeft: -40 }
+      ...props?.isRTL ? {marginRight: -40} : {marginLeft: -40}
     },
     btn: {
       marginBottom: scale(20),
@@ -91,7 +91,7 @@ const styles = (props = null) =>
       alignSelf: 'center',
       padding: scale(15),
       borderRadius: scale(28),
-      textAlign: 'center'
+      textAlign:'center'
     },
     headerLeftIcon: {
       ...alignment.PLsmall

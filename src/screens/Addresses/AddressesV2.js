@@ -166,15 +166,13 @@ function Addresses() {
 
               <View style={styles().midContainer}>
                 <View style={[styles().homeIcon]}>
-                  {addressIcons[address.label]
-                    ? (
-                        React.createElement(addressIcons[address.label], {
-                          fill: currentTheme.iconColorPink
-                        })
-                      )
-                    : (
+                  {addressIcons[address.label] ? (
+                    React.createElement(addressIcons[address.label], {
+                      fill: currentTheme.iconColorPink
+                    })
+                  ) : (
                     <AntDesign name="question" size={20} color="black" />
-                      )}
+                  )}
                 </View>
 
                 <View style={styles(currentTheme).addressDetail}>

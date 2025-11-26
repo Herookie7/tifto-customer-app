@@ -2,10 +2,10 @@
   "expo": {
     "name": "Tifto Customer",
     "scheme": "tifto-customer",
-    "version": "1.0.97",
+    "version": "1.1.2",
     "description": "Tifto is a starter kit food ordering app built in React Native using Expo for IOS and Android. It's made keeping good aesthetics in mind as well keeping the best coding practices in mind. Its fully customisable to easily help you in your next food delivery project. https://market.nativebase.io/view/react-native-food-delivery-backend-app",
     "slug": "tifto",
-    "owner": "herookie7",
+    "owner": "herookie07",
     "experiments": {
       "buildCacheProvider": "eas"
     },
@@ -17,15 +17,10 @@
       "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
-    "platforms": [
-      "ios",
-      "android"
-    ],
+    "platforms": ["ios", "android"],
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "userInterfaceStyle": "automatic",
     "ios": {
       "splash": {
@@ -46,16 +41,11 @@
       "usesAppleSignIn": true,
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "Allow $(PRODUCT_NAME) to use location to determine the delivery address for your orders.",
-        "UIBackgroundModes": [
-          "remote-notification",
-          "remote-notification"
-        ],
+        "UIBackgroundModes": ["remote-notification", "remote-notification"],
         "NSUserTrackingUsageDescription": "Allow this app to collect app-related data that can be used for tracking you or your device.",
         "CFBundleURLTypes": [
           {
-            "CFBundleURLSchemes": [
-              "com.googleusercontent.apps.650001300965-dkji7jutv8gc5m4n7cdg3nft87sauhn7"
-            ]
+            "CFBundleURLSchemes": ["com.googleusercontent.apps.650001300965-dkji7jutv8gc5m4n7cdg3nft87sauhn7"]
           }
         ],
         "ITSAppUsesNonExemptEncryption": false
@@ -69,7 +59,7 @@
       "androidCollapsedTitle": "Tifto Customer"
     },
     "android": {
-      "versionCode": 97,
+      "versionCode": 102,
       "package": "com.tifto.customer",
       "userInterfaceStyle": "automatic",
       "googleServicesFile": "./google-services.json",
@@ -83,17 +73,9 @@
           "apiKey": "AIzaSyDfxps4qzL3Hp7Y1_mF6uGuj-Z2ScUHNmk"
         }
       },
-      "permissions": [
-        "android.permission.ACCESS_FINE_LOCATION",
-        "android.permission.ACCESS_COARSE_LOCATION",
-        "android.permission.FOREGROUND_SERVICE",
-        "com.google.android.gms.permission.AD_ID"
-      ],
+      "permissions": ["android.permission.ACCESS_FINE_LOCATION", "android.permission.ACCESS_COARSE_LOCATION", "android.permission.FOREGROUND_SERVICE", "com.google.android.gms.permission.AD_ID"],
       "queries": {
-        "packages": [
-          "com.whatsapp",
-          "com.whatsapp.w4b"
-        ]
+        "packages": ["com.whatsapp", "com.whatsapp.w4b"]
       },
       "intentFilters": [
         {
@@ -103,10 +85,7 @@
               "scheme": "whatsapp"
             }
           ],
-          "category": [
-            "BROWSABLE",
-            "DEFAULT"
-          ]
+          "category": ["BROWSABLE", "DEFAULT"]
         }
       ],
       "adaptiveIcon": {
@@ -130,7 +109,7 @@
       [
         "expo-location",
         {
-          "locationAlwaysAndWhenInUsePermission": "Allow $Tifto to use your location."
+          "locationAlwaysAndWhenInUsePermission": "Allow Tifto Customer to use your location."
         }
       ],
       "expo-font",
@@ -149,8 +128,6 @@
       "eas": {
         "projectId": "39c5a33b-04de-427b-9fbe-50edc90c3b08"
       },
-      "API_URL": "https://ftifto-backend.onrender.com/api/v1",
-      "GRAPHQL_URL": "https://ftifto-backend.onrender.com/graphql",
       "googleWebClientId": "253211113708-2cu4ru93vr8aslbs2ut114bkgg1cfmfk.apps.googleusercontent.com",
       "firebase": {
         "apiKey": "AIzaSyCmiC7sAVx5DjMPACwci-L74qww3uNxna4",
@@ -161,7 +138,9 @@
         "appId": "1:253211113708:android:8ae3bc83527d52b4698dc9",
         "measurementId": "",
         "webClientId": "253211113708-2cu4ru93vr8aslbs2ut114bkgg1cfmfk.apps.googleusercontent.com",
-        "androidClientId": "253211113708-n9lr31biog65897o28s295e7mngdhd8a.apps.googleusercontent.com"
+        "androidClientId": "253211113708-n9lr31biog65897o28s295e7mngdhd8a.apps.googleusercontent.com",
+        "expoRedirectUri": "https://auth.expo.io/@herookie07/tifto",
+        "redirectUri": "com.tifto.customer:/oauthredirect"
       }
     }
   }

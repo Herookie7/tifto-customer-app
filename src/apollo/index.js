@@ -1,4 +1,3 @@
-import { useMemo } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import {
   ApolloClient,
@@ -7,240 +6,127 @@ import {
   ApolloLink,
   split,
   concat,
-  Observable,
-  from
+  Observable
 } from '@apollo/client'
-import { getMainDefinition, offsetLimitPagination } from '@apollo/client/utilities'
+import {
+  getMainDefinition,
+  offsetLimitPagination
+} from '@apollo/client/utilities'
 import { WebSocketLink } from '@apollo/client/link/ws'
-import { onError } from '@apollo/client/link/error'
-
 import useEnvVars from '../../environment'
+import { useContext } from 'react'
+import { LocationContext } from '../context/Location'
 import { calculateDistance } from '../utils/customFunctions'
-import { firebaseAuth } from '../services/firebase'
-import { getCachedAuthToken, setCachedAuthToken } from '../utils/authToken'
-
-const getAuthorizationToken = async() => {
-  try {
-    const currentUser = firebaseAuth.currentUser
-    if (currentUser) {
-      const idToken = await currentUser.getIdToken()
-      console.log('FIREBASE TOKEN:', idToken)
-      setCachedAuthToken(idToken)
-      return idToken
-    }
-  } catch (error) {
-    console.log('Unable to retrieve token from Firebase auth', error)
-  }
-
-  try {
-    const storedFirebaseToken = await AsyncStorage.getItem('firebaseToken')
-    if (storedFirebaseToken) {
-      setCachedAuthToken(storedFirebaseToken)
-      return storedFirebaseToken
-    }
-  } catch (error) {
-    console.log('Unable to get stored Firebase token', error)
-  }
-
-  try {
-    const legacyToken = await AsyncStorage.getItem('token')
-    if (legacyToken) {
-      setCachedAuthToken(legacyToken)
-      return legacyToken
-    }
-  } catch (error) {
-    console.log('Unable to get stored legacy token', error)
-  }
-
-  setCachedAuthToken(null)
-  return null
-}
 
 const setupApollo = () => {
   const { GRAPHQL_URL, WS_GRAPHQL_URL } = useEnvVars()
-  console.log('GRAPHQL TEST:', GRAPHQL_URL)
 
-  const cache = useMemo(
-    () =>
-      new InMemoryCache({
-        typePolicies: {
-          Query: {
-            fields: {
-              _id: {
-                keyArgs: ['string']
-              },
-              orders: offsetLimitPagination()
-            }
+  const cache = new InMemoryCache({
+    typePolicies: {
+      Query: {
+        fields: {
+          _id: {
+            keyArgs: ['string']
           },
-          Category: {
-            fields: {
-              foods: {
-                merge(_existing, incoming) {
-                  return incoming
-                }
-              }
-            }
-          },
-          Food: {
-            fields: {
-              variations: {
-                merge(_existing, incoming) {
-                  return incoming
-                }
-              }
-            }
-          },
-          RestaurantPreview: {
-            fields: {
-              distanceWithCurrentLocation: {
-                read(_existing, { variables, readField }) {
-                  const restaurantLocation = readField('location')
-                  const [latitude, longitude] = restaurantLocation?.coordinates ?? []
-                  if (
-                    typeof latitude !== 'number' ||
-                    typeof longitude !== 'number' ||
-                    typeof variables?.latitude !== 'number' ||
-                    typeof variables?.longitude !== 'number'
-                  ) {
-                    return null
-                  }
-                  return calculateDistance(latitude, longitude, variables.latitude, variables.longitude)
-                }
-              },
-              freeDelivery: {
-                read() {
-                  return Math.random() * 10 > 5
-                }
-              },
-              acceptVouchers: {
-                read() {
-                  return Math.random() * 10 < 5
-                }
-              }
+          orders: offsetLimitPagination()
+        }
+      },
+      Category: {
+        fields: {
+          foods: {
+            merge(_existing, incoming) {
+              return incoming
             }
           }
         }
-      }),
-    []
+      },
+      Food: {
+        fields: {
+          variations: {
+            merge(_existing, incoming) {
+              return incoming
+            }
+          }
+        }
+      },
+      RestaurantPreview: {
+        fields: {
+          distanceWithCurrentLocation: {
+            read(_existing, {variables, field, readField}) {
+              const restaurantLocation = readField('location')
+              const distance = calculateDistance(restaurantLocation?.coordinates[0], restaurantLocation?.coordinates[1], variables.latitude, variables.longitude)
+              return distance
+            }
+          },
+          freeDelivery: {
+            read(_existing) {
+              const randomValue = Math.random() * 10;
+              return randomValue > 5
+            }
+          },
+          acceptVouchers: {
+            read(_existing) {
+              const randomValue = Math.random() * 10;
+              return randomValue < 5
+            }
+          },
+        }
+      }
+    }
+  })
+
+  const httpLink = createHttpLink({
+    uri: GRAPHQL_URL
+  })
+
+  const wsLink = new WebSocketLink({
+    uri: WS_GRAPHQL_URL,
+    options: {
+      reconnect: true
+    }
+  })
+
+  const request = async operation => {
+    const token = await AsyncStorage.getItem('token')
+
+    operation.setContext({
+      headers: {
+        authorization: token ? `Bearer ${token}` : ''
+      }
+    })
+  }
+
+  const requestLink = new ApolloLink(
+    (operation, forward) =>
+      new Observable(observer => {
+        let handle
+        Promise.resolve(operation)
+          .then(oper => request(oper))
+          .then(() => {
+            handle = forward(operation).subscribe({
+              next: observer.next.bind(observer),
+              error: observer.error.bind(observer),
+              complete: observer.complete.bind(observer)
+            })
+          })
+          .catch(observer.error.bind(observer))
+
+        return () => {
+          if (handle) handle.unsubscribe()
+        }
+      })
   )
 
-  const client = useMemo(() => {
-    const httpLink = createHttpLink({
-      uri: GRAPHQL_URL
-    })
+  const terminatingLink = split(({ query }) => {
+    const { kind, operation } = getMainDefinition(query)
+    return kind === 'OperationDefinition' && operation === 'subscription'
+  }, wsLink)
 
-    const wsLink = new WebSocketLink({
-      uri: WS_GRAPHQL_URL,
-      options: {
-        reconnect: true,
-        connectionParams: () => {
-          const token = getCachedAuthToken()
-          if (token) {
-            return {
-              Authorization: `Bearer ${token}`
-            }
-          }
-          return {}
-        }
-      }
-    })
-
-    const authLink = new ApolloLink(
-      (operation, forward) =>
-        new Observable((observer) => {
-          let handle
-          Promise.resolve(getAuthorizationToken())
-            .then((token) => {
-              operation.setContext({
-                headers: {
-                  authorization: token ? `Bearer ${token}` : ''
-                }
-              })
-              handle = forward(operation).subscribe({
-                next: observer.next.bind(observer),
-                error: observer.error.bind(observer),
-                complete: observer.complete.bind(observer)
-              })
-            })
-            .catch((error) => {
-              observer.error(error)
-            })
-
-          return () => {
-            if (handle) handle.unsubscribe()
-          }
-        })
-    )
-
-    const terminatingLink = split(({ query }) => {
-      const definition = getMainDefinition(query)
-      return definition.kind === 'OperationDefinition' && definition.operation === 'subscription'
-    }, wsLink)
-
-    const errorLink = onError(({ graphQLErrors, networkError, operation, forward }) => {
-      if (graphQLErrors) {
-        graphQLErrors.forEach(({ message, locations, path }) => {
-          console.error('GRAPHQL ERROR:', {
-            message,
-            locations,
-            path,
-            operation: operation.operationName
-          })
-        })
-      }
-
-      if (networkError) {
-        console.error('NETWORK ERROR:', {
-          message: networkError.message,
-          statusCode: networkError.statusCode,
-          operation: operation.operationName,
-          url: GRAPHQL_URL
-        })
-
-        // Retry on network errors (server errors or connection failures)
-        if (networkError.statusCode >= 500 || !networkError.statusCode) {
-          // Server error or connection failure - retry once after 1 second
-          let retryCount = 0
-          const maxRetries = 1
-          
-          if (retryCount < maxRetries) {
-            retryCount++
-            return new Observable((observer) => {
-              const retryTimeout = setTimeout(() => {
-                const subscriber = forward(operation).subscribe({
-                  next: observer.next.bind(observer),
-                  error: (retryError) => {
-                    console.error('Retry failed:', retryError)
-                    observer.error(retryError)
-                  },
-                  complete: observer.complete.bind(observer)
-                })
-                
-                return () => {
-                  if (subscriber) subscriber.unsubscribe()
-                }
-              }, 1000) // Retry after 1 second
-
-              return () => {
-                clearTimeout(retryTimeout)
-              }
-            })
-          }
-        }
-      }
-    })
-
-    const link = from([
-      errorLink,
-      concat(ApolloLink.from([terminatingLink, authLink]), httpLink)
-    ])
-
-    return new ApolloClient({
-      link,
-      cache,
-      resolvers: {}
-    })
-  }, [GRAPHQL_URL, WS_GRAPHQL_URL, cache])
+  const client = new ApolloClient({
+    link: concat(ApolloLink.from([terminatingLink, requestLink]), httpLink),
+    cache,
+    resolvers: {}
+  })
 
   return client
 }

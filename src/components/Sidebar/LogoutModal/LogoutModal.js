@@ -10,7 +10,7 @@ import { Feather } from '@expo/vector-icons'
 const LogoutModal = ({ visible, onCancel, onLogout, showCrossButton }) => {
   const { t, i18n } = useTranslation()
   const themeContext = useContext(ThemeContext)
-  const currentTheme = { isRTL: i18n.dir() === 'rtl', ...theme[themeContext.ThemeValue] }
+  const currentTheme = {isRTL: i18n.dir() === 'rtl', ...theme[themeContext.ThemeValue]}
 
   return (
     <Modal visible={visible} animationType='slide' transparent>
@@ -48,7 +48,7 @@ const LogoutModal = ({ visible, onCancel, onLogout, showCrossButton }) => {
           <TouchableOpacity
             style={[
               styles(currentTheme).btn,
-              styles(currentTheme).btnLogout
+              styles(currentTheme).btnLogout,
             ]}
             onPress={onLogout}
           >
@@ -56,11 +56,11 @@ const LogoutModal = ({ visible, onCancel, onLogout, showCrossButton }) => {
               {t('Logout')}
             </TextDefault>
           </TouchableOpacity>
-
+          
           <TouchableOpacity
             style={[
               styles(currentTheme).btn,
-              styles(currentTheme).btnCancel
+              styles(currentTheme).btnCancel,
             ]}
             onPress={onCancel}
           >

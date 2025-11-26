@@ -40,7 +40,7 @@ function Item(props) {
   const currentTheme = theme[themeContext.ThemeValue]
   const [mutate, { loading: loadingMutation }] = useMutation(ADD_FAVOURITE, {
     onCompleted,
-    refetchQueries: [PROFILE, FAVOURITERESTAURANTS]
+    refetchQueries: [PROFILE,FAVOURITERESTAURANTS ]
   })
   const { isAvailable, openingTimes } = item
   const isOpen = () => {
@@ -84,17 +84,15 @@ function Item(props) {
                 onPress={() =>
                   profile ? mutate({ variables: { id: item._id } }) : null
                 }>
-                {loadingMutation
-                  ? (
+                {loadingMutation ? (
                   <Spinner size={'small'} backColor={'transparent'} spinnerColor={currentTheme.iconColorDark} />
-                    )
-                  : (
+                ) : (
                   <AntDesign
                     name={heart ? 'heart' : 'hearto'}
                     size={scale(15)}
                     color="black"
                   />
-                    )}
+                )}
               </TouchableOpacity>
               {(!isAvailable || !isOpen()) && (
                 <View style={{ ...styles().featureOverlay, top: 40 }}>
@@ -145,24 +143,24 @@ function Item(props) {
                 <Feather name="star" size={18} color={currentTheme.newIconColor} />
                 <TextDefault
                 textColor={currentTheme.fontThirdColor}
-
+       
                 H4
                  bolder
-                  style={{ marginLeft: scale(2), marginRight: scale(5) }}
+                  style={{ marginLeft: scale(2), marginRight: scale(5)}}
                  >
                   {item.reviewAverage}
                 </TextDefault>
                 <TextDefault
                    textColor={currentTheme.fontNewColor}
-                  style={{ marginLeft: scale(2) }}
-
+                  style={{ marginLeft: scale(2)}}
+                 
                   H5>
                   ({item.reviewCount})
                 </TextDefault>
               </View>
             </View>
             {
-              item?.tags?.length > 0 && (
+              item?.tags?.length>0 && (
                 <TextDefault
                   style={styles().offerCategoty}
                   numberOfLines={1}

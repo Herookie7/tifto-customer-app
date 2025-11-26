@@ -23,7 +23,7 @@ import SignUpSvg from '../../../assets/SVG/imageComponents/SignUpSvg'
 function EmailOtp(props) {
   const route = useRoute()
   const userData = route?.params?.user
-  const isPhoneExists = route?.params?.isPhoneExists || false
+   const isPhoneExists = route?.params?.isPhoneExists || false
   const {
     otp,
     setOtp,
@@ -36,6 +36,9 @@ function EmailOtp(props) {
     currentTheme,
     themeContext
   } = useEmailOtp(isPhoneExists)
+
+  
+ 
 
   const { t, i18n } = useTranslation()
   useLayoutEffect(() => {
@@ -155,15 +158,13 @@ function EmailOtp(props) {
                 {seconds === 0 ? '' : `${t('retry')} ${seconds}s`}
               </TextDefault>
             </View>
-            {loading || updateUserLoading
-              ? (
+            {loading || updateUserLoading ? (
               <Spinner
                 backColor={currentTheme.color3}
                 spinnerColor={currentTheme.color3}
                 size='small'
               />
-                )
-              : (
+            ) : (
               <TouchableOpacity
                 activeOpacity={0.7}
                 style={[
@@ -177,7 +178,7 @@ function EmailOtp(props) {
                   {t('resendOtpBtn')}
                 </TextDefault>
               </TouchableOpacity>
-                )}
+            )}
           </View>
         </View>
       </ScrollView>

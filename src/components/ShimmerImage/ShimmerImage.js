@@ -70,15 +70,13 @@ const ShimmerImage = ({ imageUrl, style, resizeMode = 'cover', defaultSource }) 
   if (!hasValidUrl || imageError) {
     return (
       <View style={[styles.container, style]}>
-        {defaultSource
-          ? (
+        {defaultSource ? (
           <Image
             source={defaultSource}
             style={[StyleSheet.absoluteFill]}
             resizeMode={resizeMode}
           />
-            )
-          : (
+        ) : (
           <LottieView
             style={{
               width: '100%',
@@ -90,7 +88,7 @@ const ShimmerImage = ({ imageUrl, style, resizeMode = 'cover', defaultSource }) 
             speed={0.35}
             resizeMode="cover"
           />
-            )}
+        )}
       </View>
     )
   }

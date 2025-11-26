@@ -108,15 +108,13 @@ function Addresses() {
                 setdeleteAllModalVisible(true)
               }}
             >
-              {loadingAddressMutation
-                ? (
+              {loadingAddressMutation ? (
                 <Spinner backColor='transparent' size='small' />
-                  )
-                : (
+              ) : (
                 <TextDefault textColor={currentTheme.red600} H5 bolder>
                   {t('delete')}
                 </TextDefault>
-                  )}
+              )}
             </TouchableOpacity>
           )
         } else {
@@ -198,7 +196,7 @@ function Addresses() {
     setFinalConfirmVisible(true)
   }
 
-  const confirmBulkDelete = async() => {
+  const confirmBulkDelete = async () => {
     mutateBulkDelete({
       variables: { ids: selectedAddresses }
     })
@@ -224,7 +222,7 @@ function Addresses() {
     setFinalConfirmVisible(true)
   }
 
-  const confirmSingleDelete = async() => {
+  const confirmSingleDelete = async () => {
     await mutate({ variables: { id: selectedAddressId._id } })
       .then((response) => {
         console.log('Mutation success:', response)
@@ -237,9 +235,7 @@ function Addresses() {
   }
 
   const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
-  if (!connect) {
-    return (<ErrorView refetchFunctions={[refetchProfile]} />);
-  }
+  if (!connect) return <ErrorView refetchFunctions={[refetchProfile]} />
 
   return (
     <View style={styles(currentTheme).flex}>
@@ -265,11 +261,11 @@ function Addresses() {
                   <View style={[styles(currentTheme).homeIcon]}>
                     {addressIcons[address.label]
                       ? React.createElement(addressIcons[address.label], {
-                        fill: currentTheme.darkBgFont
-                      })
-                      : React.createElement(addressIcons.Other, {
-                        fill: currentTheme.darkBgFont
-                      })}
+                          fill: currentTheme.darkBgFont
+                        })
+                      : React.createElement(addressIcons['Other'], {
+                          fill: currentTheme.darkBgFont
+                        })}
                   </View>
 
                   {/* addresses */}

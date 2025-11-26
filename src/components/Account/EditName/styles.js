@@ -1,8 +1,9 @@
 import { scale, verticalScale } from '../../../utils/scaling'
-import { StyleSheet, Dimensions } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { alignment } from '../../../utils/alignment'
 import { theme } from '../../../utils/themeColors'
-const { height } = Dimensions.get('screen')
+import { Dimensions } from 'react-native'
+const {height} = Dimensions.get('screen')
 
 const styles = (props = null) =>
   StyleSheet.create({
@@ -24,7 +25,7 @@ const styles = (props = null) =>
       padding: scale(12),
       color: props !== null ? props?.newFontcolor : 'red',
       ...alignment.MBxSmall,
-      textAlign: props?.isRTL ? 'right' : 'left'
+      textAlign : props?.isRTL ? 'right' : 'left'
     },
     containerButton: {
       backgroundColor: props !== null ? props?.themeBackground : 'transparent',
@@ -49,7 +50,7 @@ const styles = (props = null) =>
     contentContainer: {
       flexDirection: 'row',
       justifyContent: 'center',
-      alignItems: 'center'
+      alignItems: 'center',
     }
   })
 export default styles

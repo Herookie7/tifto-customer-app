@@ -20,12 +20,12 @@ const styles = (props = null) =>
     mainContainer: {
       backgroundColor: props != null ? props?.themeBackground : 'white',
       ...alignment.PLmedium,
-      ...alignment.PRmedium
+      ...alignment.PRmedium,
     },
     radioContainer: {
       width: '10%',
       alignItems: 'center',
-      justifyContent: 'center'
+      justifyContent: 'center',
 
     },
     horizontalLine: {
@@ -36,7 +36,7 @@ const styles = (props = null) =>
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
-      marginVertical: scale(10)
+      marginVertical: scale(10),
     },
     iconContainer: {
       width: scale(25),
@@ -44,9 +44,9 @@ const styles = (props = null) =>
       alignItems: 'center'
     },
     iconStyle: {
-      display: 'flex',
+      display: "flex",
       alignItems: 'center',
-      justifyContent: 'center'
+      justifyContent: 'center',
     }
   })
 export default styles

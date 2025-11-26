@@ -18,11 +18,10 @@ function Location({
   location: locationParam,
   locationLabel,
   forwardIcon = false,
-  screenName
-}) {
+  screenName }) {
   const { t, i18n } = useTranslation()
   const themeContext = useContext(ThemeContext)
-  const currentTheme = { isRTL: i18n.dir() === 'rtl', ...theme[themeContext.ThemeValue] }
+  const currentTheme = {isRTL : i18n.dir() === 'rtl', ...theme[themeContext.ThemeValue]}
   const { location } = useContext(LocationContext)
 
   let translatedLabel
@@ -36,11 +35,9 @@ function Location({
       ? t('currentLocation')
       : location?.deliveryAddress
   const onLocationPress = (event) => {
+
     if (screenName === 'checkout') {
       if (addresses && !addresses.length) {
-        if (!location || !location.latitude || !location.longitude) {
-          return
-        }
         navigation.navigate('AddNewAddress', {
           prevScreen: 'Checkout',
           latitude: location.latitude,
@@ -51,12 +48,14 @@ function Location({
           address: location
         })
       }
-    } else { modalOn() }
+    }
+    else
+      modalOn()
   }
   return (
     <TouchableOpacity onPress={onLocationPress} >
       <View style={styles(currentTheme).headerTitleContainer}>
-        <View style={{ flexDirection: currentTheme?.isRTL ? 'row-reverse' : 'row', alignItems: 'center', justifyContent: 'center', marginHorizontal: scale(10), gap: 5 }}>
+        <View style={{ flexDirection: currentTheme?.isRTL ? 'row-reverse' : 'row' , alignItems: 'center', justifyContent: 'center', marginHorizontal: scale(10), gap: 5 }}>
           <View style={[styles().locationIcon, locationIconGray]}>
             <EvilIcons
               name="location"

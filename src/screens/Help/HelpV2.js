@@ -20,11 +20,11 @@ const Help = props => {
   const [links, setLinks] = useState([
     {
       title: t('titleProductPage'),
-      url: 'https://tifto.com/tifto/'
+      url: 'https://tifto.com/tifto-multi-vendor/'
     },
     {
       title: t('titleDocs'),
-      url: 'https://tifto.com/tifto-doc/'
+      url: 'https://tifto.com/multi-vendor-doc/'
     },
     {
       title: t('titleBlog'),
@@ -49,11 +49,11 @@ const Help = props => {
       {
         title: t('titleProductPage'),
         url:
-          'https://tifto.com/tifto-open-source-food-delivery-solution/'
+          'https://tifto.com/tifto-multivendor-open-source-food-delivery-solution/'
       },
       {
         title: t('titleDocs'),
-        url: 'https://tifto.com/tifto-documentation/'
+        url: 'https://tifto.com/multivendor-documentation/'
       },
       {
         title: t('titleBlog'),

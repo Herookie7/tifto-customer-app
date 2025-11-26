@@ -55,9 +55,7 @@ const ActiveOrders = ({ navigation, loading, error, activeOrders }) => {
       />
     )
   }
-  if (error) {
-    return (<TextError text={error.message} />);
-  }
+  if (error) return <TextError text={error.message} />
 
   return (
     <FlatList
@@ -83,30 +81,30 @@ const getItems = (items) => {
 const Item = ({ item, navigation, currentTheme, configuration }) => {
   const [remainingTimeState, setRemainingTimeState] = useState(calulateRemainingTime(item))
   const { t } = useTranslation()
-
+  
   useSubscription(
     gql`
       ${subscriptionOrder}
     `,
     { variables: { id: item._id } }
   )
-
+  
   // Add useEffect to update the remaining time every second
   useEffect(() => {
     const intervalId = setInterval(() => {
       const updatedTime = calulateRemainingTime(item)
       setRemainingTimeState(updatedTime)
-
+      
       // Clear interval if time reaches zero
       if (updatedTime <= 0) {
         clearInterval(intervalId)
       }
     }, 1000)
-
+    
     // Clean up interval on unmount
     return () => clearInterval(intervalId)
   }, [item])
-
+  
   return (
     <TouchableOpacity
       activeOpacity={0.7}
@@ -156,7 +154,7 @@ const Item = ({ item, navigation, currentTheme, configuration }) => {
             style={{
               flex: 1,
               flexDirection: currentTheme?.isRTL ? 'row-reverse' : 'row',
-              // alignItems: 'center',
+              //alignItems: 'center',
               justifyContent: 'center',
               ...alignment.Mmedium,
               ...alignment.MTlarge,
@@ -195,7 +193,7 @@ const Item = ({ item, navigation, currentTheme, configuration }) => {
             </View>
             <View style={styles(currentTheme).subContainerRight}>
               <TextDefault
-                // numberOfLines={1}
+                //numberOfLines={1}
                 textColor={currentTheme.fontMainColor}
                 bolder
                 isRTL

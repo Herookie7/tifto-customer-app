@@ -86,11 +86,11 @@ const CategoryPage = ({ route, navigation }) => {
   const getSubCategoriesAndTabs = () => {
     if (!restaurantData?.restaurant?.categories || !subcategoriesData?.subCategories) return
 
-    const categories = []
-    const subCategoriesForTabs = []
+    let categories = []
+    let subCategoriesForTabs = []
 
     if (restaurantData?.restaurant?.categories) {
-      for (const category of restaurantData.restaurant.categories) {
+      for (let category of restaurantData.restaurant.categories) {
         categories.push({ _id: category._id, name: category.title })
 
         const subcategories = subcategoriesData?.subCategories?.filter((sub) => sub.parentCategoryId === category._id)
@@ -104,12 +104,11 @@ const CategoryPage = ({ route, navigation }) => {
       setIndex(ctgryIndex)
       setSubIndex(0)
       setTimeout(() => {
-        if (scrollRef.current) {
+        if (scrollRef.current)
           scrollRef.current.scrollTo({
             x: SCREEN_WIDTH * ctgryIndex,
             animated: true
           })
-        }
         if (tabScrollRef.current) {
           tabScrollRef.current.scrollTo({
             x: ctgryIndex * (scrollWidth / tabs.length),

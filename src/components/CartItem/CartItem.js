@@ -177,21 +177,19 @@ const CartItem = (props) => {
           ]}
           onPress={props?.removeQuantity}
         >
-          {props?.quantity < 2
-            ? (
+          {props?.quantity < 2 ? (
             <EvilIcons
               name='trash'
               size={scale(25)}
               color={currentTheme.color4}
             />
-              )
-            : (
+          ) : (
             <AntDesign
               name='minus'
               size={scale(18)}
               color={currentTheme.color4}
             />
-              )}
+          )}
         </TouchableOpacity>
 
         <Animated.View

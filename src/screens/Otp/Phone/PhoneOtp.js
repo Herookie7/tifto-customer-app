@@ -148,15 +148,13 @@ function PhoneOtp(props) {
               </TextDefault>
             </View>
             <View>
-              {loading || updateUserLoading
-                ? (
+              {loading || updateUserLoading ? (
                 <Spinner
                   backColor={currentTheme.color3}
                   spinnerColor={currentTheme.color3}
                   size='small'
                 />
-                  )
-                : (
+              ) : (
                 <TouchableOpacity
                   activeOpacity={0.7}
                   style={[
@@ -175,7 +173,7 @@ function PhoneOtp(props) {
                     {t('resendOtpBtn')}
                   </TextDefault>
                 </TouchableOpacity>
-                  )}
+              )}
             </View>
           </View>
         </View>

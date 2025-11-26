@@ -49,13 +49,14 @@ const FOOD = gql`
 
 // const concat = (...args) => args.join('')
 function Restaurant(props) {
+  const { _id: restaurantId } = props.route.params
   const Analytics = analytics()
   const { t, i18n } = useTranslation()
   const scrollRef = useRef(null)
   const flatListRef = useRef(null)
   const navigation = useNavigation()
   const route = useRoute()
-  const propsData = route.params || props.route?.params || {}
+  const propsData = route.params
   const animation = useSharedValue(0)
   const translationY = useSharedValue(0)
   const circle = useSharedValue(0)
@@ -73,22 +74,11 @@ function Restaurant(props) {
   const [filterData, setFilterData] = useState([])
   const [showSearchResults, setShowSearchResults] = useState(false)
   const { restaurant: restaurantCart, setCartRestaurant, cartCount, addCartItem, addQuantity, clearCart, checkItemCart } = useContext(UserContext)
-  // Safely extract restaurant ID from route params - try multiple possible locations
-  const restaurantIdToFetch = propsData?._id || propsData?.id || props.route?.params?._id || props.route?.params?.id
-  
-  // Debug logging
-  useEffect(() => {
-    console.log('Restaurant Screen - Route params:', route.params);
-    console.log('Restaurant Screen - Props route params:', props.route?.params);
-    console.log('Restaurant Screen - Extracted ID:', restaurantIdToFetch);
-  }, [restaurantIdToFetch, route.params])
-  
-  const { data, refetch, networkStatus, loading, error } = useRestaurant(restaurantIdToFetch)
+  const { data, refetch, networkStatus, loading, error } = useRestaurant(propsData._id)
 
   const client = useApolloClient()
   const { data: popularItems } = useQuery(POPULAR_ITEMS, {
-    variables: { restaurantId: restaurantIdToFetch },
-    skip: !restaurantIdToFetch
+    variables: { restaurantId }
   })
 
   const fetchFoodDetails = (itemId) => {
@@ -189,7 +179,7 @@ function Restaurant(props) {
     }
   })
 
-  const onPressItem = async(food) => {
+  const onPressItem = async (food) => {
     if (!data?.restaurant?.isAvailable || !isOpen(data?.restaurant)) {
       Alert.alert(
         '',
@@ -225,7 +215,7 @@ function Restaurant(props) {
           },
           {
             text: t('okText'),
-            onPress: async() => {
+            onPress: async () => {
               await addToCart(food, true)
             }
           }
@@ -247,7 +237,7 @@ function Restaurant(props) {
   }
 
   // navigate every item to itemDetails screen
-  const addToCart = async(food, clearFlag) => {
+  const addToCart = async (food, clearFlag) => {
     if (clearFlag) await clearCart()
 
     navigation.navigate('ItemDetail', {
@@ -437,54 +427,7 @@ function Restaurant(props) {
       </View>
     )
   }
-  if (!restaurantIdToFetch) {
-    return (
-      <View style={[styles(currentTheme).flex, { justifyContent: 'center', alignItems: 'center', padding: scale(20) }]}>
-        <TextError text="Restaurant ID is missing. Please go back and try again." />
-        <TouchableOpacity 
-          style={{ marginTop: scale(20), padding: scale(10), backgroundColor: currentTheme.main, borderRadius: scale(5) }}
-          onPress={() => navigation.goBack()}
-        >
-          <TextDefault textColor={currentTheme.white} bolder>Go Back</TextDefault>
-        </TouchableOpacity>
-      </View>
-    );
-  }
-  if (error) {
-    console.error('Restaurant query error:', error);
-    return (
-      <View style={[styles(currentTheme).flex, { justifyContent: 'center', alignItems: 'center', padding: scale(20) }]}>
-        <TextError text={`Error loading restaurant: ${error.message || JSON.stringify(error)}`} />
-        <TouchableOpacity 
-          style={{ marginTop: scale(20), padding: scale(10), backgroundColor: currentTheme.main, borderRadius: scale(5) }}
-          onPress={() => refetch()}
-        >
-          <TextDefault textColor={currentTheme.white} bolder>Retry</TextDefault>
-        </TouchableOpacity>
-        <TouchableOpacity 
-          style={{ marginTop: scale(10), padding: scale(10), backgroundColor: currentTheme.fontSecondColor, borderRadius: scale(5) }}
-          onPress={() => navigation.goBack()}
-        >
-          <TextDefault textColor={currentTheme.white} bolder>Go Back</TextDefault>
-        </TouchableOpacity>
-      </View>
-    );
-  }
-  if (!data || !data.restaurant) {
-    if (!loading) {
-      return (
-        <View style={[styles(currentTheme).flex, { justifyContent: 'center', alignItems: 'center', padding: scale(20) }]}>
-          <TextError text="Restaurant not found." />
-          <TouchableOpacity 
-            style={{ marginTop: scale(20), padding: scale(10), backgroundColor: currentTheme.main, borderRadius: scale(5) }}
-            onPress={() => navigation.goBack()}
-          >
-            <TextDefault textColor={currentTheme.white} bolder>Go Back</TextDefault>
-          </TouchableOpacity>
-        </View>
-      );
-    }
-  }
+  if (error) return <TextError text={JSON.stringify(error)} />
   const restaurant = data.restaurant
   const allDeals = restaurant?.categories.filter((cat) => cat?.foods?.length)
   const deals = allDeals.map((c, index) => ({
@@ -575,8 +518,7 @@ function Restaurant(props) {
                       }}
                     >
                       <View style={styles(currentTheme).deal}>
-                        {item?.image
-                          ? (
+                        {item?.image ? (
                           <Image
                             style={{
                               height: scale(60),
@@ -585,8 +527,7 @@ function Restaurant(props) {
                             }}
                             source={{ uri: item?.image }}
                           />
-                            )
-                          : null}
+                        ) : null}
                         <View style={styles(currentTheme).flex}>
                           <View style={styles(currentTheme).dealDescription}>
                             <TextDefault textColor={currentTheme.fontMainColor} style={styles(currentTheme).headerText} numberOfLines={1} bolder isRTL>

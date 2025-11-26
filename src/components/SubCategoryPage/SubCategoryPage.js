@@ -12,8 +12,8 @@ import {
   ActivityIndicator
 } from 'react-native'
 import { Gesture, GestureDetector } from 'react-native-gesture-handler'
-import ReAnimated, {
-  useSharedValue,
+import ReAnimated, { 
+  useSharedValue, 
   useAnimatedStyle,
   withTiming,
   runOnJS
@@ -201,7 +201,7 @@ const CategoryPage = ({ route, navigation }) => {
   const [isDataLoaded, setIsDataLoaded] = useState(false)
   const [isSearchVisible, setIsSearchVisible] = useState(false)
   const [initialRender, setInitialRender] = useState(true)
-
+  
   // FOOD PRELOADING STATES
   const [preloadedFoodItems, setPreloadedFoodItems] = useState({})
   const [currentFoodItems, setCurrentFoodItems] = useState([])
@@ -249,25 +249,25 @@ const CategoryPage = ({ route, navigation }) => {
   // PRELOAD ALL FOOD ITEMS BY CATEGORY AND SUBCATEGORY
   const preloadAllFoodItems = (restaurantCategories, subcategoriesData) => {
     debugLog('🍕 PRELOADING ALL FOOD ITEMS...')
-
+    
     const foodItemsCache = {}
-
+    
     restaurantCategories.forEach((category, categoryIndex) => {
       debugLog(`Processing category ${categoryIndex}: ${category.title}`)
-
+      
       const categorySubcategories = subcategoriesData.subCategories.filter(
         (sub) => sub.parentCategoryId === category._id
       )
-
+      
       // Sort subcategories alphabetically for consistency
-      const sortedSubcategories = categorySubcategories.sort((a, b) =>
+      const sortedSubcategories = categorySubcategories.sort((a, b) => 
         a.title.localeCompare(b.title)
       )
-
+      
       // Create cache key for this category
       const categoryKey = `category_${categoryIndex}`
       foodItemsCache[categoryKey] = {}
-
+      
       if (sortedSubcategories.length > 0) {
         // Has subcategories - group food by subcategory
         sortedSubcategories.forEach((subcategory, subIndex) => {
@@ -280,11 +280,11 @@ const CategoryPage = ({ route, navigation }) => {
         })
       } else {
         // No subcategories - all foods go to category directly
-        foodItemsCache[categoryKey].no_sub = category.foods
+        foodItemsCache[categoryKey]['no_sub'] = category.foods
         debugLog(`  No subcategories: ${category.foods.length} items`)
       }
     })
-
+    
     debugLog('🍕 FOOD ITEMS PRELOADING COMPLETE!', 'success')
     setPreloadedFoodItems(foodItemsCache)
   }
@@ -294,20 +294,20 @@ const CategoryPage = ({ route, navigation }) => {
     if (!preloadedFoodItems || Object.keys(preloadedFoodItems).length === 0) {
       return []
     }
-
+    
     const categoryKey = `category_${selectedCategoryIndex}`
     const categoryCache = preloadedFoodItems[categoryKey]
-
+    
     if (!categoryCache) {
       return []
     }
-
+    
     // Check if this category has subcategories
     if (subCategories[selectedCategoryIndex]?.length > 0) {
       const subKey = `sub_${selectedSubcategoryIndex}`
       return categoryCache[subKey] || []
     } else {
-      return categoryCache.no_sub || []
+      return categoryCache['no_sub'] || []
     }
   }
 
@@ -318,34 +318,34 @@ const CategoryPage = ({ route, navigation }) => {
     }
 
     debugLog('Preprocessing subcategories for consistent sorting...')
-
+    
     const processedSubcategories = []
-
+    
     restaurantCategories.forEach((category, categoryIndex) => {
       const categorySubcategories = subcategoriesData.subCategories.filter(
         (sub) => sub.parentCategoryId === category._id
       )
-
+      
       // Sort subcategories by title alphabetically for consistency
       const sortedSubcategories = categorySubcategories.sort((a, b) => {
         return a.title.localeCompare(b.title)
       })
-
+      
       // Add original index for tracking
       const subcategoriesWithIndex = sortedSubcategories.map((sub, index) => ({
         ...sub,
         originalIndex: index,
         categoryIndex
       }))
-
+      
       processedSubcategories.push(subcategoriesWithIndex)
-
+      
       debugLog(
         `Category ${categoryIndex} (${category.title}): ${subcategoriesWithIndex.length} subcategories sorted`,
         'success'
       )
     })
-
+    
     return processedSubcategories
   }
 
@@ -415,11 +415,11 @@ const CategoryPage = ({ route, navigation }) => {
         // Position item so it's fully visible at the right side
         const itemStartPosition = displayIndex * ITEM_WIDTH
         const itemEndPosition = itemStartPosition + ITEM_WIDTH
-
+        
         // Scroll so the item ends at the screen's right edge
         targetScrollX = Math.max(0, itemEndPosition - SCREEN_WIDTH)
         targetScrollX = Math.min(targetScrollX, maxScrollX)
-
+        
         debugLog(
           `RTL: Item start ${itemStartPosition}, end ${itemEndPosition}, target scroll ${targetScrollX}`
         )
@@ -427,7 +427,7 @@ const CategoryPage = ({ route, navigation }) => {
     } else {
       // LTR: Scroll to show item at LEFT corner - FIXED CALCULATION
       debugLog('LTR: Positioning at LEFT corner')
-
+      
       // CRITICAL FIX: Ensure we don't scroll past the beginning
       if (displayIndex === 0) {
         targetScrollX = 0
@@ -435,11 +435,11 @@ const CategoryPage = ({ route, navigation }) => {
       } else {
         // Position the item at the left edge
         targetScrollX = displayIndex * ITEM_WIDTH
-
+        
         // Clamp to valid range
         targetScrollX = Math.max(0, targetScrollX)
         targetScrollX = Math.min(targetScrollX, maxScrollX)
-
+        
         debugLog(`LTR: Calculated target scroll: ${targetScrollX}`)
       }
     }
@@ -483,14 +483,14 @@ const CategoryPage = ({ route, navigation }) => {
   // Reset subcategory to correct item with corner positioning
   const resetSubcategoryToCorrectPosition = (categoryIndex) => {
     debugLog('Resetting subcategory to show correct item at corner')
-
+    
     // Get the current subcategories for the selected category
     const currentSubcategories = subCategories[categoryIndex] || []
     const currentDisplaySubcategories = createDisplayData(currentSubcategories, currentTheme.isRTL)
-
+    
     debugLog(`Current subcategories count: ${currentSubcategories.length}`)
     debugLog(`Current display subcategories count: ${currentDisplaySubcategories.length}`)
-
+    
     if (subcategoryScrollRef.current && currentDisplaySubcategories.length > 0) {
       if (currentTheme.isRTL) {
         // For RTL, show the last item (which appears first visually) at the right corner
@@ -512,7 +512,7 @@ const CategoryPage = ({ route, navigation }) => {
           'SUBCATEGORY_RESET',
           false
         )
-        debugLog('LTR: Positioning first subcategory (display index 0) at left corner')
+        debugLog(`LTR: Positioning first subcategory (display index 0) at left corner`)
       }
     } else {
       debugLog('Subcategory scroll ref not ready or no subcategories', 'warning')
@@ -529,7 +529,7 @@ const CategoryPage = ({ route, navigation }) => {
     swipeInProgress.current = true
     setIsChangingCategory(true)
 
-    debugLog('=== SWIPE NAVIGATION START ===')
+    debugLog(`=== SWIPE NAVIGATION START ===`)
     debugLog(`Swipe direction: ${direction > 0 ? 'NEXT' : 'PREVIOUS'}`)
     debugLog(`RTL: ${currentTheme.isRTL}`)
     debugLog(`Current category: ${selectedCategoryIndex}`)
@@ -547,17 +547,17 @@ const CategoryPage = ({ route, navigation }) => {
     if (nextSubcategoryIndex >= 0 && nextSubcategoryIndex <= maxSubcategoryIndex) {
       // Move within subcategories
       debugLog(`Moving within subcategories: ${selectedSubcategoryIndex} → ${nextSubcategoryIndex}`)
-
+      
       setSelectedSubcategoryIndex(nextSubcategoryIndex)
-
+      
       // Find the display index for the new subcategory
       const currentDisplaySubcategories = createDisplayData(currentSubcategories, currentTheme.isRTL)
       const targetDisplayIndex = currentDisplaySubcategories.findIndex(
         item => item.originalIndex === nextSubcategoryIndex
       )
-
+      
       debugLog(`Target subcategory display index: ${targetDisplayIndex}`)
-
+      
       if (targetDisplayIndex !== -1) {
         setTimeout(() => {
           scrollSubcategoryToSelected(
@@ -570,14 +570,14 @@ const CategoryPage = ({ route, navigation }) => {
     } else {
       // NEED TO MOVE TO NEXT/PREVIOUS CATEGORY
       const nextCategoryIndex = selectedCategoryIndex + direction
-
+      
       if (nextCategoryIndex >= 0 && nextCategoryIndex <= maxCategoryIndex) {
         debugLog(`Moving to ${direction > 0 ? 'next' : 'previous'} category: ${selectedCategoryIndex} → ${nextCategoryIndex}`)
-
+        
         // Determine which subcategory to select in the new category
         const nextCategorySubcategories = subCategories[nextCategoryIndex] || []
         let newSubcategoryIndex = 0
-
+        
         if (currentTheme.isRTL) {
           // RTL: When moving to next category, start from last subcategory
           // When moving to previous category, start from first subcategory
@@ -587,23 +587,23 @@ const CategoryPage = ({ route, navigation }) => {
           // When moving to previous category, start from last subcategory
           newSubcategoryIndex = direction > 0 ? 0 : (nextCategorySubcategories.length - 1)
         }
-
+        
         debugLog(`New category subcategories: ${nextCategorySubcategories.length}`)
         debugLog(`New subcategory index: ${newSubcategoryIndex}`)
-
+        
         // Update states
         setSelectedCategoryIndex(nextCategoryIndex)
         setSelectedSubcategoryIndex(newSubcategoryIndex)
-
+        
         // Scroll category to correct position
-        const categoryDisplayIndex = currentTheme.isRTL
+        const categoryDisplayIndex = currentTheme.isRTL 
           ? displayTabs.findIndex(item => item.originalIndex === nextCategoryIndex)
           : nextCategoryIndex
-
+        
         setTimeout(() => {
           scrollCategoryToSelected(categoryScrollRef, categoryDisplayIndex, true)
         }, 10)
-
+        
         // Scroll subcategory to correct position
         setTimeout(() => {
           resetSubcategoryToCorrectPosition(nextCategoryIndex)
@@ -612,20 +612,20 @@ const CategoryPage = ({ route, navigation }) => {
         debugLog(`Cannot move to category index ${nextCategoryIndex} (out of bounds)`, 'warning')
       }
     }
-
+    
     // Reset swipe progress after animation
     setTimeout(() => {
       swipeInProgress.current = false
       setIsChangingCategory(false)
     }, 300)
-
-    debugLog('=== SWIPE NAVIGATION END ===')
+    
+    debugLog(`=== SWIPE NAVIGATION END ===`)
   }
 
   // Create pan gesture
   const panGesture = Gesture.Pan()
     .activeOffsetX([-15, 15]) // Only activate for horizontal movement > 15px
-    .failOffsetY([-25, 25]) // Fail if vertical movement > 25px
+    .failOffsetY([-25, 25])   // Fail if vertical movement > 25px
     .onUpdate((event) => {
       // Only update during horizontal swipes
       if (Math.abs(event.translationX) > Math.abs(event.translationY)) {
@@ -635,10 +635,10 @@ const CategoryPage = ({ route, navigation }) => {
     .onEnd((event) => {
       const swipeDistance = event.translationX
       const threshold = 50 // Minimum swipe distance
-
+      
       if (Math.abs(swipeDistance) > threshold) {
         let direction = 0
-
+        
         if (currentTheme.isRTL) {
           // RTL: Right swipe = next, Left swipe = previous
           direction = swipeDistance > 0 ? 1 : -1
@@ -646,10 +646,10 @@ const CategoryPage = ({ route, navigation }) => {
           // LTR: Left swipe = next, Right swipe = previous
           direction = swipeDistance < 0 ? 1 : -1
         }
-
+        
         runOnJS(handleSwipeNavigation)(direction)
       }
-
+      
       // Always reset position
       translateX.value = withTiming(0, { duration: 200 })
     })
@@ -658,7 +658,7 @@ const CategoryPage = ({ route, navigation }) => {
   const animatedStyle = useAnimatedStyle(() => {
     return {
       transform: [{ translateX: translateX.value }],
-      opacity: opacity.value
+      opacity: opacity.value,
     }
   })
 
@@ -721,7 +721,7 @@ const CategoryPage = ({ route, navigation }) => {
     setSelectedSubcategoryIndex(0)
     setIsDataLoaded(true)
     setIsInitialized(true)
-
+    
     debugLog('=== DATA PRELOADING COMPLETE ===', 'success')
   }
 
@@ -769,10 +769,10 @@ const CategoryPage = ({ route, navigation }) => {
     )
 
     setSelectedSubcategoryIndex(originalIndex)
-
+    
     // CRITICAL FIX: Don't set isChangingCategory for subcategory taps
     // This was causing the scroll to be interfered with
-
+    
     setTimeout(() => {
       scrollSubcategoryToSelected(subcategoryScrollRef, displayIndex, true)
     }, 10)
@@ -969,7 +969,7 @@ const CategoryPage = ({ route, navigation }) => {
           backgroundColor='transparent'
           translucent={true}
         />
-
+        
         <CategoryPageHeader
           navigation={navigation}
           restaurantName={restaurantName}
@@ -977,7 +977,7 @@ const CategoryPage = ({ route, navigation }) => {
           currentTheme={currentTheme}
           onOpenSearch={handleOpenSearch}
         />
-
+        
         <CategoryTabsSkeleton currentTheme={currentTheme} />
         <FoodItemsGridSkeleton currentTheme={currentTheme} count={8} />
       </View>
@@ -1035,8 +1035,8 @@ const CategoryPage = ({ route, navigation }) => {
                           callStyles(currentTheme).categoryItem,
                           isSelected && callStyles(currentTheme).selectedCategoryItem,
                           {
-                            direction: currentTheme.isRTL ? 'rtl' : 'ltr',
-                            flexDirection: currentTheme.isRTL ? 'row-reverse' : 'row'
+                            direction: currentTheme.isRTL ? "rtl" : "ltr",
+                            flexDirection: currentTheme.isRTL ? 'row-reverse' : 'row',
                           }
                         ]}
                         onPress={() => handleCategoryPress(displayIndex)}
@@ -1074,9 +1074,9 @@ const CategoryPage = ({ route, navigation }) => {
                   style={{
                     height: 50,
                     backgroundColor: callStyles(currentTheme).topSectionColor,
-                    width: '100%'
+                    width: "100%",
                   }}
-                  contentContainerStyle={{ alignItems: 'center' }}
+                  contentContainerStyle={{ alignItems: "center" }}
                 >
                   <View style={[styles.subcategoryContainer]}>
                     {displaySubcategories?.map((sub, displayIndex) => {
@@ -1086,13 +1086,13 @@ const CategoryPage = ({ route, navigation }) => {
                           key={`${sub._id}-${displayIndex}`}
                           style={[
                             // ✅ CONDITIONAL STYLE BASED ON RTL/LTR
-                            currentTheme.isRTL
-                              ? callStyles(currentTheme).subcategoryItem // RTL: width 120
+                            currentTheme.isRTL 
+                              ? callStyles(currentTheme).subcategoryItem     // RTL: width 120
                               : callStyles(currentTheme).subcategoryItemltr, // LTR: width 180
                             isSelected && callStyles(currentTheme).selectedSubcategoryItem,
                             {
-                              direction: currentTheme.isRTL ? 'rtl' : 'ltr',
-                              flexDirection: currentTheme.isRTL ? 'row-reverse' : 'row'
+                              direction: currentTheme.isRTL ? "rtl" : "ltr",
+                              flexDirection: currentTheme.isRTL ? 'row-reverse' : 'row',
                             }
                           ]}
                           onPress={() => handleSubcategoryPress(displayIndex)}
@@ -1126,7 +1126,7 @@ const CategoryPage = ({ route, navigation }) => {
               style={[
                 {
                   flex: 1,
-                  backgroundColor: callStyles(currentTheme).backgroundColor
+                  backgroundColor: callStyles(currentTheme).backgroundColor,
                 },
                 animatedStyle
               ]}
@@ -1196,13 +1196,13 @@ const CategoryPage = ({ route, navigation }) => {
 
 const styles = StyleSheet.create({
   container: { backgroundColor: '#fff' },
-
+  
   // Enhanced Loading Screen Styles
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
   },
   loadingSpinner: {
     width: 80,
@@ -1215,23 +1215,23 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
-    elevation: 8
+    elevation: 8,
   },
   loadingTextContainer: {
     alignItems: 'center',
-    marginBottom: 30
+    marginBottom: 30,
   },
   loadingDotsContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8
+    gap: 8,
   },
   loadingDot: {
     width: 10,
     height: 10,
-    borderRadius: 5
+    borderRadius: 5,
   },
-
+  
   subcategoryContainer: {
     height: 50,
     flexDirection: 'row',

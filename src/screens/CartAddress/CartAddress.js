@@ -33,7 +33,7 @@ function CartAddresses(props) {
   const { location, setLocation } = useContext(LocationContext)
   const { profile } = useContext(UserContext)
   const themeContext = useContext(ThemeContext)
-  const currentTheme = { isRTL: i18n.dir() === 'rtl', ...theme[themeContext.ThemeValue] }
+  const currentTheme = { isRTL : i18n.dir() === 'rtl', ...theme[themeContext.ThemeValue] }
   const [mutate] = useMutation(SELECT_ADDRESS, { onError })
   const [selectedAddress, setSelectedAddress] = useState(null)
   const [tempSelectedAddress, setTempSelectedAddress] = useState(null)
@@ -111,11 +111,9 @@ function CartAddresses(props) {
     setIsAddressChanged(defaultAddress ? address._id !== defaultAddress._id : true)
   }
 
-  const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
-  if (!connect) {
-    return (<ErrorView refetchFunctions={[]} />);
-  }
-
+  const { isConnected:connect,setIsConnected :setConnect} = useNetworkStatus();
+  if (!connect) return <ErrorView refetchFunctions={[]} />
+  
   return (
     <>
       <View style={[styles().flex, styles(currentTheme).cartAddress]}>

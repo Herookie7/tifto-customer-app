@@ -1,12 +1,12 @@
 import { StyleSheet, Dimensions } from 'react-native'
-import { scale } from './scaling'
 const { height, width } = Dimensions.get('window')
+import { scale } from './scaling'
 
 const styles = (props = null) =>
   StyleSheet.create({
     map: {
-      width,
-      height
+      width: width,
+      height: height
     },
     markerContainer: {
       flex: 1,

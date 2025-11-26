@@ -50,8 +50,8 @@ function Payment(props) {
       label: t('paypal'),
       index: 1,
       icon: 'paypal'
-    }
-
+    },
+    
   ]
 
   useFocusEffect(() => {

@@ -39,7 +39,7 @@ export default function AnimatedSplashScreen({ children }) {
     }
   }, [isAppReady, isSplashVideoComplete])
 
-  const onImageLoaded = useCallback(async() => {
+  const onImageLoaded = useCallback(async () => {
     try {
       await SplashScreen.hideAsync()
       // Load stuff

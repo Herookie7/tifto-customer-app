@@ -10,10 +10,11 @@ import TextDefault from '../../../components/Text/TextDefault/TextDefault'
 import { alignment } from '../../../utils/alignment'
 import { useTranslation } from 'react-i18next'
 
+
 const FdGoogleBtn = props => {
   const { t, i18n } = useTranslation()
   const themeContext = useContext(ThemeContext)
-  const currentTheme = { isRTL: i18n.dir() === 'rtl', ...theme[themeContext.ThemeValue] }
+  const currentTheme = { isRTL: i18n.dir() === "rtl", ...theme[themeContext.ThemeValue] }
 
   return (
     <TouchableOpacity
@@ -21,21 +22,19 @@ const FdGoogleBtn = props => {
       style={styles(currentTheme).mainContainer}
       onPressIn={props?.onPressIn}
       onPress={props?.onPress}>
-      {props?.loadingIcon
-        ? (
+      {props?.loadingIcon ? (
         <Spinner
         backColor='transparent'
           spinnerColor={currentTheme.main}
         />
-          )
-        : (
+      ) : (
         <>
           <FontAwesome name="google" size={scale(18)} color={currentTheme.newIconColor} />
           <TextDefault H4 center textColor={currentTheme.newFontcolor} bold>
             {t('ContinueWithGoogle')}
           </TextDefault>
         </>
-          )}
+      )}
     </TouchableOpacity>
   )
 }

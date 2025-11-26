@@ -1,8 +1,9 @@
 import React, { useContext, useState } from 'react'
 import { View, Text, FlatList, TouchableOpacity, Button } from 'react-native'
-import { FontAwesome, MaterialIcons } from '@expo/vector-icons'
+import { FontAwesome } from '@expo/vector-icons'
 import ConfigurationContext from '../../../context/Configuration'
 import ThemeContext from '../../../ui/ThemeContext/ThemeContext'
+import { MaterialIcons } from '@expo/vector-icons'
 import { theme } from '../../../utils/themeColors'
 import { scale } from '../../../utils/scaling'
 import styles from './styles'
@@ -15,7 +16,7 @@ import RandomShape from '../../../assets/SVG/RandomShape'
 import analytics from '../../../utils/analytics'
 import OrdersContext from '../../../context/Orders'
 import Spinner from '../../Spinner/Spinner'
-import { useTranslation } from 'react-i18next'
+import {useTranslation} from 'react-i18next'
 
 const orderStatuses = [
   {
@@ -53,7 +54,8 @@ const orderStatuses = [
 const orderStatusActive = ['PENDING', 'PICKED', 'ACCEPTED', 'ASSIGNED']
 
 const ActiveOrders = () => {
-  const { t } = useTranslation()
+
+  const {t} = useTranslation()
   const { loadingOrders, errorOrders, orders } = useContext(OrdersContext)
   const configuration = useContext(ConfigurationContext)
   const navigation = useNavigation()
@@ -67,12 +69,8 @@ const ActiveOrders = () => {
 
   const displayOrders = showAll ? activeOrders : activeOrders.slice(0, 2)
 
-  if (loadingOrders) {
-    return (<Spinner />);
-  }
-  if (errorOrders && !orders) {
-    return (<TextError text={errorOrders.message} />);
-  }
+  if (loadingOrders) return <Spinner />
+  if (errorOrders && !orders) return <TextError text={errorOrders.message} />
   return (
     <>
       <FlatList
@@ -117,7 +115,7 @@ const Item = ({ navigation, configuration, currentTheme, item }) => {
     `,
     { variables: { id: item._id } }
   )
-  const { t } = useTranslation()
+  const {t} = useTranslation()
   const checkStatus = status => {
     const obj = orderStatuses.filter(x => {
       return x.key === status

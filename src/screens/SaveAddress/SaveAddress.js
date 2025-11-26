@@ -48,11 +48,12 @@ function SaveAddress(props) {
   const { locationData } = props?.route.params
   const { setLocation } = useContext(LocationContext)
   const themeContext = useContext(ThemeContext)
-  const currentTheme = { isRTL: i18n.dir() === 'rtl', ...theme[themeContext.ThemeValue] }
+  const currentTheme = {isRTL : i18n.dir() === 'rtl', ...theme[themeContext.ThemeValue]}
   const [selectedLabel, setSelectedLabel] = useState('')
   const inset = useSafeAreaInsets()
   // const [selectedLabelExist, setselectedLabelExist] = useState('')
   // const { profile, refetchProfile, networkStatus } = useContext(UserContext)
+
 
   const [mutate, { loading }] = useMutation(locationData?.id ? EDIT_ADDRESS : CREATE_ADDRESS, {
     onCompleted,

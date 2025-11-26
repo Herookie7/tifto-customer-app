@@ -9,16 +9,15 @@ import { Fade, Placeholder, PlaceholderLine } from 'rn-placeholder'
 import ImageHeader from '../Restaurant/ImageHeader'
 
 const RestaurantProductsScreenLoader = (
-  {
-    styles, currentTheme, iconColor, iconSize, search,
-    iconBackColor, iconRadius, iconTouchWidth,
-    iconTouchHeight, propsData, loading, searchOpen,
-    showSearchResults, searchHandler, searchPopupHandler,
-    translationY, HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT,
-    TOP_BAR_HEIGHT, PlaceholderMedia, data, setSearch
-  }
+    { styles, currentTheme, iconColor, iconSize, search,
+        iconBackColor, iconRadius, iconTouchWidth,
+        iconTouchHeight, propsData, loading, searchOpen,
+        showSearchResults, searchHandler, searchPopupHandler,
+        translationY, HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT,
+        TOP_BAR_HEIGHT, PlaceholderMedia, data, setSearch
+    }
 ) => {
-  return (
+    return (
         <View style={[styles(currentTheme).flex]}>
             <ImageHeader
                 iconColor={iconColor}
@@ -46,11 +45,11 @@ const RestaurantProductsScreenLoader = (
             />
             <View
                 style={[
-                  styles(currentTheme).navbarContainer,
-                  styles(currentTheme).flex,
-                  {
-                    paddingTop: HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT - TOP_BAR_HEIGHT
-                  }
+                    styles(currentTheme).navbarContainer,
+                    styles(currentTheme).flex,
+                    {
+                        paddingTop: HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT - TOP_BAR_HEIGHT
+                    }
                 ]}
             >
                 {Array.from(Array(10), (_, i) => (
@@ -65,7 +64,7 @@ const RestaurantProductsScreenLoader = (
                         )}
                         Left={PlaceholderMedia}
                         style={{
-                          padding: 12
+                            padding: 12
                         }}
                     >
                         <PlaceholderLine width={80} />
@@ -74,7 +73,7 @@ const RestaurantProductsScreenLoader = (
                 ))}
             </View>
         </View>
-  )
+    )
 }
 
 export default RestaurantProductsScreenLoader

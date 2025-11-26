@@ -150,7 +150,7 @@ function ItemDetail(props) {
             },
             {
               text: 'OK',
-              onPress: async() => {
+              onPress: async () => {
                 await addToCart(quantity, true)
               }
             }
@@ -161,7 +161,7 @@ function ItemDetail(props) {
     }
   }
 
-  const addToCart = async(quantity, clearFlag) => {
+  const addToCart = async (quantity, clearFlag) => {
     const addons = selectedAddons.map(addon => ({
       ...addon,
       options: addon.options.map(({ _id }) => ({
@@ -172,35 +172,35 @@ function ItemDetail(props) {
     const cartItem = clearFlag
       ? null
       : cart.find(cartItem => {
-        if (
-          cartItem._id === food._id &&
+          if (
+            cartItem._id === food._id &&
             cartItem.variation._id === selectedVariation._id
-        ) {
-          if (cartItem.addons.length === addons.length) {
-            if (addons.length === 0) return true
-            const addonsResult = addons.every(newAddon => {
-              const cartAddon = cartItem.addons.find(
-                ad => ad._id === newAddon._id
-              )
-
-              if (!cartAddon) return false
-              const optionsResult = newAddon.options.every(newOption => {
-                const cartOption = cartAddon.options.find(
-                  op => op._id === newOption._id
+          ) {
+            if (cartItem.addons.length === addons.length) {
+              if (addons.length === 0) return true
+              const addonsResult = addons.every(newAddon => {
+                const cartAddon = cartItem.addons.find(
+                  ad => ad._id === newAddon._id
                 )
 
-                if (!cartOption) return false
-                return true
+                if (!cartAddon) return false
+                const optionsResult = newAddon.options.every(newOption => {
+                  const cartOption = cartAddon.options.find(
+                    op => op._id === newOption._id
+                  )
+
+                  if (!cartOption) return false
+                  return true
+                })
+
+                return optionsResult
               })
 
-              return optionsResult
-            })
-
-            return addonsResult
+              return addonsResult
+            }
           }
-        }
-        return false
-      })
+          return false
+        })
 
     if (!cartItem) {
       await setCartRestaurant(restaurant)

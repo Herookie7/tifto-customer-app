@@ -41,12 +41,12 @@ export default function SearchModal({
   const { t } = useTranslation()
   const animation = useSharedValue(0)
   const { GOOGLE_MAPS_KEY } = useEnvVars()
-
+  
   const [searchText, setSearchText] = useState('')
   const [predictions, setPredictions] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
-
+  
   const debounceTimerRef = useRef(null)
   const requestCancelTokenRef = useRef(null)
 
@@ -63,7 +63,7 @@ export default function SearchModal({
         themeValue: themeContext.ThemeValue,
         timestamp: new Date().toISOString()
       })
-
+      
       // Reset state when modal opens
       setSearchText('')
       setPredictions([])
@@ -108,11 +108,11 @@ export default function SearchModal({
   useEffect(() => {
     const keyboardShowListener = Keyboard.addListener('keyboardDidShow', _keyboardDidShow)
     const keyboardHideListener = Keyboard.addListener('keyboardDidHide', _keyboardDidHide)
-
+  
     return () => {
       keyboardShowListener.remove()
       keyboardHideListener.remove()
-
+      
       // Cleanup timers and requests
       if (debounceTimerRef.current) {
         clearTimeout(debounceTimerRef.current)
@@ -144,27 +144,27 @@ export default function SearchModal({
   const close = () => {
     console.log('🚪 SearchModal closing')
     animation.value = 0
-
+    
     // Cleanup
     setSearchText('')
     setPredictions([])
     setLoading(false)
     setError(null)
-
+    
     if (debounceTimerRef.current) {
       clearTimeout(debounceTimerRef.current)
     }
     if (requestCancelTokenRef.current) {
       requestCancelTokenRef.current.cancel('Modal closed')
     }
-
+    
     onClose()
   }
 
   // Search for places using Google Places API
-  const searchPlaces = useCallback(async(query) => {
+  const searchPlaces = useCallback(async (query) => {
     console.log('🔍 SearchModal: searchPlaces called with query:', query)
-
+    
     if (!query || query.length < 2) {
       setPredictions([])
       setLoading(false)
@@ -190,10 +190,10 @@ export default function SearchModal({
 
     setLoading(true)
     setError(null)
-
+    
     try {
       console.log('🌐 Making API request for query:', query)
-
+      
       const response = await axios.get(
         'https://maps.googleapis.com/maps/api/place/autocomplete/json',
         {
@@ -210,7 +210,7 @@ export default function SearchModal({
       )
 
       console.log('📍 API Response status:', response.data.status)
-
+      
       if (response.data.status === 'OK') {
         const formattedPredictions = response.data.predictions.map((prediction) => ({
           id: prediction.place_id,
@@ -219,7 +219,7 @@ export default function SearchModal({
           mainText: prediction.structured_formatting?.main_text || prediction.description,
           secondaryText: prediction.structured_formatting?.secondary_text || ''
         }))
-
+        
         console.log('✅ Found predictions:', formattedPredictions.length)
         setPredictions(formattedPredictions)
         setError(null)
@@ -231,10 +231,10 @@ export default function SearchModal({
         console.error('❌ API Error:', response.data.status, response.data.error_message)
         setPredictions([])
         setError(response.data.error_message || 'Search failed')
-
+        
         if (response.data.status === 'REQUEST_DENIED') {
           Alert.alert(
-            'API Error',
+            'API Error', 
             'Google Places API access denied. Please check your API key configuration.'
           )
         }
@@ -244,10 +244,10 @@ export default function SearchModal({
         console.log('🔄 Request cancelled:', error.message)
         return // Don't update state for cancelled requests
       }
-
+      
       console.error('🚨 Error searching places:', error)
       setPredictions([])
-
+      
       if (error.code === 'ECONNABORTED') {
         setError('Request timed out')
       } else if (error.response) {
@@ -268,9 +268,9 @@ export default function SearchModal({
   }, [GOOGLE_MAPS_KEY])
 
   // Get place details
-  const getPlaceDetails = useCallback(async(placeId) => {
+  const getPlaceDetails = useCallback(async (placeId) => {
     console.log('📍 Getting place details for placeId:', placeId)
-
+    
     if (!GOOGLE_MAPS_KEY) {
       console.error('❌ GOOGLE_MAPS_KEY is missing!')
       return null
@@ -292,7 +292,7 @@ export default function SearchModal({
       if (response.data.status === 'OK' && response.data.result) {
         const result = response.data.result
         console.log('✅ Got place details successfully')
-
+        
         return {
           geometry: {
             location: {
@@ -317,12 +317,12 @@ export default function SearchModal({
   const handleTextChange = useCallback((text) => {
     console.log('⌨️ Text changed:', text)
     setSearchText(text)
-
+    
     // Clear existing timer
     if (debounceTimerRef.current) {
       clearTimeout(debounceTimerRef.current)
     }
-
+    
     // Set new timer for debounced search
     debounceTimerRef.current = setTimeout(() => {
       searchPlaces(text)
@@ -330,13 +330,13 @@ export default function SearchModal({
   }, [searchPlaces])
 
   // Handle place selection
-  const handlePlaceSelect = useCallback(async(place) => {
+  const handlePlaceSelect = useCallback(async (place) => {
     console.log('🎯 Place selected:', place.description)
     setLoading(true)
-
+    
     try {
       const details = await getPlaceDetails(place.placeId)
-
+      
       if (details && details.geometry && details.geometry.location) {
         console.log('✅ Successfully got place coordinates:', details.geometry.location)
         onSubmit(place.description, details.geometry.location)
@@ -379,16 +379,16 @@ export default function SearchModal({
   if (!GOOGLE_MAPS_KEY) {
     return (
       <Modal visible={visible} transparent animationType={'slide'} onRequestClose={onClose}>
-        <View style={{
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: 'rgba(0,0,0,0.5)'
+        <View style={{ 
+          flex: 1, 
+          justifyContent: 'center', 
+          alignItems: 'center', 
+          backgroundColor: 'rgba(0,0,0,0.5)' 
         }}>
-          <View style={{
-            backgroundColor: currentTheme.cardBackground,
-            padding: 20,
-            borderRadius: 10,
+          <View style={{ 
+            backgroundColor: currentTheme.cardBackground, 
+            padding: 20, 
+            borderRadius: 10, 
             margin: 20,
             borderWidth: 1,
             borderColor: currentTheme.customBorder
@@ -396,13 +396,13 @@ export default function SearchModal({
             <TextDefault textColor={currentTheme.newFontcolor}>
               Google Maps API key is not configured
             </TextDefault>
-            <TouchableOpacity
-              onPress={close}
-              style={{
-                marginTop: 15,
-                padding: 12,
-                backgroundColor: currentTheme.buttonBackground,
-                borderRadius: 6
+            <TouchableOpacity 
+              onPress={close} 
+              style={{ 
+                marginTop: 15, 
+                padding: 12, 
+                backgroundColor: currentTheme.buttonBackground, 
+                borderRadius: 6 
               }}
             >
               <TextDefault textColor={currentTheme.buttonText} center>Close</TextDefault>
@@ -425,7 +425,7 @@ export default function SearchModal({
           styles(currentTheme).modalContainer,
           marginTop,
           borderTopLeftRadius,
-          borderTopRightRadius
+          borderTopRightRadius,
         ]}
       >
         <View style={[styles(currentTheme).flex, alignment.MTsmall]}>
@@ -436,10 +436,10 @@ export default function SearchModal({
               color={currentTheme.newIconColor}
             />
           </TouchableOpacity>
-
+          
           {/* Full Width Container for Search */}
           <View style={{ flex: 1, paddingHorizontal: 0 }}>
-
+            
             {/* Text Input Container */}
             <View style={{
               borderWidth: 1,
@@ -475,10 +475,10 @@ export default function SearchModal({
                 }}
               />
               {loading && (
-                <ActivityIndicator
-                  size="small"
-                  color={currentTheme.newIconColor}
-                  style={{ marginRight: 12 }}
+                <ActivityIndicator 
+                  size="small" 
+                  color={currentTheme.newIconColor} 
+                  style={{ marginRight: 12 }} 
                 />
               )}
             </View>
@@ -494,26 +494,23 @@ export default function SearchModal({
                 shadowColor: currentTheme.shadowColor,
                 shadowOffset: { width: 0, height: 2 },
                 shadowOpacity: 0.1,
-                shadowRadius: 4
+                shadowRadius: 4,
               }}>
-                {error
-                  ? (
-                  <View style={{
-                    paddingVertical: 16,
+                {error ? (
+                  <View style={{ 
+                    paddingVertical: 16, 
                     paddingHorizontal: 16,
                     alignItems: 'center'
                   }}>
                     <Ionicons name="alert-circle-outline" size={24} color="#FF6B6B" />
-                    <TextDefault
+                    <TextDefault 
                       textColor="#FF6B6B"
                       style={{ fontSize: 14, marginTop: 8, textAlign: 'center' }}
                     >
                       {error}
                     </TextDefault>
                   </View>
-                    )
-                  : predictions.length > 0
-                    ? (
+                ) : predictions.length > 0 ? (
                   <FlatList
                     data={predictions}
                     renderItem={renderPrediction}
@@ -523,33 +520,30 @@ export default function SearchModal({
                     nestedScrollEnabled={true}
                     style={{ flexGrow: 0 }}
                   />
-                      )
-                    : searchText.length > 2 && !loading
-                      ? (
+                ) : searchText.length > 2 && !loading ? (
                   <View style={{
                     paddingVertical: 20,
                     alignItems: 'center'
                   }}>
-                    <Ionicons
-                      name="search-outline"
-                      size={32}
-                      color={currentTheme.fontMainColor}
+                    <Ionicons 
+                      name="search-outline" 
+                      size={32} 
+                      color={currentTheme.fontMainColor} 
                     />
-                    <TextDefault
+                    <TextDefault 
                       textColor={currentTheme.fontMainColor}
                       style={{ marginTop: 8, fontSize: 16 }}
                     >
                       No places found
                     </TextDefault>
-                    <TextDefault
+                    <TextDefault 
                       textColor={currentTheme.fontMainColor}
                       style={{ marginTop: 4, fontSize: 14 }}
                     >
                       Try a different search term
                     </TextDefault>
                   </View>
-                        )
-                      : null}
+                ) : null}
               </View>
             )}
           </View>

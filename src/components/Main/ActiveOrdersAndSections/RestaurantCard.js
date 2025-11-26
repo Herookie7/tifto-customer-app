@@ -9,10 +9,11 @@ import { theme } from '../../../utils/themeColors'
 import TextDefault from '../../Text/TextDefault/TextDefault'
 import styles from './styles'
 import { Ionicons } from '@expo/vector-icons'
-import { useTranslation } from 'react-i18next'
+import {useTranslation} from 'react-i18next'
 
 function RestaurantCard(props) {
-  const { t } = useTranslation()
+
+  const {t} = useTranslation()
   const configuration = useContext(ConfigurationContext)
   const navigation = useNavigation()
   const themeContext = useContext(ThemeContext)

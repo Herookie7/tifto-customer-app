@@ -23,7 +23,7 @@ function emptyViewPastOrders() {
   const orderStatusActive = ['PENDING', 'PICKED', 'ACCEPTED', 'ASSIGNED']
   const orderStatusInactive = ['DELIVERED', 'COMPLETED']
   const { orders, loadingOrders, errorOrders } = useContext(OrdersContext)
-  if (loadingOrders) {
+  if (loadingOrders)
     return (
       <Spinner
         visible={loadingOrders}
@@ -31,10 +31,7 @@ function emptyViewPastOrders() {
         spinnerColor={currentTheme.main}
       />
     )
-  }
-  if (errorOrders) {
-    return (<TextError text={errorOrders.message} />);
-  }
+  if (errorOrders) return <TextError text={errorOrders.message} />
   else {
     const hasActiveOrders =
       orders.filter((o) => orderStatusActive.includes(o.orderStatus)).length > 0
@@ -83,9 +80,7 @@ const PastOrders = ({
   if (loading) {
     return <></>
   }
-  if (error) {
-    return (<TextError text={error.message} />);
-  }
+  if (error) return <TextError text={error.message} />
 
   return (
     <FlatList
@@ -262,7 +257,7 @@ const Item = ({
                   textColor={currentTheme.secondaryText}
                   isRTL
                 >
-                  {(item.orderStatus === 'CANCELLED' || item.orderStatus === 'CANCELLEDBYREST')
+                  {(item.orderStatus === 'CANCELLED' || item.orderStatus === 'CANCELLEDBYREST') 
                     ? `${t('cancelledOn')} ${formatDeliveredAt(item.cancelledAt || item.completionTime)}`
                     : `${t('deliveredOn')} ${formatDeliveredAt(item.deliveredAt)}`
                   }

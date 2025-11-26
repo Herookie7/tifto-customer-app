@@ -8,10 +8,10 @@ const styles = (props = null) =>
       flexDirection: 'column',
       gap: 24,
       // ...alignment.MBxLarge
-      marginVertical: 16
+      marginVertical : 16
     },
-    heading: {
-      marginBottom: 10,
+    heading: { 
+      marginBottom: 10, 
       paddingHorizontal: 15
     },
     flatlist: {
@@ -25,7 +25,7 @@ const styles = (props = null) =>
       paddingVertical: 8,
       borderRadius: 50,
       // borderWidth: 1,
-      marginRight: 8
+      marginRight: 8,
     },
     applyBtn: {
       width: 'auto',
@@ -36,7 +36,7 @@ const styles = (props = null) =>
     },
     closeBtn: {
       position: 'absolute',
-      ...props?.isRTL ? { left: 10 } : { right: 10 },
+      ...props?.isRTL ? {left: 10,} : {right: 10,},
       top: 10,
       zIndex: 100
     }

@@ -17,11 +17,11 @@ import { HeaderBackButton } from '@react-navigation/elements'
 import { useTranslation } from 'react-i18next'
 import ReviewModal from '../../components/Review'
 
+const orderStatusActive = ['PENDING', 'PICKED', 'ACCEPTED', 'ASSIGNED']
+const orderStatusInactive = ['DELIVERED', 'COMPLETED','CANCELLED','CANCELLEDBYREST']
+
 import useNetworkStatus from '../../utils/useNetworkStatus'
 import ErrorView from '../../components/ErrorView/ErrorView'
-
-const orderStatusActive = ['PENDING', 'PICKED', 'ACCEPTED', 'ASSIGNED']
-const orderStatusInactive = ['DELIVERED', 'COMPLETED', 'CANCELLED', 'CANCELLEDBYREST']
 
 function MyOrders(props) {
   const reviewModalRef = useRef()
@@ -37,7 +37,7 @@ function MyOrders(props) {
     networkStatusOrders
   } = useContext(OrdersContext)
   const themeContext = useContext(ThemeContext)
-  const currentTheme = { isRTL: i18n.dir() === 'rtl', ...theme[themeContext.ThemeValue] }
+  const currentTheme = {isRTL : i18n.dir() === 'rtl', ...theme[themeContext.ThemeValue]}
   const [selectedTab, setSelectedTab] = useState('current')
   const inset = useSafeAreaInsets()
   const activeOrders = useMemo(() => {
@@ -46,10 +46,10 @@ function MyOrders(props) {
   const pastOrders = useMemo(() => {
     return orders.filter(o => orderStatusInactive.includes(o.orderStatus))
   }, [orders])
-  const openReviewModal = () => {
+  const openReviewModal = ()=>{
     reviewModalRef.current.open()
   }
-  const closeReviewModal = () => {
+  const closeReviewModal = ()=>{
     reviewModalRef.current.close()
   }
 
@@ -123,15 +123,13 @@ function MyOrders(props) {
     )
   }
 
-  const onPressReview = (order, selectedRating) => {
-    setReviewInfo({ order, selectedRating })
+  const onPressReview = (order, selectedRating)=>{
+    setReviewInfo({order, selectedRating})
     openReviewModal()
   }
-
-  const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
-  if (!connect) {
-    return (<ErrorView refetchFunctions={[reFetchOrders]} />);
-  }
+  
+  const { isConnected:connect,setIsConnected :setConnect} = useNetworkStatus();
+  if (!connect) return <ErrorView refetchFunctions={[reFetchOrders]} />
   return (
     <>
       <View style={styles(currentTheme).container}>

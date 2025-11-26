@@ -1,12 +1,12 @@
 import { StyleSheet, Dimensions } from 'react-native'
-import { scale } from '../../utils/scaling'
 const { height, width } = Dimensions.get('window')
+import { scale } from '../../utils/scaling'
 
 const styles = (props = null) =>
   StyleSheet.create({
     map: {
-      width,
-      height
+      width: width,
+      height: height
     },
     markerContainer: {
       flex: 1,
@@ -22,9 +22,9 @@ const styles = (props = null) =>
       borderWidth: 1
     },
     markerImage: {
-      height: 30, // Reduced to 30
-      width: 30, // Reduced to 30
-      borderRadius: 15, // Half of width/height
+      height: 30,        // Reduced to 30
+      width: 30,         // Reduced to 30
+      borderRadius: 15,  // Half of width/height
       overflow: 'hidden',
       borderWidth: 2,
       borderColor: '#fff'

@@ -18,7 +18,7 @@ import { decodeJwtToken } from '../../utils/decode-jwt'
 const { height } = Dimensions.get('window')
 
 const CreateAccount = (props) => {
-  const { enableApple, loginButton, loginButtonSetter, loading, themeContext, currentTheme, mutateLogin, navigateToLogin, navigation, signIn, handleGuestSignIn } = useCreateAccount()
+  const { enableApple, loginButton, loginButtonSetter, loading, themeContext, currentTheme, mutateLogin, navigateToLogin, navigation, signIn } = useCreateAccount()
 
   const { t } = useTranslation()
 
@@ -50,7 +50,7 @@ const CreateAccount = (props) => {
         buttonStyle={themeContext.ThemeValue === 'Dark' ? AppleAuthentication.AppleAuthenticationButtonStyle.WHITE : AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
         cornerRadius={scale(20)}
         style={styles().appleBtn}
-        onPress={async() => {
+        onPress={async () => {
           try {
             const credential = await AppleAuthentication.signInAsync({
               requestedScopes: [AppleAuthentication.AppleAuthenticationScope.FULL_NAME, AppleAuthentication.AppleAuthenticationScope.EMAIL]
@@ -103,29 +103,19 @@ const CreateAccount = (props) => {
   )
 
   const renderGuestButton = () => (
-    <TouchableOpacity 
-      activeOpacity={0.7} 
-      style={styles(currentTheme).guestButton} 
-      onPress={handleGuestSignIn} 
-      disabled={loading && loginButton === 'Guest'}
-    >
-      {loading && loginButton === 'Guest'
-        ? (
+    <TouchableOpacity activeOpacity={0.7} style={styles(currentTheme).guestButton} onPress={() => navigation.navigate('Discovery')} disabled={props.loadingIcon}>
+      {props.loadingIcon ? (
         <Spinner backColor='rgba(0,0,0,0.1)' spinnerColor={currentTheme.main} />
-          )
-        : (
+      ) : (
         <TextDefault H4 textColor={currentTheme.primary} center bold>
           {t('continueAsGuest')}
         </TextDefault>
-          )}
+      )}
     </TouchableOpacity>
   )
 
   const { isConnected: connect } = useNetworkStatus()
-
-  if (!connect) {
-    return <ErrorView refetchFunctions={[]} />
-  }
+  if (!connect) return <ErrorView refetchFunctions={[]} />
 
   return (
     <SafeAreaView edges={['top', 'left', 'right']} style={styles(currentTheme).safeAreaViewStyles}>
@@ -138,7 +128,7 @@ const CreateAccount = (props) => {
         </View>
 
         {/* Content Section */}
-        <View style={styles().contentSection}>
+        <View styl>
           {/* Welcome Text */}
           <View style={styles().welcomeSection}>
             <TextDefault H1 bolder center textColor={currentTheme.newFontcolor} style={styles(currentTheme).mainTitle}>

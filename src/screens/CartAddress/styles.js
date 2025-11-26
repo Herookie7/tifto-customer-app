@@ -1,12 +1,13 @@
-import { scale, verticalScale } from '../../utils/scaling'
+import { scale } from '../../utils/scaling'
 import { StyleSheet } from 'react-native'
 import { alignment } from '../../utils/alignment'
+import { verticalScale } from '../../utils/scaling'
 
 const styles = (props = null) =>
   StyleSheet.create({
     flex: {
-      flex: 1
-
+      flex: 1,
+      
     },
     width100: {
       width: '100%'
@@ -15,7 +16,7 @@ const styles = (props = null) =>
       width: '10%'
     },
     titleAddress: {
-      flexDirection: props?.isRTL ? 'row-reverse' : 'row'
+      flexDirection: props?.isRTL ? 'row-reverse' : 'row',
     },
     homeIcon: {
       width: '20%',
@@ -26,9 +27,9 @@ const styles = (props = null) =>
       width: scale(15),
       height: scale(15)
     },
-    cartAddress: {
+    cartAddress:{
       ...alignment.PBmedium,
-      backgroundColor: props !== null ? props.themeBackground : 'transparent'
+      backgroundColor: props !== null ? props.themeBackground : 'transparent',
 
     },
     addressContainer: {
@@ -56,7 +57,7 @@ const styles = (props = null) =>
       ...alignment.MTmedium,
       ...alignment.MBmedium
     },
-
+    
     containerSpace: {
       backgroundColor: props !== null ? props.cardBackground : 'transparent',
       width: '92%',
@@ -65,7 +66,7 @@ const styles = (props = null) =>
       borderRadius: scale(10),
       borderWidth: 1,
       alignSelf: 'center',
-      borderColor: props !== null ? props.customBorder : '#E5E7EB'
+      borderColor: props !== null ? props.customBorder : '#E5E7EB',
     },
 
     containerButton: {
@@ -86,7 +87,7 @@ const styles = (props = null) =>
       justifyContent: 'center',
       alignItems: 'center',
       alignSelf: 'center'
-    }
+    },
 
   })
 export default styles

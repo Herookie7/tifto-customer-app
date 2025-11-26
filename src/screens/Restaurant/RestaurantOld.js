@@ -19,10 +19,10 @@ import TextError from '../../components/Text/TextError/TextError'
 import { MaterialIcons, Ionicons } from '@expo/vector-icons'
 import analytics from '../../utils/analytics'
 
+const { height } = Dimensions.get('screen')
+
 import { useTranslation } from 'react-i18next'
 import { ItemCard } from '../../components/ItemCards/ItemCards'
-
-const { height } = Dimensions.get('screen')
 
 // Animated Section List component
 const AnimatedSectionList = Animated.createAnimatedComponent(SectionList)
@@ -105,7 +105,7 @@ function Restaurant(props) {
 
     return times.length > 0
   }
-  const onPressItem = async(food) => {
+  const onPressItem = async (food) => {
     if (!data.restaurant.isAvailable || !isOpen()) {
       Alert.alert(
         '',
@@ -141,7 +141,7 @@ function Restaurant(props) {
           },
           {
             text: t('okText'),
-            onPress: async() => {
+            onPress: async () => {
               await addToCart(food, true)
             }
           }
@@ -162,7 +162,7 @@ function Restaurant(props) {
     return wrappedContent.join('\n')
   }
 
-  const addToCart = async(food, clearFlag) => {
+  const addToCart = async (food, clearFlag) => {
     if (food.variations.length === 1 && food.variations[0].addons.length === 0) {
       await setCartRestaurant(food.restaurant)
       const result = checkItemCart(food._id)
@@ -373,9 +373,7 @@ function Restaurant(props) {
       </View>
     )
   }
-  if (error) {
-    return (<TextError text={JSON.stringify(error)} />);
-  }
+  if (error) return <TextError text={JSON.stringify(error)} />
   const restaurant = data.restaurant
   const allDeals = restaurant.categories.filter((cat) => cat.foods.length)
   const deals = allDeals.map((c, index) => ({
@@ -472,13 +470,11 @@ function Restaurant(props) {
                   })
                 }
               >
-                {section.title === isPopular
-                  ? (
+                {section.title === isPopular ? (
                   <View style={styles().popularItemCards}>
                     <ItemCard />
                   </View>
-                    )
-                  : (
+                ) : (
                   <View
                     style={{
                       flexDirection: 'row',
@@ -487,8 +483,7 @@ function Restaurant(props) {
                     }}
                   >
                     <View style={styles(currentTheme).deal}>
-                      {item.image
-                        ? (
+                      {item.image ? (
                         <Image
                           style={{
                             height: scale(60),
@@ -497,8 +492,7 @@ function Restaurant(props) {
                           }}
                           source={{ uri: item?.image }}
                         />
-                          )
-                        : null}
+                      ) : null}
                       <View style={styles(currentTheme).flex}>
                         <View style={styles(currentTheme).dealDescription}>
                           <TextDefault textColor={currentTheme.fontMainColor} style={styles(currentTheme).headerText} numberOfLines={1} bolder>
@@ -524,7 +518,7 @@ function Restaurant(props) {
                       <MaterialIcons name='add' size={scale(20)} color='#fff' />
                     </View>
                   </View>
-                    )}
+                )}
                 {tagCart(item._id)}
               </TouchableOpacity>
             )}

@@ -1,4 +1,4 @@
-import { View, Alert, StatusBar, Platform, Dimensions, KeyboardAvoidingView, Text } from 'react-native'
+import { View, Alert, StatusBar, Platform, Dimensions, KeyboardAvoidingView } from 'react-native'
 import styles from './styles'
 import RadioComponent from '../../components/CustomizeComponents/RadioComponent/RadioComponent'
 import TitleComponent from '../../components/CustomizeComponents/TitleComponent/TitleComponent'
@@ -24,6 +24,7 @@ import { useTranslation } from 'react-i18next'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Animated, { Extrapolation, interpolate, useAnimatedScrollHandler, useAnimatedStyle, useSharedValue, useAnimatedRef } from 'react-native-reanimated'
 import { IconButton } from 'react-native-paper'
+import { Text } from 'react-native'
 import { scale } from '../../utils/scaling'
 import { TextField } from 'react-native-material-textfield'
 
@@ -189,7 +190,7 @@ function ItemDetail(props) {
             },
             {
               text: t('okText'),
-              onPress: async() => {
+              onPress: async () => {
                 await addToCart(quantity, true)
               }
             }
@@ -201,7 +202,7 @@ function ItemDetail(props) {
   }
 
   // Add to cart
-  const addToCart = async(quantity, clearFlag) => {
+  const addToCart = async (quantity, clearFlag) => {
     const addons = selectedAddons.map((addon) => ({
       ...addon,
       options: addon?.options?.map(({ _id }) => ({
@@ -212,28 +213,28 @@ function ItemDetail(props) {
     const cartItem = clearFlag
       ? null
       : cart.find((cartItem) => {
-        if (cartItem?._id === food?._id && cartItem?.variation?._id === selectedVariation?._id) {
-          if (cartItem?.addons?.length === addons?.length) {
-            if (addons?.length === 0) return true
-            const addonsResult = addons?.every((newAddon) => {
-              const cartAddon = cartItem.addons?.find((ad) => ad._id === newAddon._id)
+          if (cartItem?._id === food?._id && cartItem?.variation?._id === selectedVariation?._id) {
+            if (cartItem?.addons?.length === addons?.length) {
+              if (addons?.length === 0) return true
+              const addonsResult = addons?.every((newAddon) => {
+                const cartAddon = cartItem.addons?.find((ad) => ad._id === newAddon._id)
 
-              if (!cartAddon) return false
-              const optionsResult = newAddon?.options?.every((newOption) => {
-                const cartOption = cartAddon?.options?.find((op) => op._id === newOption._id)
+                if (!cartAddon) return false
+                const optionsResult = newAddon?.options?.every((newOption) => {
+                  const cartOption = cartAddon?.options?.find((op) => op._id === newOption._id)
 
-                if (!cartOption) return false
-                return true
+                  if (!cartOption) return false
+                  return true
+                })
+
+                return optionsResult
               })
 
-              return optionsResult
-            })
-
-            return addonsResult
+              return addonsResult
+            }
           }
-        }
-        return false
-      })
+          return false
+        })
 
     if (!cartItem) {
       await setCartRestaurant(restaurant)
@@ -293,7 +294,7 @@ function ItemDetail(props) {
       }, 0)
     })
     return (variation + addons).toFixed(2)
-  }, [selectedVariation, addons, selectedAddons])
+  }, [selectedVariation, addons,selectedAddons])
 
   const calculateDiscountedPrice = useCallback(() => {
     const variation = selectedVariation.discounted
@@ -328,9 +329,7 @@ function ItemDetail(props) {
     return !hasError
   }
 
-  if (!connect) {
-    return (<ErrorView />);
-  }
+  if (!connect) return <ErrorView />
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -385,7 +384,7 @@ function ItemDetail(props) {
           <View style={[styles(currentTheme).subContainer]}>
             <View>
               {food?.variations?.length > 1 && (
-                <View key={'1223323'}>
+                <View key={"1223323"}>
                   <TitleComponent title={t('SelectVariation')} subTitle={t('SelectOne')} status={t('Required')} />
                   <RadioComponent
                     options={food?.variations}
@@ -409,7 +408,7 @@ function ItemDetail(props) {
             <View style={styles(currentTheme).line}></View>
             <View style={styles(currentTheme).inputContainer}>
               <TitleComponent title={t('specialInstructions')} subTitle={t('anySpecificPreferences')} status={t('optional')} />
-              <TextField style={styles(currentTheme).input} placeholder={t('noMayo')} textAlignVertical='center' value={specialInstructions} onChangeText={setSpecialInstructions} maxLength={144} textColor={currentTheme.fontMainColor} baseColor={currentTheme.lightHorizontalLine} errorColor={currentTheme.textErrorColor} tintColor={themeContext.ThemeValue === 'Dark' ? 'white' : 'black'} placeholderTextColor={themeContext.ThemeValue === 'Dark' ? 'white' : 'black'} />
+              <TextField style={styles(currentTheme).input} placeholder={t('noMayo')} textAlignVertical='center' value={specialInstructions} onChangeText={setSpecialInstructions} maxLength={144} textColor={currentTheme.fontMainColor} baseColor={currentTheme.lightHorizontalLine} errorColor={currentTheme.textErrorColor} tintColor={themeContext.ThemeValue === 'Dark' ? "white" : "black"} placeholderTextColor={themeContext.ThemeValue === 'Dark' ? "white" : "black"} />
             </View>
             {/** frequently bought together */}
             <FrequentlyBoughtTogether itemId={food?._id} restaurantId={restaurant} />

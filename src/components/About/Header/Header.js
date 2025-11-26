@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import { View, TouchableOpacity, Image, StatusBar } from 'react-native'
-import { Ionicons, MaterialIcons } from '@expo/vector-icons'
+import { Ionicons } from '@expo/vector-icons'
+import { MaterialIcons } from '@expo/vector-icons'
 import { scale } from '../../../utils/scaling'
 import styles from './styles'
 import { useNavigation } from '@react-navigation/native'

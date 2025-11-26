@@ -1,6 +1,6 @@
-import { StyleSheet } from 'react-native'
-import { scale } from '../../utils/scaling'
-import { alignment } from '../../utils/alignment'
+import { StyleSheet } from 'react-native';
+import { scale } from '../../utils/scaling';
+import { alignment } from '../../utils/alignment';
 
 const styles = (props = null) =>
   StyleSheet.create({
@@ -24,17 +24,17 @@ const styles = (props = null) =>
       borderWidth: scale(1),
       borderColor: props !== null ? props?.customBorder : '#E5E7EB',
       flex: 1,
-      justifyContent: 'center'
+      justifyContent: 'center',
     },
     modalView: {
       width: '100%',
       backgroundColor: props !== null ? props?.cardBackground : 'white',
-      paddingHorizontal: scale(20)
+      paddingHorizontal: scale(20),
     },
     modalHead: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      ...alignment.PBsmall
+      ...alignment.PBsmall,
     },
     btn: {
       display: 'flex',
@@ -45,7 +45,7 @@ const styles = (props = null) =>
       borderRadius: 40,
       marginVertical: scale(5),
       backgroundColor: props !== null ? props?.color3 : 'transparent',
-      borderWidth: 1
+      borderWidth: 1,
     },
     btnCancel: {
       borderColor: props !== null ? props?.iconColor : '#717171'
@@ -56,6 +56,6 @@ const styles = (props = null) =>
     btnEdit: {
       borderColor: props !== null ? props?.linkColor : '#0EA5E9'
     }
-  })
+  });
 
-export default styles
+export default styles;

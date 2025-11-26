@@ -23,7 +23,7 @@ const UPDATEUSER = gql`
 const EditName = (props) => {
   const { t, i18n } = useTranslation()
   const themeContext = useContext(ThemeContext)
-  const currentTheme = { isRTL: i18n.dir() === 'rtl', ...theme[themeContext.ThemeValue] }
+  const currentTheme = { isRTL : i18n.dir() === 'rtl', ...theme[themeContext.ThemeValue]}
   const route = useRoute()
   const { name: initialName, phone } = route?.params
   const [mutate, { loading: loadingMutation }] = useMutation(UPDATEUSER, {
@@ -119,7 +119,7 @@ const EditName = (props) => {
     } catch (err) {}
   }
 
-  const validateName = async() => {
+  const validateName = async () => {
     setNameError('')
     const updatedName = name.trim()
 
@@ -146,7 +146,7 @@ const EditName = (props) => {
   //   }
   // }
 
-  const updateName = async() => {
+  const updateName = async () => {
     const isValid = await validateName()
     if (isValid && name.trim() !== initialName) {
       try {
@@ -161,7 +161,7 @@ const EditName = (props) => {
     }
   }
 
-  const handleNamePressUpdate = async() => {
+  const handleNamePressUpdate = async () => {
     await updateName()
   }
 
@@ -203,15 +203,13 @@ const EditName = (props) => {
               disabled={!isNameChanged || loadingMutation}
             >
               <View style={styles(currentTheme).contentContainer}>
-                {loadingMutation
-                  ? (
+                {loadingMutation ? (
                   <Spinner size='small' backColor='transparent' spinnerColor={currentTheme.white} />
-                    )
-                  : (
+                ) : (
                   <TextDefault bold H5>
                     {t('saveBtn')}
                   </TextDefault>
-                    )}
+                )}
               </View>
             </TouchableOpacity>
           </View>

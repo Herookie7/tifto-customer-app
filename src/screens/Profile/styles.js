@@ -1,8 +1,9 @@
 import { scale } from '../../utils/scaling'
-import { StyleSheet, Dimensions } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { alignment } from '../../utils/alignment'
 import { theme } from '../../utils/themeColors'
-const { height } = Dimensions.get('screen')
+import { Dimensions } from 'react-native'
+const {height} = Dimensions.get('screen')
 
 const styles = (props = null) =>
   StyleSheet.create({
@@ -19,7 +20,7 @@ const styles = (props = null) =>
       ...alignment.MTmedium
     },
     mainContainer: {
-      flex: 1
+      flex: 1,
       // ...alignment.Pmedium,
     },
     formSubContainer: {
@@ -133,7 +134,7 @@ const styles = (props = null) =>
       display: 'flex',
       flexDirection: 'row'
     },
-    // Modal
+    //Modal
     centeredView: {
       flex: 1,
       justifyContent: 'center',
@@ -195,7 +196,7 @@ const styles = (props = null) =>
       paddingLeft: 16,
       paddingRight: 16
     },
-    nameView: {
+    nameView:{
       ...alignment.MTlarge,
       ...alignment.MBlarge,
       alignItems: 'center'
@@ -208,10 +209,10 @@ const styles = (props = null) =>
       ...alignment.MTsmall
     },
     favView: {
-      ...alignment.MTlarge
+      ...alignment.MTlarge,
     },
     orderAgainView: {
-      ...alignment.MTlarge
+      ...alignment.MTlarge,
     },
     offerScroll: {
       height: height * 0.4,
@@ -239,26 +240,26 @@ const styles = (props = null) =>
     },
     line: {
       height: 0.5,
-      backgroundColor: props !== null ? props?.borderBottomColor : '#DAD6D6'
+      backgroundColor: props !== null ? props?.borderBottomColor : '#DAD6D6',
     },
 
     drawerContainer: {
       ...alignment.PLlarge
     },
     settingView: {
-      ...alignment.MTlarge
+      ...alignment.MTlarge,
     },
     quickLinkView: {
-      ...alignment.MTlarge
+      ...alignment.MTlarge,
     },
     seeAll: {
       backgroundColor: props !== null ? props?.newButtonBackground : '#F3FFEE',
       ...alignment.Psmall,
-      borderRadius: scale(5)
+      borderRadius: scale(5),
     },
     padding: {
       ...alignment.PLmedium,
-      ...alignment.PRmedium
+      ...alignment.PRmedium,
     }
   })
 export default styles

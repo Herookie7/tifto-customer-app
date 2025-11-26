@@ -3,7 +3,7 @@ import { View, TouchableOpacity, KeyboardAvoidingView, Platform, StatusBar, Moda
 import { useMutation } from '@apollo/client'
 import gql from 'graphql-tag'
 import { scale } from '../../utils/scaling'
-import { Deactivate, pushToken, updateNotificationStatus } from '../../apollo/mutations'
+import { Deactivate } from '../../apollo/mutations'
 import { FavouriteRestaurant, profile } from '../../apollo/queries'
 import { theme } from '../../utils/themeColors'
 import UserContext from '../../context/User'
@@ -21,14 +21,15 @@ import { useTranslation } from 'react-i18next'
 import Spinner from '../../components/Spinner/Spinner'
 import { LocationContext } from '../../context/Location'
 import ButtonContainer from '../../components/Account/ButtonContainer/ButtonContainer'
-
+import { pushToken, updateNotificationStatus } from '../../apollo/mutations'
 import CheckboxBtn from '../../ui/FdCheckbox/CheckboxBtn'
 import LogoutModal from '../../components/Sidebar/LogoutModal/LogoutModal'
 import * as Notifications from 'expo-notifications'
 import * as Device from 'expo-device'
-import LanguageModal, { languageTypes } from '../../components/LanguageModalize/LanguageModal'
+import LanguageModal from '../../components/LanguageModalize/LanguageModal'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as Localization from 'expo-localization'
+import { languageTypes } from '../../components/LanguageModalize/LanguageModal'
 
 import useNetworkStatus from '../../utils/useNetworkStatus'
 import ErrorView from '../../components/ErrorView/ErrorView'
@@ -162,7 +163,7 @@ function Account(props) {
     }
   }, [])
 
-  const _handleAppStateChange = async(nextAppState) => {
+  const _handleAppStateChange = async (nextAppState) => {
     if (nextAppState === 'active') {
       let token = null
       const permission = await getPermission()
@@ -183,7 +184,7 @@ function Account(props) {
     setAppState(nextAppState)
   }
 
-  const fetchSelectedLanguage = async() => {
+  const fetchSelectedLanguage = async () => {
     const lang = await AsyncStorage.getItem('tifto-language-name')
     const systemLangCode = Localization?.locale?.split('-')[0]
 
@@ -253,7 +254,7 @@ function Account(props) {
   const handleCancel = () => {
     setModalVisible(false)
   }
-  const handleLogout = async() => {
+  const handleLogout = async () => {
     try {
       setSpinnerLoading(true)
       setModalVisible(false)
@@ -351,13 +352,9 @@ function Account(props) {
     })
   }
 
-  if (loadingProfile || spinnerLoading) {
-    return (<Spinner backColor={currentTheme.CustomLoadingBG} spinnerColor={currentTheme.main} />);
-  }
+  if (loadingProfile || spinnerLoading) return <Spinner backColor={currentTheme.CustomLoadingBG} spinnerColor={currentTheme.main} />
 
-  if (!connect) {
-    return (<ErrorView refetchFunctions={[]} />);
-  }
+  if (!connect) return <ErrorView refetchFunctions={[]} />
 
   return (
     <>
@@ -524,7 +521,7 @@ function Account(props) {
                     detail={''}
                     status='null'
                     onPress={() => {
-                      Linking.openURL('https://tifto.tifto.com/terms')
+                      Linking.openURL('https://multivendor.tifto.com/terms')
                     }}
                   />
                   <View style={styles(currentTheme).line} />
@@ -534,7 +531,7 @@ function Account(props) {
                     detail={''}
                     status='null'
                     onPress={() => {
-                      Linking.openURL('https://tifto.tifto.com/privacy')
+                      Linking.openURL('https://multivendor.tifto.com/privacy')
                     }}
                   />
                 </View>
@@ -590,15 +587,13 @@ function Account(props) {
                   {t('permanentDeleteMessage')}
                 </TextDefault>
                 <TouchableOpacity style={[styles(currentTheme).btn, styles().btnDelete, { opacity: deactivateLoading ? 0.5 : 1 }]} onPress={deactivatewithemail} disabled={deactivateLoading}>
-                  {deactivateLoading
-                    ? (
+                  {deactivateLoading ? (
                     <Spinner backColor='transparent' size='small' />
-                      )
-                    : (
+                  ) : (
                     <TextDefault bolder H4 textColor={currentTheme.white}>
                       {t('yesSure')}
                     </TextDefault>
-                      )}
+                  )}
                 </TouchableOpacity>
                 <TouchableOpacity style={[styles(currentTheme).btn, styles().btnCancel]} onPress={() => setDeleteModalVisible(false)} disabled={deactivateLoading}>
                   <TextDefault bolder H4 textColor={currentTheme.black}>

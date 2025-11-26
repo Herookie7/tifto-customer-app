@@ -64,7 +64,7 @@ const styles = (props = null) =>
       alignSelf: 'center'
     },
     whatsAppText: {
-      textAlign: 'center'
+      textAlign: 'center',
       // paddingLeft: scale(5),
     },
     contentContainer: {

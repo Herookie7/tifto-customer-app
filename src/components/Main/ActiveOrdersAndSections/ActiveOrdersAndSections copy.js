@@ -9,10 +9,11 @@ import ThemeContext from '../../../ui/ThemeContext/ThemeContext'
 import { theme } from '../../../utils/themeColors'
 import RestaurantCard from './RestaurantCard'
 import { scale } from '../../../utils/scaling'
-import { useTranslation } from 'react-i18next'
+import {useTranslation} from 'react-i18next'
+
 
 function ActiveOrdersAndSections(props) {
-  const { t } = useTranslation()
+  const {t} = useTranslation()
   const { sections } = props
   const { isLoggedIn, profile } = useContext(UserContext)
   const themeContext = useContext(ThemeContext)

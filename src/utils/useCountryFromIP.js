@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react'
 import countryCallingCodes from '../screens/PhoneNumber/countryCodes'
 
+
 export const useCountryFromIP = () => {
   const [country, setCountry] = useState({
     callingCode: ['972'],
@@ -17,9 +18,9 @@ export const useCountryFromIP = () => {
   const [error, setError] = useState(null)
   const retryCount = 3
   const currentRetry = useRef(0)
-  const [trigger, setTrigger] = useState(0)
+  const [trigger, setTrigger] = useState(0) 
 
-  const fetchIpAddress = async() => {
+  const fetchIpAddress = async () => {
     try {
       const response = await fetch('https://api.ipify.org/?format=json')
       const data = await response.json()
@@ -41,7 +42,7 @@ export const useCountryFromIP = () => {
     }
   }
 
-  const initializeCountry = async() => {
+  const initializeCountry = async () => {
     setIsLoading(true)
     try {
       const code = await fetchIpAddress()
@@ -51,11 +52,11 @@ export const useCountryFromIP = () => {
           setCountry({
             callingCode: [callingCode.toString()],
             cca2: code,
-            currency: ['PKR'],
+            currency: ['PKR'], 
             flag: 'flag-' + code,
             name: code,
             region: '',
-            subregion: ''
+            subregion: '',
           })
         } else {
           console.warn('Unknown country code:', code)

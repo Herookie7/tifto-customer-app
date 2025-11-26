@@ -14,7 +14,8 @@ read_app_json() {
 # Function to update the app version via GraphQL mutation
 update_version() {
   local version="$1"
-  local url="https://ftifto-backend.onrender.com/graphql"
+  # local url="http://10.97.22.208:8001/graphql"
+  local url="https://yalla-api.up.railway.app/graphql"
 
   # Define the GraphQL mutation as a JSON payload
   local payload=$(jq -n \
@@ -28,21 +29,12 @@ update_version() {
   # Print the server response for debugging
   echo "Response from server: $response"
 
-  # Check if the response contains errors
-  local errors
-  errors=$(echo "$response" | jq -r '.errors // empty')
-  
-  if [ -n "$errors" ] && [ "$errors" != "null" ]; then
-    echo "Error updating version on the server: $errors"
-    exit 1
-  fi
-
   # Check if the response indicates success
   local success
-  success=$(echo "$response" | jq -r '.data.setVersions // empty')
+  success=$(echo "$response" | jq -r '.data.setVersions')
 
-  if [ -z "$success" ] || [ "$success" == "null" ]; then
-    echo "Error: Unexpected response from server: $response"
+  if [ "$success" == "null" ]; then
+    echo "Error updating version on the server: $(echo "$response" | jq -r '.errors')"
     exit 1
   fi
 

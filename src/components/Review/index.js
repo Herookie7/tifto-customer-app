@@ -23,12 +23,13 @@ const REVIEWORDER = gql`
 `
 
 function Review({ onOverlayPress, theme, orderId, rating }, ref) {
+
   const { t } = useTranslation()
 
   const ratingRef = useRef()
   const [description, setDescription] = useState('')
   const [mutate] = useMutation(REVIEWORDER, { variables: { order: orderId, description, rating: ratingRef.current }, onCompleted, onError })
-
+ 
   function onCompleted() {
     setDescription('')
     ref?.current?.close()
@@ -38,7 +39,7 @@ function Review({ onOverlayPress, theme, orderId, rating }, ref) {
   }
   const client = useApolloClient()
   const [showSection, setShowSection] = useState(false)
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const [order, setOrder] = useState()
   const onSelectRating = (rating) => {
     if (!showSection) { setShowSection(true) }
@@ -53,20 +54,20 @@ function Review({ onOverlayPress, theme, orderId, rating }, ref) {
     fetchOrder()
   }, [orderId])
 
-  const onSubmit = async() => {
-    if (loading) return
-    setLoading(true)
-
+  const onSubmit = async () => {
+    if (loading) return; 
+    setLoading(true); 
+  
     try {
       await mutate({
         variables: { order: orderId, description, rating: ratingRef.current }
-      })
+      });
     } catch (error) {
-      console.error('Error submitting review:', error)
+      console.error("Error submitting review:", error);
     } finally {
-      setLoading(false)
+      setLoading(false); 
     }
-  }
+  };
   return (
     <Modalize snapPoint={SNAP_HEIGHT} handlePosition='inside' ref={ref} withHandle={false} adjustToContentHeight modalStyle={{ borderWidth: StyleSheet.hairlineWidth }} onOverlayPress={onOverlayPress}>
       <View style={styles.container(theme)}>
@@ -86,7 +87,7 @@ function Review({ onOverlayPress, theme, orderId, rating }, ref) {
             </View>
           </View>
           <View>
-            <Image source={order?.restaurant?.image ? { uri: order?.restaurant?.image } : require('../../assets/images/food_placeholder.png') } style={styles.image}/>
+            <Image source={order?.restaurant?.image ? { uri: order?.restaurant?.image }: require('../../assets/images/food_placeholder.png') } style={styles.image}/>
           </View>
         </View>
 
@@ -94,7 +95,7 @@ function Review({ onOverlayPress, theme, orderId, rating }, ref) {
           <StarRating numberOfStars={5} onSelect={onSelectRating} defaultRating={rating} theme={theme} />
         </View>
 
-        {(showSection || rating > 0) && <View>
+        {(showSection || rating>0) && <View>
           <TextDefault textColor={theme.gray900} H4 bolder style={{ marginVertical: scale(8) }} isRTL >{t('tellAboutExp')} {order?.restaurant?.name}</TextDefault>
           {/* <OutlinedTextField
             label={t('review')}
@@ -117,8 +118,8 @@ function Review({ onOverlayPress, theme, orderId, rating }, ref) {
             style={styles.modalInput(theme)}
           />
           <Button text={t('submit')}
-            buttonProps={{ onPress: onSubmit, disabled: loading }}
-            buttonStyles={{ borderRadius: 15, backgroundColor: theme.primary, margin: 10, opacity: loading ? 0.6 : 1 }} textStyles={{ margin: 10, alignSelf: 'center' }}
+            buttonProps={{ onPress: onSubmit,disabled: loading }}
+            buttonStyles={{ borderRadius: 15, backgroundColor: theme.primary, margin: 10, opacity: loading ? 0.6 : 1, }} textStyles={{ margin: 10, alignSelf: 'center' }}
             textProps={{ H4: true, bold: true, textColor: theme.black }}/>
         </View>}
       </View>
@@ -126,12 +127,12 @@ function Review({ onOverlayPress, theme, orderId, rating }, ref) {
   )
 }
 
-const StarRating = ({ numberOfStars = 5, onSelect, defaultRating = 0, theme }) => {
+const StarRating = ({ numberOfStars = 5, onSelect, defaultRating=0, theme }) => {
   const stars = Array.from({ length: numberOfStars }, (_, index) => index + 1)
   const [selected, setSelected] = useState(defaultRating)
-  useEffect(() => {
-    if (defaultRating) onSelect(defaultRating)
-  }, [])
+  useEffect(()=>{
+    if(defaultRating) onSelect(defaultRating)
+  },[])
   const onPress = index => {
     onSelect(index)
     setSelected(index)

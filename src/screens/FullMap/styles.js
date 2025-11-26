@@ -13,7 +13,7 @@ const styles = (props = null) =>
       position: 'absolute',
       top: scale(0),
       bottom: scale(0),
-      left: scale(0),
+      left:scale(0),
       right: scale(0),
       marginTop: -scale(40),
       alignItems: 'center',
@@ -37,7 +37,7 @@ const styles = (props = null) =>
     },
     customMarkerContainer: {
       width: scale(50),
-      height: scale(50),
+      height:scale(50),
       position: 'absolute',
       top: '46%',
       left: '50%',

@@ -16,7 +16,7 @@ import { alignment } from '../../utils/alignment'
 import { FontAwesome } from '@expo/vector-icons'
 import { useLogin } from './useLogin'
 import screenOptions from './screenOptions'
-import { useTranslation } from 'react-i18next'
+import {useTranslation} from 'react-i18next'
 
 function Login(props) {
   const {
@@ -35,7 +35,7 @@ function Login(props) {
     setShowPassword,
     checkEmailExist
   } = useLogin()
-  const { t } = useTranslation()
+    const {t} = useTranslation()
   useLayoutEffect(() => {
     props?.navigation.setOptions(
       screenOptions({
@@ -183,13 +183,11 @@ function Login(props) {
                       textColor={currentTheme.buttonTextPink}
                       style={alignment.MLsmall}
                       bold>
-                      {loading || loginLoading
-                        ? (
+                      {loading || loginLoading ? (
                         <Spinner backColor="transparent" size="small" />
-                          )
-                        : (
-                            t('continueBtn')
-                          )}
+                      ) : (
+                        t('continueBtn')
+                      )}
                     </TextDefault>
                   </TouchableOpacity>
                 </View>

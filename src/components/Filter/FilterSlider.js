@@ -8,10 +8,11 @@ import { FILTER_TYPE } from '../../utils/enums'
 import styles from './styles'
 import { useTranslation } from 'react-i18next'
 
+
 const Filters = ({ filters, setFilters, applyFilters, onClose }) => {
   const { t, i18n } = useTranslation()
   const themeContext = useContext(ThemeContext)
-  const currentTheme = { isRTL: i18n.dir() === 'rtl', ...theme[themeContext.ThemeValue] }
+  const currentTheme = {isRTL : i18n.dir() === 'rtl', ...theme[themeContext.ThemeValue]}
 
   const handleValueSelection = (filterTitle, filterValue) => {
     const selectedFilter = filters[filterTitle]
@@ -77,7 +78,7 @@ const Filters = ({ filters, setFilters, applyFilters, onClose }) => {
           ))}
         </ScrollView>
 
-        <View style={{ height: 1, backgroundColor: '#D1D5DB', marginBottom: 10 }} />
+        <View style={{ height: 1, backgroundColor: '#D1D5DB', marginBottom: 10 }}  />
       </View>
     ))}
 
@@ -99,7 +100,7 @@ const Filters = ({ filters, setFilters, applyFilters, onClose }) => {
       onPress={onClose}
     />
   </ScrollView>
-  )
+)
 }
 
 export default Filters

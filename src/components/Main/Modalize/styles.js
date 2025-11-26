@@ -1,7 +1,7 @@
 import { verticalScale, scale } from '../../../utils/scaling'
 import { Dimensions, StyleSheet } from 'react-native'
-import { alignment } from '../../../utils/alignment'
 const windowWidth = Dimensions.get('window').width
+import { alignment } from '../../../utils/alignment'
 
 const SCREEN_HEIGHT = Dimensions.get('screen').height
 const MODAL_HEIGHT = Math.floor(SCREEN_HEIGHT / 4)
@@ -41,7 +41,7 @@ const styles = (props = null, hasActiveOrders = false) =>
       height: '100%',
       alignSelf: 'center'
     },
-    searchbar: {
+    searchbar:{
       backgroundColor: props != null ? props?.main : 'black',
       ...alignment.PBmedium
     },
@@ -54,7 +54,7 @@ const styles = (props = null, hasActiveOrders = false) =>
       flexDirection: props?.isRTL ? 'row-reverse' : 'row',
       alignItems: 'center',
       padding: scale(5),
-      borderWidth: scale(1),
+      borderWidth:scale(1),
       borderColor: props != null ? props?.customBorder : '#FFF'
     },
     addNewAddressbtn: {
@@ -133,7 +133,7 @@ const styles = (props = null, hasActiveOrders = false) =>
     placeHolderFadeColor: {
       backgroundColor: props != null ? props?.fontSecondColor : '#B8B8B8'
     },
-    emptyViewContainer: {
+    emptyViewContainer:{
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center'
@@ -148,8 +148,8 @@ const styles = (props = null, hasActiveOrders = false) =>
       padding: scale(15),
       marginTop: scale(30),
       borderColor: props !== null ? props?.gray200 : '#E5E7EB',
-      borderWidth: scale(1),
-      borderRadius: scale(10)
+      borderWidth:scale(1),
+      borderRadius:scale(10)
     },
     searchList: {
       marginBottom: 70
@@ -178,7 +178,7 @@ const styles = (props = null, hasActiveOrders = false) =>
       display: 'flex',
       flexDirection: props?.isRTL ? 'row-reverse' : 'row',
       paddingHorizontal: scale(50),
-      width: 'auto'
+      width: 'auto',
     },
     topBrandsMargin: {
       marginBottom: hasActiveOrders ? MODAL_HEIGHT : 0

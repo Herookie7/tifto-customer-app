@@ -72,13 +72,11 @@ function Paypal(props) {
           loadingSetter(false)
         }}
       />
-      {loading
-        ? (
+      {loading ? (
         <ActivityIndicator
           style={{ position: 'absolute', bottom: '50%', left: '50%' }}
         />
-          )
-        : null}
+      ) : null}
     </View>
   )
 }

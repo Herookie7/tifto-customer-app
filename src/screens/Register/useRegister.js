@@ -42,6 +42,7 @@ const useRegister = () => {
     refetch
   } = useCountryFromIP()
 
+
   const [phoneExist, { loading }] = useMutation(PHONE, {
     onCompleted,
     onError
@@ -116,7 +117,7 @@ const useRegister = () => {
 
   function onCompleted({ phoneExist }) {
     console.log('phoneExist', phoneExist)
-    if (phoneExist && phoneExist?.phone) {
+    if (phoneExist  && phoneExist?.phone) {
       // FlashMessage({
       //   message: t('phoneNumberExist')
       // })
@@ -137,7 +138,7 @@ const useRegister = () => {
                 user: {
                   phone: '+'.concat(country.callingCode[0]).concat(phone),
                   email: email.toLowerCase().trim(),
-                  password,
+                  password: password,
                   name: firstname + ' ' + lastname
                 },
                 isPhoneExists: true
@@ -152,7 +153,7 @@ const useRegister = () => {
         user: {
           phone: '+'.concat(country.callingCode[0]).concat(phone),
           email: email.toLowerCase().trim(),
-          password,
+          password: password,
           name: firstname + ' ' + lastname
         }
       })

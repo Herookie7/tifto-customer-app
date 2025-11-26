@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native'
 import { scale } from '../../../utils/scaling'
 
+
 const styles = (props = null) => {
   return StyleSheet.create({
     backdrop: {
@@ -28,7 +29,7 @@ const styles = (props = null) => {
     flexRow: {
       flexDirection: props?.isRTL ? 'row-reverse' : 'row',
       justifyContent: 'space-between',
-      alignItems: 'center'
+      alignItems: 'center',
     },
     modalContent: {
       backgroundColor: props !== null ? props.themeBackground : '#fff',
@@ -39,15 +40,15 @@ const styles = (props = null) => {
     },
     modalText: {
       fontSize: scale(15),
-      marginBottom: scale(10)
+      marginBottom: scale(10),
     },
     modalButtonsContainer: {
-      justifyContent: 'space-around'
+      justifyContent: 'space-around',
     },
     modalHeader: {
       fontSize: scale(20),
       marginBottom: scale(10),
-      fontWeight: 'bold'
+      fontWeight: 'bold',
     },
     btn: {
       display: 'flex',
@@ -58,14 +59,14 @@ const styles = (props = null) => {
       borderRadius: 40,
       marginVertical: scale(5),
       backgroundColor: props !== null ? props.color3 : 'transparent',
-      borderWidth: 1
+      borderWidth: 1,
     },
     btnCancel: {
       borderColor: props !== null ? props.linkColor : '#0EA5E9'
     },
     btnLogout: {
       borderColor: props !== null ? props.red600 : '#DC2626'
-    }
+    },
   })
 }
 export default styles

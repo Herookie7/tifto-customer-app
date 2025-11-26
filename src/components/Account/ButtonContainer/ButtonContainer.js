@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next'
 const ButtonContainer = (props) => {
   const { t, i18n } = useTranslation()
   const themeContext = useContext(ThemeContext)
-  const currentTheme = { isRTL: i18n.dir() == 'rtl', ...theme[themeContext.ThemeValue] }
+  const currentTheme = {isRTL : i18n.dir() == 'rtl', ...theme[themeContext.ThemeValue]}
   const isDisabled = props?.onPress === 'null'
   const isVerifyDisabled = props?.status === 'null'
   const statusColor = props?.status === 'verified' ? `${currentTheme.linkColor}` : `${currentTheme.red600}`

@@ -1,9 +1,9 @@
-import React from 'react'
-import { View, Text, StyleSheet, Image } from 'react-native'
-import MapView, { Marker } from 'react-native-maps'
+import React from 'react';
+import { View, Text, StyleSheet, Image } from 'react-native';
+import MapView, { Marker } from 'react-native-maps';
 
 const CustomMarkerWithLabel = ({ coordinate, label, icon, onPress, currentTheme }) => {
-  const styles = getStyles(currentTheme)
+  const styles = getStyles(currentTheme);
 
   return (
     <Marker coordinate={coordinate} onPress={onPress}>
@@ -12,8 +12,8 @@ const CustomMarkerWithLabel = ({ coordinate, label, icon, onPress, currentTheme 
         <Text style={styles.label}>{label}</Text>
       </View>
     </Marker>
-  )
-}
+  );
+};
 
 const getStyles = (currentTheme) => StyleSheet.create({
   markerContainer: {
@@ -21,13 +21,13 @@ const getStyles = (currentTheme) => StyleSheet.create({
   },
   icon: {
     width: 32,
-    height: 32
+    height: 32,
   },
   label: {
     marginTop: 2,
     color: currentTheme.black,
-    fontWeight: 'bold'
-  }
-})
+    fontWeight: 'bold',
+  },
+});
 
-export default CustomMarkerWithLabel
+export default CustomMarkerWithLabel;

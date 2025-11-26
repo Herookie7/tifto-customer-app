@@ -37,10 +37,10 @@ import useEnvVars from '../../../environment'
 import LottieView from 'lottie-react-native'
 import { clearLogEntriesAsync } from 'expo-updates'
 import Taxes from './Taxes'
+const { height: HEIGHT, width: WIDTH } = Dimensions.get('screen')
 
 import useNetworkStatus from '../../utils/useNetworkStatus'
 import ErrorView from '../../components/ErrorView/ErrorView'
-const { height: HEIGHT, width: WIDTH } = Dimensions.get('screen')
 
 const CANCEL_ORDER = gql`
   ${cancelOrderMutation}
@@ -49,7 +49,7 @@ const CANCEL_ORDER = gql`
 function OrderDetail(props) {
   // console.log("propsdata",props?.route.params)
   const [cancelModalVisible, setCancelModalVisible] = useState(false)
-  // const Analytics = analytics()
+  //const Analytics = analytics()
   const { t, i18n } = useTranslation()
   const id = props?.route.params ? props?.route.params?._id : null
   const orderData = props?.route.params ? props?.route.params?.order : null
@@ -109,21 +109,22 @@ function OrderDetail(props) {
   }, [orders])
 
   const [remainingTimeState, setRemainingTimeState] = useState(0)
-
+  
   useEffect(() => {
     if (order && ![ORDER_STATUS_ENUM.DELIVERED, ORDER_STATUS_ENUM.CANCELLED, ORDER_STATUS_ENUM.CANCELLEDBYREST].includes(order.orderStatus)) {
       const initialTime = calulateRemainingTime(order)
       setRemainingTimeState(initialTime)
-
+ 
+    
       const intervalId = setInterval(() => {
         const updatedTime = calulateRemainingTime(order)
         setRemainingTimeState(updatedTime)
-
+        
         if (updatedTime <= 0 || [ORDER_STATUS_ENUM.DELIVERED, ORDER_STATUS_ENUM.CANCELLED, ORDER_STATUS_ENUM.CANCELLEDBYREST].includes(order.orderStatus)) {
           clearInterval(intervalId)
         }
       }, 5000)
-
+      
       return () => clearInterval(intervalId)
     }
   }, [order])
@@ -138,13 +139,11 @@ function OrderDetail(props) {
   const { _id, id: orderId, restaurant, deliveryAddress, items, tipping: tip, taxationAmount: tax, orderAmount: total, deliveryCharges } = order
 
   const subTotal = total - tip - tax - deliveryCharges
-
+  
   const isOrderPending = order?.orderStatus === ORDER_STATUS_ENUM.PENDING
   const isOrderCancelable = isOrderPending
-
-  if (!connect) {
-    return (<ErrorView refetchFunctions={[]} />);
-  }
+  
+  if (!connect) return <ErrorView refetchFunctions={[]} />
 
   return (
     <View style={{ flex: 1 }}>
@@ -204,8 +203,8 @@ function OrderDetail(props) {
               strokeColor={currentTheme.main}
               optimizeWaypoints={true}
               onReady={(result) => {
-                // result.distance} km
-                // Duration: ${result.duration} min.
+                //result.distance} km
+                //Duration: ${result.duration} min.
 
                 mapView?.current?.fitToCoordinates(result.coordinates, {
                   edgePadding: {
@@ -263,11 +262,11 @@ function OrderDetail(props) {
       </ScrollView>
       <View style={styles().bottomContainer(currentTheme)}>
         <PriceRow theme={currentTheme} title={t('total')} currency={configuration.currencySymbol} price={total.toFixed(2)} />
-
+        
           <View style={{ margin: scale(20) }}>
-            <Button disabled={!isOrderCancelable} text={t('cancelOrder')} buttonProps={{ onPress: cancelModalToggle }} buttonStyles={styles().cancelButtonContainer(currentTheme)} textProps={{ textColor: currentTheme.red600 }} textStyles={{ ...alignment.Pmedium }} />
+            <Button disabled={isOrderCancelable ? false : true} text={t('cancelOrder')} buttonProps={{ onPress: cancelModalToggle }} buttonStyles={styles().cancelButtonContainer(currentTheme)} textProps={{ textColor: currentTheme.red600 }} textStyles={{ ...alignment.Pmedium }} />
           </View>
-
+        
       </View>
       <CancelModal theme={currentTheme} modalVisible={cancelModalVisible} setModalVisible={cancelModalToggle} cancelOrder={cancelOrder} loading={loadingCancel} orderStatus={order?.orderStatus} />
     </View>

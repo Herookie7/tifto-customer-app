@@ -74,7 +74,7 @@ function SidebBar(props) {
   const handleCancel = () => {
     setModalVisible(false)
   }
-  const handleLogout = async() => {
+  const handleLogout = async () => {
     setModalVisible(false)
     await Analytics.track(Analytics.events.USER_LOGGED_OUT)
     await Analytics.identify(null, null)
@@ -114,7 +114,7 @@ function SidebBar(props) {
             <View key={ind} style={styles().item}>
               <SideDrawerItems
                 style={styles(currentTheme).iconContainer}
-                onPress={async() => {
+                onPress={async () => {
                   if (dataItem.isAuth && !isLoggedIn) {
                     props.navigation.navigate('CreateAccount')
                   } else {

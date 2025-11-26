@@ -32,9 +32,7 @@ function Login(props) {
   }, [props?.navigation])
 
   const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
-  if (!connect) {
-    return (<ErrorView />);
-  }
+  if (!connect) return <ErrorView />
 
   return (
     <SafeAreaView edges={['bottom', 'left', 'right']} style={styles(currentTheme).safeAreaViewStyles}>

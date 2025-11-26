@@ -1,3 +1,4 @@
+
 import React, { useContext, useEffect, useState } from 'react'
 import { TouchableOpacity, View, Platform } from 'react-native'
 import styles from './styles'
@@ -30,12 +31,13 @@ function PickUp(props) {
         props?.setOrderDate(date)
       }
     },
-    textColor: props?.pickupTextColor || currentTheme.newFontcolor
+    textColor: props?.pickupTextColor || currentTheme.newFontcolor,
   }
 
   useEffect(() => {
     props?.setIsPickedUp(isPickUp)
   }, [isPickUp])
+
 
   const onEditPress = () => {
     if (Platform.OS === 'android') DateTimePickerAndroid.open(datePickerOptions)

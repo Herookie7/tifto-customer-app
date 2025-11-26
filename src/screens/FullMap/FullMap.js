@@ -28,9 +28,9 @@ export default function FullMap(props) {
 
   const [mapMargin, setMapMargin] = useState(1)
   const [region, setRegion] = useState({
-    latitude,
+    latitude: latitude,
     latitudeDelta: LATITUDE_DELTA,
-    longitude,
+    longitude: longitude,
     longitudeDelta: LONGITUDE_DELTA
   })
   const backScreen = props?.route.params.currentScreen ?? null

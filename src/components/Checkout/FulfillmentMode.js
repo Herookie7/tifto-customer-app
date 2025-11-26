@@ -8,8 +8,8 @@ import PickupIcon from '../../assets/SVG/pickup-icon'
 import { alignment } from '../../utils/alignment'
 
 export const FulfillmentMode = ({ theme, isPickup, setIsPickup, t }) => {
-  const styles = useStyles(theme)
-  return <View style={styles.container}>
+    const styles = useStyles(theme)
+    return <View style={styles.container}>
         <View style={styles.ovalContainer}>
             <OvalButton theme={theme} styles={styles.ovalButton} title={t('Delivery')} selected={!isPickup} icon={<DeliveryIcon />} onSelect={() => { setIsPickup(false) }} />
             <OvalButton theme={theme} styles={styles.ovalButton} title={t('Pickup')} selected={isPickup} icon={<PickupIcon />} onSelect={() => { setIsPickup(true) }} />
@@ -18,14 +18,13 @@ export const FulfillmentMode = ({ theme, isPickup, setIsPickup, t }) => {
 }
 
 const OvalButton = ({
-  theme,
-  selected = false, title,
-  icon,
-  onSelect,
-  styles
-}) => (<Pressable onPress={onSelect} style={[styles, {
-  backgroundColor: selected ? theme.main : null
-}]}>
+    theme,
+    selected = false, title,
+    icon,
+    onSelect,
+    styles }) => (<Pressable onPress={onSelect} style={[styles, {
+        backgroundColor: selected ? theme.main : null,
+    }]}>
         <View style={alignment.MxSmall}>
             {icon}
         </View>

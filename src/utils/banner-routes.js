@@ -4,7 +4,7 @@ const BANNER_PARAMETERS = {
     selectedType: '',
     queryType: 'restaurant'
   },
-  'Tiffin Centers List': {
+  'Grocery List': {
     name: 'Store',
     selectedType: 'grocery',
     queryType: 'grocery'
@@ -13,6 +13,6 @@ const BANNER_PARAMETERS = {
     name: 'Menu',
     selectedType: '',
     queryType: 'topBrands'
-  }
+  },
 }
 export { BANNER_PARAMETERS }

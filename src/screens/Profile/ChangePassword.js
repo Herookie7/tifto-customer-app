@@ -10,15 +10,17 @@ import ThemeContext from '../../ui/ThemeContext/ThemeContext'
 import { FlashMessage } from '../../ui/FlashMessage/FlashMessage'
 import { alignment } from '../../utils/alignment'
 import TextDefault from '../../components/Text/TextDefault/TextDefault'
-import { useTranslation } from 'react-i18next'
+import {useTranslation} from 'react-i18next'
 import { Feather } from '@expo/vector-icons'
+
 
 const CHANGE_PASSWORD = gql`
   ${changePassword}
 `
 
 function ChangePassword(props) {
-  const { t } = useTranslation()
+
+  const {t} = useTranslation()
   const [oldPassword, setOldPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [oldPasswordError, setOldPasswordError] = useState('')
@@ -109,13 +111,11 @@ function ChangePassword(props) {
               setOldPasswordError(!oldPassword ? t('passErr1') : '')
             }}
           />
-          {oldPasswordError
-            ? (
+          {oldPasswordError ? (
             <TextDefault small textColor={currentTheme.textErrorColor}>
               {oldPasswordError}
             </TextDefault>
-              )
-            : null}
+          ) : null}
         </View>
 
         <View style={{ ...alignment.MTmedium, gap: 8 }}>
@@ -143,13 +143,11 @@ function ChangePassword(props) {
               setNewPasswordError(!newPassword ? t('passErr1') : '')
             }}
           />
-          {newPasswordError
-            ? (
+          {newPasswordError ? (
             <TextDefault small textColor={currentTheme.textErrorColor}>
               {newPasswordError}
             </TextDefault>
-              )
-            : null}
+          ) : null}
         </View>
 
         <TouchableOpacity

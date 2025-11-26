@@ -15,7 +15,6 @@ import AuthContext from '../../../context/Auth'
 import { useTranslation } from 'react-i18next'
 import ConfigurationContext from '../../../context/Configuration'
 import useEnvVars from '../../../../environment'
-import { signUpWithEmail, signInWithEmail } from '../../../services/authService'
 
 const SEND_OTP_TO_EMAIL = gql`
   ${sendOtpToEmail}
@@ -35,7 +34,7 @@ const useEmailOtp = (isPhoneExists) => {
   const [otpError, setOtpError] = useState(false)
   const [seconds, setSeconds] = useState(5)
   const [user] = useState(route.params?.user)
-  const { setTokenAsync, setFirebaseTokenAsync } = useContext(AuthContext)
+  const { setTokenAsync } = useContext(AuthContext)
   const { profile } = useContext(UserContext)
   const themeContext = useContext(ThemeContext)
   const currentTheme = theme[themeContext.ThemeValue]
@@ -87,32 +86,6 @@ const useEmailOtp = (isPhoneExists) => {
         email: data.createUser.email,
         type: 'email'
       })
-      try {
-        const normalizedEmail = (user?.email || '').trim().toLowerCase()
-        const userPassword = user?.password || ''
-        if (normalizedEmail && userPassword) {
-          try {
-            const result = await signUpWithEmail(normalizedEmail, userPassword)
-            if (!result.success) {
-              // If sign-up fails due to email already in use, try sign-in
-              if (result.error?.includes('already exists') || result.error?.includes('email-already-in-use')) {
-                const signInResult = await signInWithEmail(normalizedEmail, userPassword)
-                if (signInResult.success && signInResult.idToken) {
-                  await setFirebaseTokenAsync(signInResult.idToken)
-                }
-            } else {
-                console.log('Firebase sign-up error', result.error)
-            }
-            } else if (result.success && result.idToken) {
-              await setFirebaseTokenAsync(result.idToken)
-            }
-          } catch (firebaseError) {
-            console.log('Firebase user creation error', firebaseError)
-          }
-        }
-      } catch (firebaseError) {
-        console.log('Firebase user creation error', firebaseError)
-      }
       await setTokenAsync(data.createUser.token)
       navigation.navigate('PhoneOtp', {
         name: data?.createUser?.name,
@@ -142,9 +115,9 @@ const useEmailOtp = (isPhoneExists) => {
       if (Device.isDevice) {
         try {
           const { status } = await Notifications.requestPermissionsAsync()
-          if (status === 'granted') {
-            notificationToken = (await Notifications.getExpoPushTokenAsync({ projectId: Constants.expoConfig?.extra?.eas?.projectId })).data
-          }
+        if (status === 'granted') {
+          notificationToken = (await Notifications.getExpoPushTokenAsync({ projectId: Constants.expoConfig.extra.eas.projectId })).data
+        }
         } catch (error) {
           console.log('Error catched in notificationToken:', error)
         }
@@ -157,7 +130,7 @@ const useEmailOtp = (isPhoneExists) => {
           password: user.password,
           name: user.name,
           picture: '',
-          notificationToken,
+          notificationToken: notificationToken,
           emailIsVerified: true,
           isPhoneExists: isPhoneExists || false
         }
@@ -168,7 +141,7 @@ const useEmailOtp = (isPhoneExists) => {
     }
   }
 
-  const onCodeFilled = async(otp_code) => {
+  const onCodeFilled = async (otp_code) => {
     if (configuration?.skipEmailVerification) {
       await mutateRegister()
       return
@@ -218,7 +191,7 @@ const useEmailOtp = (isPhoneExists) => {
     if (!configuration) return
     if (configuration.skipEmailVerification) {
       setOtp(TEST_OTP)
-      timer = setTimeout(async() => {
+      timer = setTimeout(async () => {
         await onCodeFilled(TEST_OTP)
       }, 3000)
     }

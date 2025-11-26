@@ -31,12 +31,13 @@ const LATITUDE_DELTA = 0.02
 const LONGITUDE_DELTA = 0.02
 
 export default function SelectLocation(props) {
+
   const Analytics = analytics()
 
   const { t, i18n } = useTranslation()
   const { longitude, latitude } = props?.route.params || {}
   const themeContext = useContext(ThemeContext)
-  const currentTheme = { isRTL: i18n.dir() == 'rtl', ...theme[themeContext.ThemeValue] }
+  const currentTheme = {isRTL : i18n.dir() == 'rtl', ...theme[themeContext.ThemeValue]}
   const navigation = useNavigation()
   const inset = useSafeAreaInsets()
   const [loading, setLoading] = useState(false)
@@ -67,20 +68,21 @@ export default function SelectLocation(props) {
         iconColor: currentTheme.newIconColor,
         lineColor: currentTheme.newIconColor,
         setCurrentLocation,
-        locationPrevScreen: props?.route?.params?.prevScreen
+        locationPrevScreen : props?.route?.params?.prevScreen
       })
     )
   })
 
+
   StatusBar.setBarStyle('dark-content')
 
-  const setCurrentLocation = async() => {
+  const setCurrentLocation = async () => {
     setLoading(true)
     const { status, canAskAgain } = await getLocationPermission()
     if (status !== 'granted' && !canAskAgain) {
       FlashMessage({
         message: t('locationPermissionMessage'),
-        onPress: async() => {
+        onPress: async () => {
           await Linking.openSettings()
         }
       })
@@ -91,13 +93,6 @@ export default function SelectLocation(props) {
     if (error) {
       FlashMessage({
         message
-      })
-      setLoading(false)
-      return
-    }
-    if (!coords || !coords.latitude || !coords.longitude) {
-      FlashMessage({
-        message: 'LocationUnavailable'
       })
       setLoading(false)
       return

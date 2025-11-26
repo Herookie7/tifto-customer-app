@@ -15,14 +15,14 @@ const styles = (props = null) => {
       height: scale(24),
       borderRadius: scale(24),
       justifyContent: 'center',
-      alignItems: 'center'
+      alignItems: 'center',
     },
     headerContainer: {
       height: '100%',
       width: '90%',
       paddingLeft: scale(5),
       marginTop: scale(10)
-    }
+    },
   })
 }
 export default styles

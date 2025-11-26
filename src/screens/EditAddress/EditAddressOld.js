@@ -351,7 +351,7 @@ function EditAddress(props) {
                   mutate({
                     variables: {
                       addressInput: {
-                        _id,
+                        _id: _id,
                         latitude: `${region.latitude}`,
                         longitude: `${region.longitude}`,
                         deliveryAddress: deliveryAddress.trim(),

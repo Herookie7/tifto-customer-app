@@ -77,12 +77,8 @@ function MyOrders(props) {
   }
 
   function emptyView() {
-    if (loadingOrders) {
-      return (<Spinner visible={loadingOrders} />);
-    }
-    if (errorOrders) {
-      return (<TextError text={errorOrders.message} />);
-    }
+    if (loadingOrders) return <Spinner visible={loadingOrders} />
+    if (errorOrders) return <TextError text={errorOrders.message} />
     else {
       const hasActiveOrders =
         orders.filter(o => orderStatusActive.includes(o.orderStatus)).length > 0

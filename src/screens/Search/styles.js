@@ -8,7 +8,7 @@ const styles = (props = null) =>
     flex: {
       flex: 1,
       backgroundColor: props !== null ? props?.themeBackground : '#FFF',
-      paddingTop: scale(10)
+      paddingTop: scale(10),
     },
     tagView: {
       display: 'flex',
@@ -26,7 +26,7 @@ const styles = (props = null) =>
       paddingHorizontal: scale(15),
       borderRadius: scale(10)
     },
-    emptyViewContainer: {
+    emptyViewContainer:{
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center'
@@ -41,8 +41,8 @@ const styles = (props = null) =>
       padding: scale(15),
       marginTop: scale(30),
       borderColor: props !== null ? props?.gray200 : '#E5E7EB',
-      borderWidth: scale(1),
-      borderRadius: scale(10)
+      borderWidth:scale(1),
+      borderRadius:scale(10)
     },
     searchList: {
       marginBottom: 70,

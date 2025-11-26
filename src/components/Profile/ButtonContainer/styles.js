@@ -1,8 +1,9 @@
 import { scale } from '../../../utils/scaling'
-import { StyleSheet, Dimensions } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { alignment } from '../../../utils/alignment'
 import { theme } from '../../../utils/themeColors'
-const { height } = Dimensions.get('screen')
+import { Dimensions } from 'react-native'
+const {height} = Dimensions.get('screen')
 
 const styles = (props = null) =>
   StyleSheet.create({
@@ -17,13 +18,13 @@ const styles = (props = null) =>
     flexRow: {
       flexDirection: props?.isRTL ? 'row-reverse' : 'row',
       justifyContent: 'space-between',
-      marginVertical: scale(10)
+      marginVertical: scale(10),
     },
     linkContainer: {
       flex: 1,
       flexDirection: props?.isRTL ? 'row-reverse' : 'row',
       justifyContent: 'space-between',
-      alignItems: 'center'
+      alignItems: 'center',
     },
     mainLeftContainer: {
       flexDirection: props?.isRTL ? 'row-reverse' : 'row',

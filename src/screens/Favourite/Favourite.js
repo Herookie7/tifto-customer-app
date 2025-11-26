@@ -34,6 +34,7 @@ import { isOpen, sortRestaurantsByOpenStatus } from '../../utils/customFunctions
 
 import useNetworkStatus from '../../utils/useNetworkStatus'
 
+
 const RESTAURANTS = gql`
   ${FavouriteRestaurant}
 `
@@ -54,15 +55,15 @@ function Favourite() {
         latitude: location.latitude || null
       },
       fetchPolicy: 'network-only',
-      errorPolicy: 'all'
+      errorPolicy: "all"
     }
   )
   useEffect(() => {
-    if (data && data.userFavourite) {
-      console.log(JSON.stringify(data, null, 2), 'FavouriteRestaurantsData')
+    if(data && data.userFavourite) {
+  console.log(JSON.stringify(data, null, 2), 'FavouriteRestaurantsData')
     }
-  }, [data])
-
+  },[data])
+ 
   useEffect(() => {
     async function Track() {
       await analytics.track(analytics.events.NAVIGATE_TO_FAVOURITES)
@@ -79,10 +80,10 @@ function Favourite() {
   })
 
   useEffect(() => {
-    if (error) {
+    if(error){
       console.error('Error fetching favourite restaurants:', error)
     }
-  }, [error])
+  }, [error]) 
 
   useEffect(() => {
     navigation.setOptions({
@@ -90,7 +91,7 @@ function Favourite() {
       headerTitleAlign: 'center',
       headerRight: null,
       headerTitleStyle: {
-        color: currentTheme.newFontcolor,
+        color:currentTheme.newFontcolor,
         fontWeight: 'bold'
       },
       headerTitleContainerStyle: {
@@ -122,10 +123,9 @@ function Favourite() {
     })
   }, [navigation])
 
-  const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
-  if (!connect) {
-    return (<ErrorView refetchFunctions={[refetch]} />);
-  }
+    
+    const { isConnected:connect,setIsConnected :setConnect} = useNetworkStatus();
+    if (!connect) return <ErrorView refetchFunctions={[refetch]} />
 
   const emptyView = () => {
     return (
@@ -137,20 +137,17 @@ function Favourite() {
     )
   }
 
-  if (loading) {
+  if (loading)
     return (
       <Spinner
         backColor={currentTheme.themeBackground}
         spinnerColor={currentTheme.main}
       />
     )
-  }
-  if (error) {
-    return (<ErrorView />);
-  }
+  if (error) return <ErrorView />
 
-  const favouriteRestaurants = data?.userFavourite?.filter(item => item !== null) || []
-  console.log('Favourite Restaurants:', favouriteRestaurants)
+const favouriteRestaurants = data?.userFavourite?.filter(item => item !== null) || []
+console.log('Favourite Restaurants:', favouriteRestaurants)
   return (
     <SafeAreaView edges={['bottom']} style={styles(currentTheme).flex}>
       <FlatList
@@ -164,9 +161,9 @@ function Favourite() {
         ListEmptyComponent={emptyView()}
         ListHeaderComponent={null}
         renderItem={({ item }) => {
-          if (!item) return null // skip nulls
+  if (!item) return null // skip nulls
 
-          return (
+  return (
     <NewRestaurantCard
       {...item}
       reviewAverage={item.reviewAverage}
@@ -176,8 +173,8 @@ function Favourite() {
       isOpen={true}
       isAvailable={item.isAvailable || true}
     />
-          )
-        }}
+  )
+}}
       />
     </SafeAreaView>
   )

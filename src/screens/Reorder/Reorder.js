@@ -15,7 +15,7 @@ import { textStyles } from '../../utils/textStyles'
 import { scale } from '../../utils/scaling'
 import { HeaderBackButton } from '@react-navigation/elements'
 import navigationService from '../../routes/navigationService'
-import { AntDesign } from '@expo/vector-icons'
+import {  AntDesign } from '@expo/vector-icons'
 import { useTranslation } from 'react-i18next'
 import { useRestaurant } from '../../ui/hooks'
 import ReorderItem from '../../components/ReorderItem/ReorderItem'
@@ -27,7 +27,7 @@ function Reorder(props) {
   const order = props?.route.params.item
   const themeContext = useContext(ThemeContext)
   const { setCartRestaurant, addCartItem } = useContext(UserContext)
-  const currentTheme = { isRTL: i18n.dir() === 'rtl', ...theme[themeContext.ThemeValue] }
+  const currentTheme = {isRTL : i18n.dir() === 'rtl', ...theme[themeContext.ThemeValue]}
   const { data } = useRestaurant(order.restaurant._id)
 
   const inset = useSafeAreaInsets()
@@ -103,9 +103,9 @@ function Reorder(props) {
     }
   }
 
-  const onAddToCart = async() => {
+  const onAddToCart = async () => {
     await setCartRestaurant(order.restaurant._id)
-    selectedItems.forEach(async(index) => {
+    selectedItems.forEach(async (index) => {
       const item = order.items[index]
       const addons = item.addons.map((addon) => ({
         _id: addon._id,
@@ -161,7 +161,7 @@ function Reorder(props) {
     return {
       ...cartItem,
       optionsTitle,
-      title,
+      title: title,
       price: price.toFixed(2),
       image: food.image,
       addons: populateAddons
@@ -181,7 +181,7 @@ function Reorder(props) {
           </TextDefault>
           {order.items.map((item, index) => {
             const food = populateFood(item)
-            if (!food) {
+            if(!food){
               return null
             }
             return (
@@ -197,7 +197,7 @@ function Reorder(props) {
                 ).toFixed(2)}
                 checked={selectedItems.includes(index)}
                         onPress={() => onSelect(index)}
-
+              
               />
             )
           })}

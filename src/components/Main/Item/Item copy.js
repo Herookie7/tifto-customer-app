@@ -17,7 +17,8 @@ import gql from 'graphql-tag'
 import { useMutation } from '@apollo/client'
 import Spinner from '../../Spinner/Spinner'
 import { FlashMessage } from '../../../ui/FlashMessage/FlashMessage'
-import { useTranslation } from 'react-i18next'
+import {useTranslation} from 'react-i18next'
+
 
 const ADD_FAVOURITE = gql`
   ${addFavouriteRestaurant}
@@ -27,7 +28,7 @@ const PROFILE = gql`
 `
 
 function Item(props) {
-  const { t } = useTranslation()
+  const {t} = useTranslation()
   const navigation = useNavigation()
   const { profile } = useContext(UserContext)
   const heart = profile ? profile.favourite.includes(props?.item._id) : false
@@ -82,17 +83,15 @@ function Item(props) {
                 onPress={() =>
                   profile ? mutate({ variables: { id: item._id } }) : null
                 }>
-                {loadingMutation
-                  ? (
+                {loadingMutation ? (
                   <Spinner size={'small'} backColor={'transparent'} />
-                    )
-                  : (
+                ) : (
                   <AntDesign
                     name={heart ? 'heart' : 'hearto'}
                     size={scale(15)}
                     color="black"
                   />
-                    )}
+                )}
               </TouchableOpacity>
               {(!isAvailable || !isOpen()) && (
                 <View style={{ ...styles().featureOverlay, top: 40 }}>

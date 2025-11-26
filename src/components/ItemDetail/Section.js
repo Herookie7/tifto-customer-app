@@ -27,16 +27,10 @@ const Section = ({ itemId, restaurantId }) => {
   const { loading, error, data } = useQuery(RELATED_ITEMS, {
     variables: { itemId, restaurantId }
   })
-  if (loading) {
-    return (<View />);
-  }
-  if (error) {
-    return (<View />);
-  }
+  if (loading) return <View />
+  if (error) return <View />
   const { relatedItems } = data
-  if (relatedItems.length < 1) {
-    return (<View />);
-  }
+  if (relatedItems.length < 1) return <View />
   const result = client.readQuery({
     query: RESTAURANT,
     variables: { id: restaurantId }

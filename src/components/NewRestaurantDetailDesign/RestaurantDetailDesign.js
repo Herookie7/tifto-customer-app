@@ -118,7 +118,7 @@ function NewRestaurantDetailDesign(props) {
       ? restaurantData?.restaurant.location.coordinates[0]
       : '',
     isOpen: isRestaurantOpen,
-    isAvailable
+    isAvailable: isAvailable
   }
 
   // Render the skeleton loader when data is loading

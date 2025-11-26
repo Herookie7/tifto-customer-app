@@ -53,10 +53,8 @@ function ForgotPassword(props) {
     )
   }, [props?.navigation])
 
-  const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
-  if (!connect) {
-    return (<ErrorView refetchFunctions={[]} />);
-  }
+  const { isConnected:connect,setIsConnected :setConnect} = useNetworkStatus();
+  if (!connect) return <ErrorView refetchFunctions={[]} />
 
   return (
     <SafeAreaView style={styles(currentTheme).safeAreaViewStyles}>
@@ -133,17 +131,15 @@ function ForgotPassword(props) {
                 onPress={() => forgotPassword()}
               >
                 <TextDefault H4 textColor={currentTheme.black} bold>
-                  {loading
-                    ? (
+                  {loading ? (
                     <Spinner
                       backColor='transparent'
                       spinnerColor={currentTheme.white}
                       size='small'
                     />
-                      )
-                    : (
-                        t('continueBtn')
-                      )}
+                  ) : (
+                    t('continueBtn')
+                  )}
                 </TextDefault>
               </TouchableOpacity>
             </View>

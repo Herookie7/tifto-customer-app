@@ -30,7 +30,7 @@ const ModalDropdown = ({ theme, visible, onItemPress, onClose }) => {
       <TextDefault H5 bold textColor={theme.color7}>
         {item.name}
       </TextDefault>
-      <Entypo name={theme.isRTL ? 'chevron-left' : 'chevron-right'} size={24} color={theme.newIconColor} />
+      <Entypo name={theme.isRTL ? "chevron-left" : "chevron-right"} size={24} color={theme.newIconColor} />
     </TouchableOpacity>
   )
 
@@ -53,33 +53,21 @@ const ModalDropdown = ({ theme, visible, onItemPress, onClose }) => {
             <Feather name="x-circle" size={30} color={theme.newIconColor} />
           </TouchableOpacity>
         </View>
-        {!isConnected
-          ? (
-            <View style={{ paddingTop: 100, paddingBottom: 130, paddingLeft: 50 }}>
-          <TextDefault textColor={theme.gray900} >
+        {!isConnected ? (
+            <View style={{paddingTop:100,paddingBottom:130,paddingLeft:50}}>
+          <TextDefault textColor={theme.gray900}  >
            You're offline.Check your internet connection.
            </TextDefault>
            </View>
-            )
-          : loading
-            ? (
-            <Spinner backColor={theme.cardBackground} spinnerColor={theme.iconColor} />
-              )
-            : cities && cities.length > 0
-              ? (
+        ) :loading ? (
+            <Spinner backColor={theme.cardBackground} spinnerColor={theme.iconColor}  />
+        ):(
           <FlatList
             data={cities}
             renderItem={renderItem}
             keyExtractor={item => item.id.toString()}
           />
-              )
-              : (
-            <View style={{ paddingTop: 100, paddingBottom: 130, paddingLeft: 50 }}>
-              <TextDefault textColor={theme.gray900} >
-                {t('noCitiesAvailable') || 'No cities available. Please check your connection and try again.'}
-              </TextDefault>
-            </View>
-              )}
+        )}
       </View>
     </Modal>
   )
@@ -114,7 +102,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     margin: scale(10)
   },
-  item: theme => ({
+  item: theme =>({
     flexDirection: theme.isRTL ? 'row-reverse' : 'row',
     justifyContent: 'space-between',
     alignItems: 'center',

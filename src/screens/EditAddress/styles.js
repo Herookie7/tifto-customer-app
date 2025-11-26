@@ -36,13 +36,13 @@ const styles = (props = null) =>
     },
     address: {
       ...alignment.MTxSmall
-      // ...alignment.MBsmall
-      // backgroundColor: '#112233'
+      //...alignment.MBsmall
+      //backgroundColor: '#112233'
     },
     addressContainer: {
       paddingTop: 0,
       width: '100%',
-      // shadowOffset: { width: 0, height: scale(2) },
+      //shadowOffset: { width: 0, height: scale(2) },
       shadowColor: props !== null ? props?.verticalLine : '#D1D5DB',
       shadowOpacity: 0.3,
       shadowRadius: scale(1),
@@ -61,7 +61,7 @@ const styles = (props = null) =>
       ...alignment.MTmedium,
       ...alignment.MBmedium
 
-      // backgroundColor: '#335599'
+      //backgroundColor: '#335599'
     },
     locationRow: {
       flex: 1,

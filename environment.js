@@ -73,18 +73,24 @@ const useEnvVars = () => {
       ANDROID_CLIENT_ID_GOOGLE: configuration?.androidClientID,
       GOOGLE_MAPS_KEY: configuration?.googleApiKey,
       EXPO_CLIENT_ID: configuration?.expoClientID,
+      AMPLITUDE_API_KEY: configuration?.appAmplitudeApiKey,
+      SENTRY_DSN: configuration?.customerAppSentryUrl,
       TERMS_AND_CONDITIONS: configuration?.termsAndConditions,
       PRIVACY_POLICY: configuration?.privacyPolicy,
-      TEST_OTP: configuration?.testOtp
+      TEST_OTP: configuration?.testOtp,
+      GOOGLE_PLACES_API_BASE_URL: configuration?.googlePlacesApiBaseUrl
     }),
     [
       configuration?.androidClientID,
       configuration?.expoClientID,
       configuration?.googleApiKey,
       configuration?.iOSClientID,
+      configuration?.appAmplitudeApiKey,
+      configuration?.customerAppSentryUrl,
       configuration?.privacyPolicy,
       configuration?.termsAndConditions,
-      configuration?.testOtp
+      configuration?.testOtp,
+      configuration?.googlePlacesApiBaseUrl
     ]
   )
 

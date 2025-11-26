@@ -23,7 +23,7 @@ const Taxes = ({ tax, deliveryCharges, currency }) => {
         style={{
           flexDirection: theme?.isRTL ? 'row-reverse' : 'row',
           justifyContent: 'space-between',
-          alignItems: 'center'
+          alignItems: 'center',
         }}
       >
         <TextDefault
@@ -61,7 +61,7 @@ const Taxes = ({ tax, deliveryCharges, currency }) => {
         </TextDefault>
         <TextDefault H5 bolder style={{ ...alignment.Mmedium }}>
           {' '}
-          {currency}{deliveryCharges}{' '}
+          {currency}{deliveryCharges}{' '} 
         </TextDefault>
       </View>
     </View>
