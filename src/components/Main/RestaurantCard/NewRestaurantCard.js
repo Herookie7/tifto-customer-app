@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native'
 import React, { useContext } from 'react'
-import { TouchableOpacity, View, Image, Text, Alert, Platform } from 'react-native'
+import { TouchableOpacity, View, Image, Alert } from 'react-native'
 import ConfigurationContext from '../../../context/Configuration'
 import ThemeContext from '../../../ui/ThemeContext/ThemeContext'
 import { scale } from '../../../utils/scaling'
@@ -66,46 +66,9 @@ function NewRestaurantCard(props) {
   }
 
   const handleRestaurantClick = () => {
-    // Debug: Test if function is called
-    Alert.alert('Debug', `Restaurant clicked: ${props?.name}\nID: ${props?._id}`, [
-      {
-        text: 'Cancel',
-        style: 'cancel'
-      },
-      {
-        text: 'Navigate',
-        onPress: () => {
-          // Validate required props before navigation
-          if (!props?._id) {
-            Alert.alert('Error', 'Restaurant information is missing. Please try again.')
-            return
-          }
-
-          if (isRestaurantClosed) {
-            // Navigate even if closed
-            if (props?.shopType === 'grocery') {
-              navigation.navigate('NewRestaurantDetailDesign', { ...props })
-            } else {
-              navigation.navigate('Restaurant', { ...props })
-            }
-          } else {
-            // For open restaurants, navigate directly
-            if (props?.shopType === 'grocery') {
-              navigation.navigate('NewRestaurantDetailDesign', { ...props })
-            } else {
-              navigation.navigate('Restaurant', { ...props })
-            }
-          }
-        }
-      }
-    ])
-    return
-
-    // Original code below (commented out for testing)
-    /*
     // Validate required props before navigation
     if (!props?._id) {
-      Alert.alert('Error', 'Restaurant information is missing. Please try again.')
+      FlashMessage({ message: t('restaurantInformationMissing') || 'Restaurant information is missing. Please try again.' })
       return
     }
 
@@ -128,18 +91,18 @@ function NewRestaurantCard(props) {
                   if (props.shopType === 'grocery') {
                     navigation.navigate('NewRestaurantDetailDesign', { ...props })
                   } else {
-                    navigation.navigate('Restaurant', { 
+                    navigation.navigate('Restaurant', {
                       _id: props._id,
                       name: props.name,
                       image: props.image,
                       shopType: props.shopType,
                       minimumOrder: props.minimumOrder,
                       tax: props.tax,
-                      ...props 
+                      ...props
                     })
                   }
                 } catch (navError) {
-                  Alert.alert('Navigation Error', 'Failed to open restaurant. Please try again.')
+                  FlashMessage({ message: t('navigationError') || 'Failed to open restaurant. Please try again.' })
                 }
               }, 300)
             }
@@ -153,24 +116,23 @@ function NewRestaurantCard(props) {
         if (props?.shopType === 'grocery') {
           navigation.navigate('NewRestaurantDetailDesign', { ...props })
         } else {
-          navigation.navigate('Restaurant', { 
+          navigation.navigate('Restaurant', {
             _id: props._id,
             name: props.name,
             image: props.image,
             shopType: props.shopType,
             minimumOrder: props.minimumOrder,
             tax: props.tax,
-            ...props 
+            ...props
           })
         }
       } catch (navError) {
-        Alert.alert('Navigation Error', 'Failed to open restaurant. Please check your connection and try again.')
+        FlashMessage({ message: t('navigationError') || 'Failed to open restaurant. Please check your connection and try again.' })
       }
     }
     if (props?.isSearch) {
       storeSearch(props?.isSearch)
     }
-    */
   }
   return (
     <View style={[
@@ -183,15 +145,15 @@ function NewRestaurantCard(props) {
         onPress={handleRestaurantClick}
         style={[
           { width: '100%', height: '100%' },
-          Platform.OS === 'android' && {
+          {
             overflow: 'hidden',
             borderRadius: 15
           }
         ]}
         rippleColor={'#F5F5F5'}
         rippleContainerBorderRadius={15}
-        rippleDuration={Platform.OS === 'android' ? 300 : 400}
-        rippleSize={Platform.OS === 'android' ? 150 : 200}
+        rippleDuration={300}
+        rippleSize={150}
         disabled={false}
       >
         <View
@@ -200,13 +162,6 @@ function NewRestaurantCard(props) {
             themeContext.ThemeValue === 'Pink' && {
               backgroundColor: 'white',
               borderRadius: 8,
-
-              // iOS shadow
-              shadowColor: '#000',
-              shadowOffset: { width: 0, height: 2 },
-              shadowOpacity: 0.05,
-              shadowRadius: 8,
-              // Android shadow
               elevation: 2,
               marginBottom: 5
             }
@@ -259,7 +214,7 @@ function NewRestaurantCard(props) {
           </View>
         </View>
       </Ripple>
-      
+
       <TouchableOpacity
         activeOpacity={0.7}
         disabled={loadingMutation}

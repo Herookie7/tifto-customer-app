@@ -192,13 +192,8 @@ function RightButton(props) {
   }
 
   function navigateCart() {
-    if (cartCount > 0) {
-      navigation.navigate('Cart')
-    } else {
-      FlashMessage({
-        message: t('cartIsEmpty')
-      })
-    }
+    // Always navigate to cart, even when empty
+    navigation.navigate('Cart')
   }
   if (props?.icon === 'dots') {
     return (
