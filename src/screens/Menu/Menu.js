@@ -39,7 +39,7 @@ import AppliedFilters from '../../components/Filter/AppliedFilters'
 import NetInfo from '@react-native-community/netinfo'
 import useNetworkStatus from '../../utils/useNetworkStatus'
 import { isOpen, sortRestaurantsByOpenStatus } from '../../utils/customFunctions'
-import { TouchableOpacity } from 'react-native'
+import Ripple from 'react-native-material-ripple'
 import useGeocoding from '../../ui/hooks/useGeocoding'
 
 const SELECT_ADDRESS = gql`
@@ -579,7 +579,7 @@ function Menu({ route, props }) {
             renderItem={({ item, index }) => {
               setCurrentIndex(index)
               return (
-                <TouchableOpacity
+                <Ripple
                   activeOpacity={0.8}
                   onPress={() => onPressCollection(item, index)}
                   style={[
@@ -597,7 +597,7 @@ function Menu({ route, props }) {
                       {item.name}
                     </TextDefault>
                   </View>
-                </TouchableOpacity>
+                </Ripple>
               )
             }}
             initialScrollIndex={0}

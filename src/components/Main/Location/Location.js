@@ -25,26 +25,23 @@ function Location({
   const { location } = useContext(LocationContext)
 
   let translatedLabel
-  if (!location) {
-    translatedLabel = t('selectLocation')
-  } else if (location?.label === 'Current Location') {
+  if (location?.label === 'Current Location') {
     translatedLabel = t('currentLocation')
   } else {
-    translatedLabel = t(location?.label) || location?.label || t('selectLocation')
+    translatedLabel = t(location?.label)
   }
-  const translatedAddress = !location
-    ? t('selectLocation')
-    : location?.deliveryAddress === 'Current Location'
-    ? t('currentLocation')
-    : location?.deliveryAddress || t('selectLocation')
+  const translatedAddress =
+    location?.deliveryAddress === 'Current Location'
+      ? t('currentLocation')
+      : location?.deliveryAddress
   const onLocationPress = (event) => {
 
     if (screenName === 'checkout') {
       if (addresses && !addresses.length) {
         navigation.navigate('AddNewAddress', {
           prevScreen: 'Checkout',
-          latitude: location?.latitude,
-          longitude: location?.longitude
+          latitude: location.latitude,
+          longitude: location.longitude
         })
       } else {
         navigation.navigate('CartAddress', {
@@ -69,7 +66,8 @@ function Location({
           <View style={styles(currentTheme).headerContainer}>
             <View>
               <TextDefault textColor={locationParam} numberOfLines={1} H5 bolder isRTL>
-                {translatedAddress?.slice ? translatedAddress.slice(0, 40) + (translatedAddress.length > 40 ? '...' : '') : translatedAddress}
+                {translatedAddress?.slice(0, 40)}
+                ...
               </TextDefault>
             </View>
             <TextDefault textColor={locationLabel} left isRTL>

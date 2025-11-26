@@ -12,7 +12,7 @@ import { useNavigation } from '@react-navigation/native'
 import { MaterialIcons } from '@expo/vector-icons'
 import { scale } from '../../../utils/scaling'
 import { isOpen } from '../../../utils/customFunctions'
-import { TouchableOpacity } from 'react-native'
+import Ripple from 'react-native-material-ripple'
 
 const ICONS = {
   grocery: 'local-grocery-store',
