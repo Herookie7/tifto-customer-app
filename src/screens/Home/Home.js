@@ -56,10 +56,11 @@ function Main(props) {
   const { getAddress } = useGeocoding()
   const { data, refetch, networkStatus, loading, error } = useQuery(RESTAURANTS, {
     variables: {
-      longitude: location.longitude || null,
-      latitude: location.latitude || null,
+      longitude: location?.longitude || null,
+      latitude: location?.latitude || null,
       ip: null
     },
+    skip: !location?.latitude || !location?.longitude,
     fetchPolicy: 'network-only'
   })
   const [mutate, { loading: mutationLoading }] = useMutation(SELECT_ADDRESS, {

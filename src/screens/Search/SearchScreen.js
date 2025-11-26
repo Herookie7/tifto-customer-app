@@ -89,35 +89,37 @@ const SearchScreen = () => {
 
   const { data, refetch, networkStatus, loading, error } = useQuery(RESTAURANTS, {
     variables: {
-      longitude: location.longitude || null,
-      latitude: location.latitude || null,
+      longitude: location?.longitude || null,
+      latitude: location?.latitude || null,
       shopType: null,
       ip: null
     },
+    skip: !location?.latitude || !location?.longitude,
     fetchPolicy: 'network-only'
   })
 
   const { data: topRatedData } = useQuery(TOP_RATED_VENDORS, {
     variables: {
-      longitude: location.longitude || null,
-      latitude: location.latitude || null
+      longitude: location?.longitude || null,
+      latitude: location?.latitude || null
     },
-    skip: !location.latitude || !location.longitude
+    skip: !location?.latitude || !location?.longitude
   })
 
   const { data: recentOrderData } = useQuery(RECENT_ORDER_RESTAURANTS, {
     variables: {
-      longitude: location.longitude || null,
-      latitude: location.latitude || null
+      longitude: location?.longitude || null,
+      latitude: location?.latitude || null
     },
-    skip: !location.latitude || !location.longitude
+    skip: !location?.latitude || !location?.longitude
   })
 
   const { data: mostOrderedData } = useQuery(MOST_ORDERED_RESTAURANTS, {
     variables: {
-      longitude: location.longitude || null,
-      latitude: location.latitude || null
+      longitude: location?.longitude || null,
+      latitude: location?.latitude || null
     },
+    skip: !location?.latitude || !location?.longitude,
     skip: !location.latitude || !location.longitude
   })
 

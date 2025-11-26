@@ -87,6 +87,7 @@ function Main(props) {
       shopType: null,
       ip: null
     },
+    skip: !location?.latitude || !location?.longitude,
     fetchPolicy: 'network-only'
   })
 

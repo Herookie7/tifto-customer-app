@@ -54,7 +54,10 @@ const setupApollo = () => {
           distanceWithCurrentLocation: {
             read(_existing, {variables, field, readField}) {
               const restaurantLocation = readField('location')
-              const distance = calculateDistance(restaurantLocation?.coordinates[0], restaurantLocation?.coordinates[1], variables.latitude, variables.longitude)
+              if (!restaurantLocation?.coordinates || !variables?.latitude || !variables?.longitude) {
+                return 0 // Return 0 distance if location data is missing
+              }
+              const distance = calculateDistance(restaurantLocation.coordinates[0], restaurantLocation.coordinates[1], variables.latitude, variables.longitude)
               return distance
             }
           },
