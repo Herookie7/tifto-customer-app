@@ -12,7 +12,13 @@ import { scale } from '../../../utils/scaling'
 
 // Helper function to get media type from URL
 const getMediaTypeFromUrl = (url) => {
-  const extension = url?.split('.').pop().toLowerCase()
+  if (!url || typeof url !== 'string') {
+    return 'image' // Default to image if URL is invalid
+  }
+  const extension = url.split('.').pop()?.toLowerCase()
+  if (!extension) {
+    return 'image' // Default to image if no extension found
+  }
   const videoExtensions = ['mp4']
   return videoExtensions.includes(extension) ? 'video' : 'image'
 }

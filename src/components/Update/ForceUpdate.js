@@ -22,6 +22,15 @@ const VERSIONS = gql`
 `
 
 const compareVersions = (version1, version2) => {
+  // Add null/undefined checks
+  if (!version1 || !version2) {
+    return 0 // Return 0 (equal) if either version is null/undefined
+  }
+  
+  if (typeof version1 !== 'string' || typeof version2 !== 'string') {
+    return 0 // Return 0 if versions are not strings
+  }
+  
   const v1Parts = version1.split('.').map(Number)
   const v2Parts = version2.split('.').map(Number)
 
@@ -58,13 +67,19 @@ const ForceUpdate = () => {
       if (data?.getVersions && currentVersion) {
         const { customerAppVersion } = data.getVersions
 
+        // Add null check for customerAppVersion
+        if (!customerAppVersion) {
+          return
+        }
+
         // New Version
         const new_version =
           Platform.OS === 'ios'
             ? customerAppVersion.ios
             : customerAppVersion.android
 
-        if (compareVersions(currentVersion, new_version) < 0) {
+        // Check if new_version exists and is valid before comparing
+        if (new_version && currentVersion && compareVersions(currentVersion, new_version) < 0) {
           setIsUpdateModalVisible(true)
         }
       }
