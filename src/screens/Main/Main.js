@@ -124,6 +124,10 @@ function Main(props) {
         StatusBar.setBackgroundColor(currentTheme.newheaderColor)
       }
       StatusBar.setBarStyle('dark-content')
+      // Ensure modal is closed when screen is focused
+      if (modalRef.current) {
+        modalRef.current.close()
+      }
     }, [currentTheme])
   )
   useEffect(() => {
@@ -131,6 +135,10 @@ function Main(props) {
       await Analytics.track(Analytics.events.NAVIGATE_TO_MAIN)
     }
     Track()
+    // Ensure modal is closed on mount
+    if (modalRef.current) {
+      modalRef.current.close()
+    }
   }, [])
   useLayoutEffect(() => {
     navigation.setOptions(
@@ -433,7 +441,7 @@ function Main(props) {
                         </View>
                         <View>{loading ? <MainLoadingUI /> : <MainRestaurantCard shopType='grocery' orders={sortRestaurantsByOpenStatus(groceryorders || [])} loading={orderLoading} error={orderError} title={t('Grocery List')} queryType='grocery' icon='grocery' selectedType='grocery' />}</View>
 
-                        <View>{orderLoading ? <MainLoadingUI /> : <MainRestaurantCard shopType='grocery' orders={sortRestaurantsByOpenStatus(mostOrderedRestaurantsVar?.filter((order) => order.shopType === 'grocery') || [])} loading={orderLoading} error={orderError} title={t('Top grocery picks')} queryType='grocery' icon='store' selectedType='grocery' />}</View>
+                        <View>{orderLoading ? <MainLoadingUI /> : <MainRestaurantCard shopType='grocery' orders={sortRestaurantsByOpenStatus(mostOrderedRestaurantsVar?.filter((order) => order.shopType === 'grocery') || [])} loading={orderLoading} error={orderError} title={t('Top grocery picks')} queryType='grocery' icon='grocery' selectedType='grocery' />}</View>
                       </View>
                       <View style={styles(currentTheme, hasActiveOrders).topBrandsMargin}>{orderLoading ? <TopBrandsLoadingUI /> : <TopBrands />}</View>
                     </ScrollView>

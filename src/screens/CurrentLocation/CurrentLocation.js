@@ -218,8 +218,8 @@ export default function CurrentLocation() {
   }, [])
 
   const initialRegion = {
-    latitude: 16.10966,
-    longitude: 71.41271,
+    latitude: 24.0667,
+    longitude: 75.0833,
     latitudeDelta: 130,
     longitudeDelta: 130
   }

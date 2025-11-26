@@ -11,8 +11,8 @@ import CustomMarker from '../../assets/SVG/imageComponents/CustomMarker'
 import analytics from '../../utils/analytics'
 import { useTranslation } from 'react-i18next'
 
-const LATITUDE = 33.7001019
-const LONGITUDE = 72.9735978
+const LATITUDE = 24.0667
+const LONGITUDE = 75.0833
 const LATITUDE_DELTA = 0.0022
 const LONGITUDE_DELTA = 0.0021
 

@@ -29,8 +29,8 @@ import useGeocoding from '../../ui/hooks/useGeocoding'
 import blackmarker from '../../assets/images/user.png'
 
 // Default location if current location can't be retrieved
-const DEFAULT_LATITUDE = 33.95
-const DEFAULT_LONGITUDE = 73.56
+const DEFAULT_LATITUDE = 24.0667
+const DEFAULT_LONGITUDE = 75.0833
 const LATITUDE_DELTA = 0.035
 const LONGITUDE_DELTA = 0.035
 

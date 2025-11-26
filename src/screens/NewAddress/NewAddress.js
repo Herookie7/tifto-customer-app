@@ -48,8 +48,8 @@ const labelValues = [
   }
 ]
 
-const LATITUDE = 33.7001019
-const LONGITUDE = 72.9735978
+const LATITUDE = 24.0667
+const LONGITUDE = 75.0833
 const LATITUDE_DELTA = 0.0022
 const LONGITUDE_DELTA = 0.0021
 

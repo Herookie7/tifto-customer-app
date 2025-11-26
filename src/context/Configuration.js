@@ -20,8 +20,8 @@ export const ConfigurationProvider = props => {
   const configuration =
     loading || error || !data?.configuration
       ? {
-          currency: '',
-          currencySymbol: '',
+          currency: 'INR',
+          currencySymbol: '₹',
           deliveryRate: 10,
           costType: 'perKM',
           expoClientID: WEB_CLIENT_ID,
