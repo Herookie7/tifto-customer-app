@@ -147,11 +147,18 @@ function Menu({ route, props }) {
         icon: 'back',
         haveBackBtn: routeData?.name === 'Menu',
         onPressFilter: () => filtersModalRef?.current?.open(),
-        onPressMap: () =>
-          navigation.navigate('MapSection', {
-            location,
-            restaurants: restaurantData
-          }),
+        onPressMap: () => {
+          try {
+            if (navigation) {
+              navigation.navigate('MapSection', {
+                location,
+                restaurants: restaurantData
+              })
+            }
+          } catch (error) {
+            console.error('Navigation error:', error)
+          }
+        },
         onPressBack: () => navigation.goBack()
       })
     )
@@ -372,12 +379,20 @@ function Menu({ route, props }) {
           activeOpacity={0.5}
           style={styles(currentTheme).addButton}
           onPress={() => {
-            if (isLoggedIn) {
-              navigation.navigate('AddNewAddress', { ...locationData })
-            } else {
-              const modal = modalRef.current
-              modal?.close()
-              navigation.navigate({ name: 'CreateAccount' })
+            try {
+              if (isLoggedIn) {
+                if (navigation) {
+                  navigation.navigate('AddNewAddress', { ...locationData })
+                }
+              } else {
+                const modal = modalRef.current
+                modal?.close()
+                if (navigation) {
+                  navigation.navigate({ name: 'CreateAccount' })
+                }
+              }
+            } catch (error) {
+              console.error('Navigation error:', error)
             }
           }}
         >
@@ -561,10 +576,16 @@ function Menu({ route, props }) {
             style={styles(currentTheme).seeAllBtn}
             activeOpacity={0.8}
             onPress={() => {
-              navigation.navigate('Collection', {
-                collectionType: routeData?.name,
-                data: collectionData
-              })
+              try {
+                if (navigation) {
+                  navigation.navigate('Collection', {
+                    collectionType: routeData?.name,
+                    data: collectionData
+                  })
+                }
+              } catch (error) {
+                console.error('Navigation error:', error)
+              }
             }}
           >
             <TextDefault H5 bolder textColor={currentTheme.main}>

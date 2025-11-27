@@ -5,11 +5,27 @@ function setGlobalRef(ref) {
 }
 
 function navigate(path, props = {}) {
-  navObj.navigate(path, props)
+  if (!navObj) {
+    console.error('Navigation not initialized. Cannot navigate to:', path)
+    return
+  }
+  try {
+    navObj.navigate(path, props)
+  } catch (error) {
+    console.error('Navigation error:', error, 'Path:', path, 'Props:', props)
+  }
 }
 
 function goBack() {
-  navObj.goBack()
+  if (!navObj) {
+    console.error('Navigation not initialized. Cannot go back.')
+    return
+  }
+  try {
+    navObj.goBack()
+  } catch (error) {
+    console.error('Navigation goBack error:', error)
+  }
 }
 
 export default {

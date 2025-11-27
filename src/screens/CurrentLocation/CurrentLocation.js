@@ -46,32 +46,40 @@ export default function CurrentLocation() {
   const { cities, setLocation, permissionState, setPermissionState } = useContext(LocationContext)
 
   const checkLocationPermission = async () => {
-    setLoading(true)
-    const { status, canAskAgain } = await getLocationPermission()
+    try {
+      setLoading(true)
+      const { status, canAskAgain } = await getLocationPermission()
 
-    if (status === 'granted') {
-      setLoading(false)
-      navigation.replace('Main')
-    } else if (status === 'denied') {
-      // Permission denied but can ask again
-      // Show the Allow Location screen
-    } else if (status === 'blocked') {
-      Alert.alert('Location Permission Blocked', 'Please enable location services in your device settings.', [
-        { text: 'Cancel', style: 'cancel' },
-        { text: 'Open Settings', onPress: () => Linking.openSettings() }
-      ])
-      setLoading(false)
-    } else {
-      if (status !== 'granted' && !canAskAgain) {
-        FlashMessage({
-          message: t('locationPermissionMessage'),
-          onPress: async () => {
-            await Linking.openSettings()
-          }
-        })
+      if (status === 'granted') {
         setLoading(false)
-        return
+        // Don't navigate immediately - let getCurrentLocationOnStart handle it
+        // navigation.replace('Main')
+      } else if (status === 'denied') {
+        // Permission denied but can ask again
+        // Show the Allow Location screen
+        setLoading(false)
+      } else if (status === 'blocked') {
+        Alert.alert('Location Permission Blocked', 'Please enable location services in your device settings.', [
+          { text: 'Cancel', style: 'cancel' },
+          { text: 'Open Settings', onPress: () => Linking.openSettings() }
+        ])
+        setLoading(false)
+      } else {
+        if (status !== 'granted' && !canAskAgain) {
+          FlashMessage({
+            message: t('locationPermissionMessage') || 'Location permission is required to use this app.',
+            onPress: async () => {
+              await Linking.openSettings()
+            }
+          })
+          setLoading(false)
+          return
+        }
+        setLoading(false)
       }
+    } catch (error) {
+      console.error('Error checking location permission:', error)
+      setLoading(false)
     }
   }
 
@@ -81,55 +89,105 @@ export default function CurrentLocation() {
   }
 
   const handleMarkerPress = async (coordinates) => {
-    setCitiesModalVisible(false)
-    setIsCheckingZone(true)
-    const response = await getAddress(coordinates.latitude, coordinates.longitude)
-    setLocation({
-      label: 'Location',
-      deliveryAddress: response.formattedAddress,
-      latitude: coordinates.latitude,
-      longitude: coordinates.longitude,
-      city: response.city
-    })
-    setTimeout(() => {
+    try {
+      setCitiesModalVisible(false)
+      setIsCheckingZone(true)
+      
+      if (!coordinates || !coordinates.latitude || !coordinates.longitude) {
+        console.error('Invalid coordinates:', coordinates)
+        setIsCheckingZone(false)
+        return
+      }
+
+      const response = await getAddress(coordinates.latitude, coordinates.longitude)
+      
+      if (!response || !response.formattedAddress) {
+        console.error('Failed to get address for coordinates')
+        setIsCheckingZone(false)
+        FlashMessage({
+          message: t('unableToGetAddress') || 'Unable to get address for selected location.'
+        })
+        return
+      }
+
+      setLocation({
+        label: 'Location',
+        deliveryAddress: response.formattedAddress,
+        latitude: coordinates.latitude,
+        longitude: coordinates.longitude,
+        city: response.city
+      })
+      
+      setTimeout(() => {
+        setIsCheckingZone(false)
+        if (navigation) {
+          navigation.navigate('Main')
+        }
+      }, 100)
+    } catch (error) {
+      console.error('Error in handleMarkerPress:', error)
       setIsCheckingZone(false)
-      navigation.navigate('Main')
-    }, 100)
+      FlashMessage({
+        message: t('errorSelectingLocation') || 'Error selecting location. Please try again.'
+      })
+    }
   }
 
   async function checkCityMatch(new_location = null) {
-    console.log('calling checkCityMatch', new_location)
-    const cl_p = new_location || currentLocation
-    if (!cl_p || !cities.length) return
-    // console.log("Checking city match for location:", currentLocation);
-    // console.log("Cities list:", cities);
+    try {
+      console.log('calling checkCityMatch', new_location)
+      const cl_p = new_location || currentLocation
+      if (!cl_p || !cities || cities.length === 0) {
+        console.log('No location or cities available for matching')
+        return
+      }
 
-    setIsCheckingZone(true)
+      setIsCheckingZone(true)
 
-    const matchingCity = checkLocationInCities(cl_p, filterCities())
-    if (matchingCity) {
-      try {
-        const response = await getAddress(cl_p.latitude, cl_p.longitude)
-        // console.log("Fetched Address Data:", response);
-        const locationData = {
-          label: 'Location',
-          deliveryAddress: response.formattedAddress,
-          latitude: cl_p.latitude,
-          longitude: cl_p.longitude,
-          city: response.city
-        }
+      const filteredCities = filterCities()
+      if (!filteredCities || filteredCities.length === 0) {
+        console.log('No valid cities after filtering')
+        setIsCheckingZone(false)
+        return
+      }
 
-        setLocation(locationData)
-        setTimeout(() => {
+      const matchingCity = checkLocationInCities(cl_p, filteredCities)
+      if (matchingCity) {
+        try {
+          const response = await getAddress(cl_p.latitude, cl_p.longitude)
+          console.log("Fetched Address Data:", response);
+          
+          if (!response || !response.formattedAddress) {
+            console.error('Failed to get address')
+            setIsCheckingZone(false)
+            return
+          }
+
+          const locationData = {
+            label: 'Location',
+            deliveryAddress: response.formattedAddress,
+            latitude: cl_p.latitude,
+            longitude: cl_p.longitude,
+            city: response.city
+          }
+
+          setLocation(locationData)
+          setTimeout(() => {
+            setIsCheckingZone(false)
+            if (navigation) {
+              navigation.navigate('Main')
+            }
+          }, 100)
+        } catch (error) {
+          console.error('Error getting address:', error)
           setIsCheckingZone(false)
-          navigation.navigate('Main')
-        }, 100)
-      } catch (error) {
-        // console.error('Error getting address:', error)
+        }
+      } else {
+        console.log("No matching city found for this location.");
         setIsCheckingZone(false)
       }
-    } else {
-      // console.warn("No matching city found for this location.");
+    } catch (error) {
+      console.error('Error in checkCityMatch:', error)
       setIsCheckingZone(false)
     }
   }
@@ -138,32 +196,49 @@ export default function CurrentLocation() {
     console.log('calling getCurrentLocationOnStart', permissionState)
     setLoading(true)
 
-    // Handle permission request result
-    if (!permissionState) return
+    try {
+      // Handle permission request result
+      if (!permissionState) {
+        setLoading(false)
+        return
+      }
 
-    if (!permissionState?.granted) {
-      console.log('Location permission not granted')
-      return
-    }
+      if (!permissionState?.granted) {
+        console.log('Location permission not granted')
+        setLoading(false)
+        return
+      }
 
-    // Permission is granted, continue with location logic
-    const { error, coords } = await getCurrentLocation()
+      // Permission is granted, continue with location logic
+      const { error, coords } = await getCurrentLocation()
 
-    if (error) {
-      // console.log("Location error:",message, error)
+      if (error) {
+        console.log("Location error:", error)
+        FlashMessage({
+          message: error?.message || t('unableToGetLocation') || 'Unable to get your current location. Please try again.'
+        })
+        setLoading(false)
+        return
+      }
+
+      if (!coords || !coords.latitude || !coords.longitude) {
+        console.error('Invalid coordinates:', coords)
+        setLoading(false)
+        return
+      }
+
+      console.log("Fetched Location:", coords);
+      const userLocation = {
+        latitude: coords.latitude,
+        longitude: coords.longitude
+      }
+
+      setCurrentLocation(userLocation)
       setLoading(false)
-      return
+    } catch (error) {
+      console.error('Error in getCurrentLocationOnStart:', error)
+      setLoading(false)
     }
-
-    // console.log("Fetched Location:", coords);
-    const userLocation = {
-      latitude: coords.latitude,
-      longitude: coords.longitude
-    }
-
-    setCurrentLocation(userLocation)
-    // console.log("Current Location before rendering Marker:", currentLocation);
-    setLoading(false)
   }
 
   async function onRequestPermissionHandler() {

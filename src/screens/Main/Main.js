@@ -227,21 +227,44 @@ function Main(props) {
   }
 
   const handleMarkerPress = async (coordinates) => {
-    setCitiesModalVisible(false)
-    // setIsCheckingZone(true)
-    const response = await getAddress(coordinates.latitude, coordinates.longitude)
-    setLocation({
-      label: 'Location',
-      deliveryAddress: response.formattedAddress,
-      latitude: coordinates.latitude,
-      longitude: coordinates.longitude,
-      city: response.city
-    })
-    setTimeout(() => {
-      // setIsCheckingZone(false)
-      reloadScreen()
-      // navigation.navigate('Main')
-    }, 100)
+    try {
+      setCitiesModalVisible(false)
+      
+      if (!coordinates || !coordinates.latitude || !coordinates.longitude) {
+        console.error('Invalid coordinates:', coordinates)
+        FlashMessage({
+          message: t('invalidLocation') || 'Invalid location selected.'
+        })
+        return
+      }
+
+      const response = await getAddress(coordinates.latitude, coordinates.longitude)
+      
+      if (!response || !response.formattedAddress) {
+        console.error('Failed to get address')
+        FlashMessage({
+          message: t('unableToGetAddress') || 'Unable to get address for selected location.'
+        })
+        return
+      }
+
+      setLocation({
+        label: 'Location',
+        deliveryAddress: response.formattedAddress,
+        latitude: coordinates.latitude,
+        longitude: coordinates.longitude,
+        city: response.city
+      })
+      
+      setTimeout(() => {
+        reloadScreen()
+      }, 100)
+    } catch (error) {
+      console.error('Error in handleMarkerPress:', error)
+      FlashMessage({
+        message: t('errorSelectingLocation') || 'Error selecting location. Please try again.'
+      })
+    }
   }
 
   // Function to reload screen
@@ -381,9 +404,15 @@ function Main(props) {
                               return (
                                 <CollectionCard
                                   onPress={() => {
-                                    navigation.navigate('Restaurants', {
-                                      collection: item.name
-                                    })
+                                    try {
+                                      if (navigation) {
+                                        navigation.navigate('Restaurants', {
+                                          collection: item.name
+                                        })
+                                      }
+                                    } catch (error) {
+                                      console.error('Navigation error:', error)
+                                    }
                                   }}
                                   image={item?.image ? item?.image : IMAGE_LINK}
                                   name={item.name}
@@ -416,9 +445,15 @@ function Main(props) {
                               return (
                                 <CollectionCard
                                   onPress={() => {
-                                    navigation.navigate('Store', {
-                                      collection: item.name
-                                    })
+                                    try {
+                                      if (navigation) {
+                                        navigation.navigate('Store', {
+                                          collection: item.name
+                                        })
+                                      }
+                                    } catch (error) {
+                                      console.error('Navigation error:', error)
+                                    }
                                   }}
                                   image={item?.image}
                                   name={item.name}

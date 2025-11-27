@@ -52,8 +52,24 @@ export const LocationProvider = ({ children }) => {
 
   // show zones as cities
   useEffect(() => {
-    if (!loading && !error && data) {
+    if (error) {
+      console.error('Error fetching zones:', error)
+      console.error('Error details:', error.message, error.graphQLErrors, error.networkError)
+      // Set empty cities array on error to prevent undefined state
+      setCities([])
+      return
+    }
+
+    if (!loading && data) {
       const fetchedZones = data.zones || []
+      
+      if (fetchedZones.length === 0) {
+        console.warn('No zones found in the response')
+        setCities([])
+        return
+      }
+
+      console.log(`Processing ${fetchedZones.length} zones`)
 
       // Function to validate coordinates structure
       const validateCoordinates = (zone) => {
@@ -245,8 +261,16 @@ export const LocationProvider = ({ children }) => {
         })
 
       console.log(`Processed ${centroids.length} valid cities from ${fetchedZones.length} zones`)
+      
+      if (centroids.length === 0) {
+        console.warn('No valid cities could be processed from zones')
+      }
+      
       // Set this as the cities or the midpoint
       setCities(centroids)
+    } else if (!loading && !data) {
+      console.warn('No data received from zones query')
+      setCities([])
     }
   }, [loading, error, data])
   useEffect(() => {

@@ -60,13 +60,28 @@ const ModalDropdown = ({ theme, visible, onItemPress, onClose }) => {
            </TextDefault>
            </View>
         ) :loading ? (
-            <Spinner backColor={theme.cardBackground} spinnerColor={theme.iconColor}  />
-        ):(
+            <View style={{paddingTop:100,paddingBottom:130,justifyContent:'center',alignItems:'center'}}>
+              <Spinner backColor={theme.cardBackground} spinnerColor={theme.iconColor}  />
+            </View>
+        ): cities && cities.length > 0 ? (
           <FlatList
             data={cities}
             renderItem={renderItem}
-            keyExtractor={item => item.id.toString()}
+            keyExtractor={item => item.id?.toString() || item._id?.toString() || Math.random().toString()}
+            ListEmptyComponent={
+              <View style={{paddingTop:100,paddingBottom:130,paddingLeft:50}}>
+                <TextDefault textColor={theme.gray900}>
+                  {t('noCitiesAvailable') || 'No cities available'}
+                </TextDefault>
+              </View>
+            }
           />
+        ) : (
+          <View style={{paddingTop:100,paddingBottom:130,paddingLeft:50}}>
+            <TextDefault textColor={theme.gray900}>
+              {t('noCitiesAvailable') || 'No cities available. Please check back later.'}
+            </TextDefault>
+          </View>
         )}
       </View>
     </Modal>
