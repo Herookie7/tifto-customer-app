@@ -12,8 +12,8 @@ function Search(props) {
   const themeContext = useContext(ThemeContext)
   const currentTheme = {isRTL: i18n.dir() == 'rtl', ...theme[themeContext.ThemeValue]}
   return (
-    <View style={styles(currentTheme, props?.newheaderColor).mainContainerHolder}>
-      <View style={styles(currentTheme, props?.cartContainer).mainContainer}>
+    <View style={styles(currentTheme, props?.newheaderColor, props?.cartContainer).mainContainerHolder}>
+      <View style={styles(currentTheme, props?.newheaderColor, props?.cartContainer).mainContainer}>
         <View style={styles(currentTheme).subContainer}>
           <View style={styles(currentTheme).leftContainer}>
             <View style={styles().searchContainer}>
@@ -27,18 +27,13 @@ function Search(props) {
               <TextInput
                 style={[
                   styles(currentTheme).bodyStyleOne,
-                  {
-                    textAlignVertical: 'center', // For Android
-                    paddingVertical: 0, // Remove default padding
-                    height: '100%', // Take full height of container
-                    flex: 1,
-                    includeFontPadding: false,
-                  }
+                  styles(currentTheme).inputBaseStyle
                 ]}
                 placeholder={props?.placeHolder}
                 placeholderTextColor={currentTheme.gray500}
                 onChangeText={text => props?.setSearch(text)}
                 value={props?.search}
+                accessibilityLabel={t('searchInput')}
               />
             </View>
           </View>
@@ -47,7 +42,8 @@ function Search(props) {
               <TouchableOpacity
                 onPress={() => {
                   props?.setSearch('')
-                }}>
+                }}
+                accessibilityLabel={t('clearSearch')}>
                 <AntDesign
                   name="closecircleo"
                   size={15}

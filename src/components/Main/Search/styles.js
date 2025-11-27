@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native'
 import { alignment } from '../../../utils/alignment'
 import { theme } from '../../../utils/themeColors'
 
-const styles = (props = null, newheaderColor = theme.headerMenuBackground) =>
+const styles = (props = null, newheaderColor = theme.headerMenuBackground, cartContainer = null) =>
   StyleSheet.create({
     bodyStyleOne: {
       fontFamily: fontStyles.MuseoSans500,
@@ -25,7 +25,7 @@ const styles = (props = null, newheaderColor = theme.headerMenuBackground) =>
       alignItems: 'center',
       alignSelf: 'center',
       borderRadius: scale(40),
-      backgroundColor: props != null ? props?.color1 : 'black',
+      backgroundColor: cartContainer || (props != null ? props?.color1 : 'black'),
 
       shadowColor: props != null ? props?.shadowColor : 'black',
       shadowOffset: {
@@ -66,6 +66,13 @@ const styles = (props = null, newheaderColor = theme.headerMenuBackground) =>
       flexDirection: props?.isRTL ? 'row-reverse' : 'row'
       // borderColor: 'white',
       // borderWidth: 2
+    },
+    inputBaseStyle: {
+      textAlignVertical: 'center', // For Android
+      paddingVertical: 0, // Remove default padding
+      height: '100%', // Take full height of container
+      flex: 1,
+      includeFontPadding: false
     }
   })
 export default styles

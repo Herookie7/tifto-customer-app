@@ -64,7 +64,25 @@ function NewRestaurantCard(props) {
     }
   }
 
+  const navigateToRestaurant = () => {
+    if (props?.shopType === 'grocery') {
+      navigation.navigate('NewRestaurantDetailDesign', { ...props })
+    } else {
+      navigation.navigate('Restaurant', { ...props })
+    }
+    if (props?.isSearch) {
+      storeSearch(props?.isSearch)
+    }
+  }
+
   const handleRestaurantClick = () => {
+    // Priority: Use custom onPress if provided
+    if (props.onPress) {
+      props.onPress()
+      return
+    }
+
+    // Default behavior: Show alert if closed, otherwise navigate
     if (isRestaurantClosed) {
       Alert.alert(
         '',
@@ -77,26 +95,13 @@ function NewRestaurantCard(props) {
           },
           {
             text: t('seeMenu'),
-            onPress: () => {
-              if (props.shopType === 'grocery') {
-                navigation.navigate('NewRestaurantDetailDesign', { ...props })
-              } else {
-                navigation.navigate('Restaurant', { ...props })
-              }
-            }
+            onPress: navigateToRestaurant
           }
         ],
         { cancelable: true }
       )
     } else {
-      if (props?.shopType === 'grocery') {
-        navigation.navigate('NewRestaurantDetailDesign', { ...props })
-      } else {
-        navigation.navigate('Restaurant', { ...props })
-      }
-    }
-    if (props?.isSearch) {
-      storeSearch(props?.isSearch)
+      navigateToRestaurant()
     }
   }
   return (

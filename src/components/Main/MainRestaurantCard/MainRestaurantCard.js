@@ -81,7 +81,13 @@ function MainRestaurantCard(props) {
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => {
             const restaurantOpen = isOpen(item)
-            return <NewRestaurantCard {...item} isOpen={restaurantOpen} />
+            return (
+              <NewRestaurantCard
+                {...item}
+                isOpen={restaurantOpen}
+                shopType={props?.shopType || item?.shopType || 'restaurant'}
+              />
+            )
           }}
           inverted={currentTheme?.isRTL ? true : false}
         />

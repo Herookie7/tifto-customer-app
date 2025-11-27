@@ -401,7 +401,7 @@ function Main(props) {
                             showsVerticalScrollIndicator={false}
                             showsHorizontalScrollIndicator={false}
                             horizontal={true}
-                            inverted={currentTheme?.isRTL ? true : false}
+                            inverted={currentTheme?.isRTL}
                             maintainVisibleContentPosition={{
                               minIndexForVisible: 0
                             }}
@@ -436,7 +436,7 @@ function Main(props) {
                             showsVerticalScrollIndicator={false}
                             showsHorizontalScrollIndicator={false}
                             horizontal={true}
-                            inverted={currentTheme?.isRTL ? true : false}
+                            inverted={currentTheme?.isRTL}
                           />
                         </View>
                         <View>{loading ? <MainLoadingUI /> : <MainRestaurantCard shopType='grocery' orders={sortRestaurantsByOpenStatus(groceryorders || [])} loading={orderLoading} error={orderError} title={t('Grocery List')} queryType='grocery' icon='grocery' selectedType='grocery' />}</View>
