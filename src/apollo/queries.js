@@ -1099,7 +1099,10 @@ export const getZones = `query Zones{
   _id
   title
   description
-  location{coordinates}
+  location{
+    type
+    coordinates
+  }
   isActive
   }
 }`

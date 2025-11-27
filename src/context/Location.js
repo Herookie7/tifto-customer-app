@@ -69,7 +69,9 @@ export const LocationProvider = ({ children }) => {
         return
       }
 
-      console.log(`Processing ${fetchedZones.length} zones`)
+      // Filter for active zones only
+      const activeZones = fetchedZones.filter((zone) => zone.isActive !== false)
+      console.log(`Processing ${activeZones.length} active zones from ${fetchedZones.length} total zones`)
 
       // Function to validate coordinates structure
       const validateCoordinates = (zone) => {
@@ -91,8 +93,10 @@ export const LocationProvider = ({ children }) => {
           return false
         }
 
-        // For Polygon type, coordinates should be [[[lng, lat], ...]]
-        if (zone.location.type === 'Polygon') {
+        const locationType = zone.location.type
+
+        // Handle Polygon type - coordinates should be [[[lng, lat], ...]]
+        if (locationType === 'Polygon') {
           if (!Array.isArray(zone.location.coordinates[0])) {
             console.warn(`Zone ${zone._id} (${zone.title}) polygon coordinates[0] is not an array`)
             return false
@@ -116,6 +120,44 @@ export const LocationProvider = ({ children }) => {
               return false
             }
           }
+        } 
+        // Handle Point type - coordinates should be [lng, lat]
+        else if (locationType === 'Point') {
+          if (!Array.isArray(zone.location.coordinates) || zone.location.coordinates.length < 2) {
+            console.warn(`Zone ${zone._id} (${zone.title}) point coordinates are invalid`)
+            return false
+          }
+          const [lng, lat] = zone.location.coordinates
+          if (typeof lng !== 'number' || typeof lat !== 'number' || isNaN(lng) || isNaN(lat)) {
+            console.warn(`Zone ${zone._id} (${zone.title}) point has invalid coordinates`)
+            return false
+          }
+        }
+        // If type is missing or unknown, try to infer from structure
+        else if (!locationType) {
+          console.warn(`Zone ${zone._id} (${zone.title}) has no location type, attempting to infer from structure`)
+          // Try to handle as Polygon if structure matches
+          if (Array.isArray(zone.location.coordinates[0]) && Array.isArray(zone.location.coordinates[0][0])) {
+            // Looks like Polygon structure
+            const points = zone.location.coordinates[0]
+            if (Array.isArray(points) && points.length >= 3) {
+              // Valid polygon structure, continue
+            } else {
+              return false
+            }
+          } else if (Array.isArray(zone.location.coordinates) && zone.location.coordinates.length === 2) {
+            // Looks like Point structure
+            const [lng, lat] = zone.location.coordinates
+            if (typeof lng !== 'number' || typeof lat !== 'number' || isNaN(lng) || isNaN(lat)) {
+              return false
+            }
+          } else {
+            console.warn(`Zone ${zone._id} (${zone.title}) has unknown location type: ${locationType}`)
+            return false
+          }
+        } else {
+          console.warn(`Zone ${zone._id} (${zone.title}) has unsupported location type: ${locationType}`)
+          return false
         }
 
         return true
@@ -216,13 +258,18 @@ export const LocationProvider = ({ children }) => {
         }
       }
 
-      // Calculate centroids for each zone with validation
-      const centroids = fetchedZones
-        .filter((zone) => {
-          // Filter out zones with invalid coordinates
-          return validateCoordinates(zone)
-        })
-        .map((zone) => {
+      // Function to extract coordinates based on location type
+      const extractCoordinates = (zone) => {
+        const locationType = zone.location.type
+
+        // Handle Point type - coordinates are directly [lng, lat]
+        if (locationType === 'Point') {
+          const [lng, lat] = zone.location.coordinates
+          return { latitude: lat, longitude: lng }
+        }
+
+        // Handle Polygon type - calculate centroid
+        if (locationType === 'Polygon' || (!locationType && Array.isArray(zone.location.coordinates[0]) && Array.isArray(zone.location.coordinates[0][0]))) {
           // Try to calculate centroid
           let centroid = calculateCentroid(zone.location.coordinates)
 
@@ -232,8 +279,24 @@ export const LocationProvider = ({ children }) => {
             centroid = getFallbackCoordinate(zone.location.coordinates)
           }
 
-          // If both failed, skip this zone
-          if (!centroid) {
+          return centroid
+        }
+
+        return null
+      }
+
+      // Calculate centroids for each zone with validation
+      const centroids = activeZones
+        .filter((zone) => {
+          // Filter out zones with invalid coordinates
+          return validateCoordinates(zone)
+        })
+        .map((zone) => {
+          // Extract coordinates based on location type
+          const coordinates = extractCoordinates(zone)
+
+          // If extraction failed, skip this zone
+          if (!coordinates) {
             console.error(`Cannot determine coordinates for zone ${zone._id} (${zone.title})`)
             return null
           }
@@ -241,8 +304,8 @@ export const LocationProvider = ({ children }) => {
           return {
             id: zone._id,
             name: zone.title,
-            latitude: centroid.latitude,
-            longitude: centroid.longitude,
+            latitude: coordinates.latitude,
+            longitude: coordinates.longitude,
             location: zone.location
           }
         })
@@ -260,7 +323,7 @@ export const LocationProvider = ({ children }) => {
           )
         })
 
-      console.log(`Processed ${centroids.length} valid cities from ${fetchedZones.length} zones`)
+      console.log(`Processed ${centroids.length} valid cities from ${activeZones.length} active zones`)
       
       if (centroids.length === 0) {
         console.warn('No valid cities could be processed from zones')
@@ -286,9 +349,11 @@ export const LocationProvider = ({ children }) => {
         setLocation,
         cities,
         loading,
+        error,
         isConnected,
         permissionState,
-        setPermissionState
+        setPermissionState,
+        refetch
       }}
     >
       {children}

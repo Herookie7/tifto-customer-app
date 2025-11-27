@@ -16,7 +16,18 @@ import Spinner from '../Spinner/Spinner'
 
 const ModalDropdown = ({ theme, visible, onItemPress, onClose }) => {
   const { t } = useTranslation()
-  const { cities, loading, isConnected } = useContext(LocationContext)
+  const { cities, loading, error, isConnected, refetch } = useContext(LocationContext)
+  
+  const handleRetry = async () => {
+    try {
+      if (refetch) {
+        await refetch()
+      }
+    } catch (err) {
+      console.error('Error retrying cities fetch:', err)
+    }
+  }
+
   const renderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.item(theme)}
@@ -33,6 +44,37 @@ const ModalDropdown = ({ theme, visible, onItemPress, onClose }) => {
       <Entypo name={theme.isRTL ? "chevron-left" : "chevron-right"} size={24} color={theme.newIconColor} />
     </TouchableOpacity>
   )
+
+  const renderEmptyState = () => {
+    if (error) {
+      return (
+        <View style={styles.emptyStateContainer}>
+          <TextDefault textColor={theme.gray900} H5 center style={{ marginBottom: scale(10) }}>
+            {t('errorLoadingCities') || 'Unable to load cities'}
+          </TextDefault>
+          <TextDefault textColor={theme.gray900} center style={{ marginBottom: scale(20) }}>
+            {t('errorLoadingCitiesDescription') || 'There was an error loading available cities. Please try again.'}
+          </TextDefault>
+          <TouchableOpacity style={styles.retryButton(theme)} onPress={handleRetry}>
+            <TextDefault textColor={theme.color4} bold>
+              {t('retry') || 'Retry'}
+            </TextDefault>
+          </TouchableOpacity>
+        </View>
+      )
+    }
+    
+    return (
+      <View style={styles.emptyStateContainer}>
+        <TextDefault textColor={theme.gray900} H5 center style={{ marginBottom: scale(10) }}>
+          {t('noCitiesAvailable') || 'No cities available'}
+        </TextDefault>
+        <TextDefault textColor={theme.gray900} center>
+          {t('noCitiesAvailableDescription') || 'We are currently not serving in any cities. Please check back later.'}
+        </TextDefault>
+      </View>
+    )
+  }
 
   return (
     <Modal
@@ -54,34 +96,30 @@ const ModalDropdown = ({ theme, visible, onItemPress, onClose }) => {
           </TouchableOpacity>
         </View>
         {!isConnected ? (
-            <View style={{paddingTop:100,paddingBottom:130,paddingLeft:50}}>
-          <TextDefault textColor={theme.gray900}  >
-           You're offline.Check your internet connection.
-           </TextDefault>
-           </View>
-        ) :loading ? (
-            <View style={{paddingTop:100,paddingBottom:130,justifyContent:'center',alignItems:'center'}}>
-              <Spinner backColor={theme.cardBackground} spinnerColor={theme.iconColor}  />
-            </View>
-        ): cities && cities.length > 0 ? (
+          <View style={styles.emptyStateContainer}>
+            <TextDefault textColor={theme.gray900} H5 center style={{ marginBottom: scale(10) }}>
+              {t('offline') || 'You\'re offline'}
+            </TextDefault>
+            <TextDefault textColor={theme.gray900} center>
+              {t('offlineDescription') || 'Please check your internet connection and try again.'}
+            </TextDefault>
+          </View>
+        ) : loading ? (
+          <View style={styles.loadingContainer}>
+            <Spinner backColor={theme.cardBackground} spinnerColor={theme.iconColor} />
+            <TextDefault textColor={theme.gray900} center style={{ marginTop: scale(20) }}>
+              {t('loadingCities') || 'Loading cities...'}
+            </TextDefault>
+          </View>
+        ) : cities && cities.length > 0 ? (
           <FlatList
             data={cities}
             renderItem={renderItem}
             keyExtractor={item => item.id?.toString() || item._id?.toString() || Math.random().toString()}
-            ListEmptyComponent={
-              <View style={{paddingTop:100,paddingBottom:130,paddingLeft:50}}>
-                <TextDefault textColor={theme.gray900}>
-                  {t('noCitiesAvailable') || 'No cities available'}
-                </TextDefault>
-              </View>
-            }
+            ListEmptyComponent={renderEmptyState()}
           />
         ) : (
-          <View style={{paddingTop:100,paddingBottom:130,paddingLeft:50}}>
-            <TextDefault textColor={theme.gray900}>
-              {t('noCitiesAvailable') || 'No cities available. Please check back later.'}
-            </TextDefault>
-          </View>
+          renderEmptyState()
         )}
       </View>
     </Modal>
@@ -125,6 +163,26 @@ const styles = StyleSheet.create({
     backgroundColor: theme.cardBackground,
     borderBottomWidth: scale(0.5),
     borderBottomColor: '#ccc'
+  }),
+  emptyStateContainer: {
+    paddingTop: scale(100),
+    paddingBottom: scale(130),
+    paddingHorizontal: scale(50),
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  loadingContainer: {
+    paddingTop: scale(100),
+    paddingBottom: scale(130),
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  retryButton: theme => ({
+    backgroundColor: theme.color4 + '20',
+    paddingHorizontal: scale(20),
+    paddingVertical: scale(10),
+    borderRadius: scale(8),
+    marginTop: scale(10)
   })
 })
 

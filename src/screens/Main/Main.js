@@ -230,30 +230,53 @@ function Main(props) {
     try {
       setCitiesModalVisible(false)
       
-      if (!coordinates || !coordinates.latitude || !coordinates.longitude) {
-        console.error('Invalid coordinates:', coordinates)
+      // Validate coordinates structure
+      if (!coordinates || typeof coordinates !== 'object') {
+        console.error('Invalid coordinates object:', coordinates)
         FlashMessage({
           message: t('invalidLocation') || 'Invalid location selected.'
         })
         return
       }
 
-      const response = await getAddress(coordinates.latitude, coordinates.longitude)
+      // Validate coordinate values
+      const { latitude, longitude } = coordinates
+      if (typeof latitude !== 'number' || typeof longitude !== 'number' || 
+          isNaN(latitude) || isNaN(longitude) || 
+          !isFinite(latitude) || !isFinite(longitude)) {
+        console.error('Invalid coordinate values:', { latitude, longitude })
+        FlashMessage({
+          message: t('invalidLocation') || 'Invalid location selected.'
+        })
+        return
+      }
+
+      // Check network connectivity
+      if (!connect) {
+        FlashMessage({
+          message: t('noInternetConnection') || 'No internet connection. Please check your network and try again.'
+        })
+        return
+      }
+
+      // Get address using geocoding
+      const response = await getAddress(latitude, longitude)
       
       if (!response || !response.formattedAddress) {
-        console.error('Failed to get address')
+        console.error('Failed to get address - empty response')
         FlashMessage({
           message: t('unableToGetAddress') || 'Unable to get address for selected location.'
         })
         return
       }
 
+      // Set location with validated data
       setLocation({
         label: 'Location',
         deliveryAddress: response.formattedAddress,
-        latitude: coordinates.latitude,
-        longitude: coordinates.longitude,
-        city: response.city
+        latitude: latitude,
+        longitude: longitude,
+        city: response.city || null
       })
       
       setTimeout(() => {
@@ -261,8 +284,10 @@ function Main(props) {
       }, 100)
     } catch (error) {
       console.error('Error in handleMarkerPress:', error)
+      // Use the error message from getAddress if available, otherwise use default
+      const errorMessage = error?.message || t('errorSelectingLocation') || 'Error selecting location. Please try again.'
       FlashMessage({
-        message: t('errorSelectingLocation') || 'Error selecting location. Please try again.'
+        message: errorMessage
       })
     }
   }
@@ -406,9 +431,9 @@ function Main(props) {
                                   onPress={() => {
                                     try {
                                       if (navigation) {
-                                        navigation.navigate('Restaurants', {
-                                          collection: item.name
-                                        })
+                                    navigation.navigate('Restaurants', {
+                                      collection: item.name
+                                    })
                                       }
                                     } catch (error) {
                                       console.error('Navigation error:', error)
@@ -447,9 +472,9 @@ function Main(props) {
                                   onPress={() => {
                                     try {
                                       if (navigation) {
-                                        navigation.navigate('Store', {
-                                          collection: item.name
-                                        })
+                                    navigation.navigate('Store', {
+                                      collection: item.name
+                                    })
                                       }
                                     } catch (error) {
                                       console.error('Navigation error:', error)

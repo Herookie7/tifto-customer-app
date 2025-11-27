@@ -47,34 +47,34 @@ export default function CurrentLocation() {
 
   const checkLocationPermission = async () => {
     try {
-      setLoading(true)
-      const { status, canAskAgain } = await getLocationPermission()
+    setLoading(true)
+    const { status, canAskAgain } = await getLocationPermission()
 
-      if (status === 'granted') {
-        setLoading(false)
+    if (status === 'granted') {
+      setLoading(false)
         // Don't navigate immediately - let getCurrentLocationOnStart handle it
         // navigation.replace('Main')
-      } else if (status === 'denied') {
-        // Permission denied but can ask again
-        // Show the Allow Location screen
+    } else if (status === 'denied') {
+      // Permission denied but can ask again
+      // Show the Allow Location screen
         setLoading(false)
-      } else if (status === 'blocked') {
-        Alert.alert('Location Permission Blocked', 'Please enable location services in your device settings.', [
-          { text: 'Cancel', style: 'cancel' },
-          { text: 'Open Settings', onPress: () => Linking.openSettings() }
-        ])
-        setLoading(false)
-      } else {
-        if (status !== 'granted' && !canAskAgain) {
-          FlashMessage({
+    } else if (status === 'blocked') {
+      Alert.alert('Location Permission Blocked', 'Please enable location services in your device settings.', [
+        { text: 'Cancel', style: 'cancel' },
+        { text: 'Open Settings', onPress: () => Linking.openSettings() }
+      ])
+      setLoading(false)
+    } else {
+      if (status !== 'granted' && !canAskAgain) {
+        FlashMessage({
             message: t('locationPermissionMessage') || 'Location permission is required to use this app.',
-            onPress: async () => {
-              await Linking.openSettings()
-            }
-          })
-          setLoading(false)
-          return
-        }
+          onPress: async () => {
+            await Linking.openSettings()
+          }
+        })
+        setLoading(false)
+        return
+      }
         setLoading(false)
       }
     } catch (error) {
@@ -93,16 +93,43 @@ export default function CurrentLocation() {
       setCitiesModalVisible(false)
       setIsCheckingZone(true)
       
-      if (!coordinates || !coordinates.latitude || !coordinates.longitude) {
-        console.error('Invalid coordinates:', coordinates)
+      // Validate coordinates structure
+      if (!coordinates || typeof coordinates !== 'object') {
+        console.error('Invalid coordinates object:', coordinates)
         setIsCheckingZone(false)
+        FlashMessage({
+          message: t('invalidLocation') || 'Invalid location selected.'
+        })
         return
       }
 
-      const response = await getAddress(coordinates.latitude, coordinates.longitude)
+      // Validate coordinate values
+      const { latitude, longitude } = coordinates
+      if (typeof latitude !== 'number' || typeof longitude !== 'number' || 
+          isNaN(latitude) || isNaN(longitude) || 
+          !isFinite(latitude) || !isFinite(longitude)) {
+        console.error('Invalid coordinate values:', { latitude, longitude })
+        setIsCheckingZone(false)
+        FlashMessage({
+          message: t('invalidLocation') || 'Invalid location selected.'
+        })
+        return
+      }
+
+      // Check network connectivity
+      if (!connect) {
+        setIsCheckingZone(false)
+        FlashMessage({
+          message: t('noInternetConnection') || 'No internet connection. Please check your network and try again.'
+        })
+        return
+      }
+
+      // Get address using geocoding
+      const response = await getAddress(latitude, longitude)
       
       if (!response || !response.formattedAddress) {
-        console.error('Failed to get address for coordinates')
+        console.error('Failed to get address - empty response')
         setIsCheckingZone(false)
         FlashMessage({
           message: t('unableToGetAddress') || 'Unable to get address for selected location.'
@@ -110,12 +137,13 @@ export default function CurrentLocation() {
         return
       }
 
+      // Set location with validated data
       setLocation({
         label: 'Location',
         deliveryAddress: response.formattedAddress,
-        latitude: coordinates.latitude,
-        longitude: coordinates.longitude,
-        city: response.city
+        latitude: latitude,
+        longitude: longitude,
+        city: response.city || null
       })
       
       setTimeout(() => {
@@ -127,22 +155,24 @@ export default function CurrentLocation() {
     } catch (error) {
       console.error('Error in handleMarkerPress:', error)
       setIsCheckingZone(false)
+      // Use the error message from getAddress if available, otherwise use default
+      const errorMessage = error?.message || t('errorSelectingLocation') || 'Error selecting location. Please try again.'
       FlashMessage({
-        message: t('errorSelectingLocation') || 'Error selecting location. Please try again.'
+        message: errorMessage
       })
     }
   }
 
   async function checkCityMatch(new_location = null) {
     try {
-      console.log('calling checkCityMatch', new_location)
-      const cl_p = new_location || currentLocation
+    console.log('calling checkCityMatch', new_location)
+    const cl_p = new_location || currentLocation
       if (!cl_p || !cities || cities.length === 0) {
         console.log('No location or cities available for matching')
         return
       }
 
-      setIsCheckingZone(true)
+    setIsCheckingZone(true)
 
       const filteredCities = filterCities()
       if (!filteredCities || filteredCities.length === 0) {
@@ -152,9 +182,9 @@ export default function CurrentLocation() {
       }
 
       const matchingCity = checkLocationInCities(cl_p, filteredCities)
-      if (matchingCity) {
-        try {
-          const response = await getAddress(cl_p.latitude, cl_p.longitude)
+    if (matchingCity) {
+      try {
+        const response = await getAddress(cl_p.latitude, cl_p.longitude)
           console.log("Fetched Address Data:", response);
           
           if (!response || !response.formattedAddress) {
@@ -163,22 +193,22 @@ export default function CurrentLocation() {
             return
           }
 
-          const locationData = {
-            label: 'Location',
-            deliveryAddress: response.formattedAddress,
-            latitude: cl_p.latitude,
-            longitude: cl_p.longitude,
-            city: response.city
-          }
+        const locationData = {
+          label: 'Location',
+          deliveryAddress: response.formattedAddress,
+          latitude: cl_p.latitude,
+          longitude: cl_p.longitude,
+          city: response.city
+        }
 
-          setLocation(locationData)
-          setTimeout(() => {
-            setIsCheckingZone(false)
+        setLocation(locationData)
+        setTimeout(() => {
+          setIsCheckingZone(false)
             if (navigation) {
-              navigation.navigate('Main')
+          navigation.navigate('Main')
             }
-          }, 100)
-        } catch (error) {
+        }, 100)
+      } catch (error) {
           console.error('Error getting address:', error)
           setIsCheckingZone(false)
         }
@@ -197,22 +227,22 @@ export default function CurrentLocation() {
     setLoading(true)
 
     try {
-      // Handle permission request result
+    // Handle permission request result
       if (!permissionState) {
         setLoading(false)
         return
       }
 
-      if (!permissionState?.granted) {
-        console.log('Location permission not granted')
+    if (!permissionState?.granted) {
+      console.log('Location permission not granted')
         setLoading(false)
-        return
-      }
+      return
+    }
 
-      // Permission is granted, continue with location logic
-      const { error, coords } = await getCurrentLocation()
+    // Permission is granted, continue with location logic
+    const { error, coords } = await getCurrentLocation()
 
-      if (error) {
+    if (error) {
         console.log("Location error:", error)
         FlashMessage({
           message: error?.message || t('unableToGetLocation') || 'Unable to get your current location. Please try again.'
@@ -223,21 +253,21 @@ export default function CurrentLocation() {
 
       if (!coords || !coords.latitude || !coords.longitude) {
         console.error('Invalid coordinates:', coords)
-        setLoading(false)
-        return
-      }
+      setLoading(false)
+      return
+    }
 
       console.log("Fetched Location:", coords);
-      const userLocation = {
-        latitude: coords.latitude,
-        longitude: coords.longitude
-      }
+    const userLocation = {
+      latitude: coords.latitude,
+      longitude: coords.longitude
+    }
 
-      setCurrentLocation(userLocation)
+    setCurrentLocation(userLocation)
       setLoading(false)
     } catch (error) {
       console.error('Error in getCurrentLocationOnStart:', error)
-      setLoading(false)
+    setLoading(false)
     }
   }
 
