@@ -39,6 +39,7 @@ import ForceUpdate from '../../components/Update/ForceUpdate'
 
 import useNetworkStatus from '../../utils/useNetworkStatus'
 import ModalDropdown from '../../components/Picker/ModalDropdown'
+import { FlashMessage } from '../../ui/FlashMessage/FlashMessage'
 
 const RESTAURANTS = gql`
   ${restaurantListPreview}
@@ -183,19 +184,19 @@ function Main(props) {
     console.log('Fetching current location...')
     setBusy(true)
 
-    const { error, coords } = await getCurrentLocation()
-    console.log('getCurrentLocation result:', { error, coords })
-    console.log('coords', coords)
-    console.log('coords', coords.latitude)
-    console.log('coords', coords.longitude)
-
-    if (!coords || !coords.latitude || !coords.longitude) {
-      console.error('Invalid coordinates:', coords)
-      setBusy(false)
-      return
-    }
-
     try {
+      const { error, coords } = await getCurrentLocation()
+      console.log('getCurrentLocation result:', { error, coords })
+
+      if (error || !coords || !coords.latitude || !coords.longitude) {
+        console.error('Invalid coordinates:', coords)
+        FlashMessage({
+          message: error?.message || t('unableToGetLocation') || 'Unable to get your current location. Please try again.'
+        })
+        setBusy(false)
+        return
+      }
+
       // Fetch the address using the geocoding hook
       const { formattedAddress, city } = await getAddress(coords.latitude, coords.longitude)
 
@@ -208,20 +209,20 @@ function Main(props) {
         address = address.substring(0, 21) + '...'
       }
 
-      if (error) {
-        navigation.navigate('SelectLocation')
-      } else {
-        modalRef.current?.close()
-        setLocation({
-          label: 'currentLocation',
-          latitude: coords.latitude,
-          longitude: coords.longitude,
-          deliveryAddress: address
-        })
-        setBusy(false)
-      }
+      modalRef.current?.close()
+      setLocation({
+        label: 'currentLocation',
+        latitude: coords.latitude,
+        longitude: coords.longitude,
+        deliveryAddress: address
+      })
+      setBusy(false)
     } catch (fetchError) {
       console.error('Error fetching address using Google Maps API:', fetchError.message)
+      FlashMessage({
+        message: fetchError.message || t('unableToGetLocation') || 'Unable to get your current location. Please try again.'
+      })
+      setBusy(false)
     }
   }
 
@@ -279,17 +280,14 @@ function Main(props) {
           activeOpacity={0.5}
           style={styles(currentTheme).addButton}
           onPress={() => {
+            modalRef.current?.close()
             if (isLoggedIn) {
               navigation.navigate('AddNewAddress', {
                 prevScreen: 'Main',
                 ...locationData
               })
             } else {
-              const modal = modalRef.current
-              modal?.close()
-              props?.navigation.navigate({
-                name: 'CreateAccount'
-              })
+              navigation.navigate('CreateAccount')
             }
           }}
         >
