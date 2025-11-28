@@ -13,13 +13,9 @@ import {
   offsetLimitPagination
 } from '@apollo/client/utilities'
 import { WebSocketLink } from '@apollo/client/link/ws'
-import useEnvVars from '../../environment'
-import { useContext } from 'react'
-import { LocationContext } from '../context/Location'
 import { calculateDistance } from '../utils/customFunctions'
 
-const setupApollo = () => {
-  const { GRAPHQL_URL, WS_GRAPHQL_URL } = useEnvVars()
+const setupApollo = (GRAPHQL_URL, WS_GRAPHQL_URL) => {
 
   const cache = new InMemoryCache({
     typePolicies: {
@@ -85,7 +81,11 @@ const setupApollo = () => {
   const wsLink = new WebSocketLink({
     uri: WS_GRAPHQL_URL,
     options: {
-      reconnect: true
+      reconnect: true,
+      connectionParams: async () => {
+        const token = await AsyncStorage.getItem('token')
+        return token ? { Authorization: `Bearer ${token}` } : {}
+      }
     }
   })
 

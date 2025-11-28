@@ -66,8 +66,8 @@ export default function App() {
   // const responseListener = useRef()
   const [orderId, setOrderId] = useState()
   const [isUpdating, setIsUpdating] = useState(false)
-  // const { SENTRY_DSN } = useEnvVars()
-  const client = setupApolloClient()
+  const { GRAPHQL_URL, WS_GRAPHQL_URL } = useEnvVars()
+  const client = setupApolloClient(GRAPHQL_URL, WS_GRAPHQL_URL)
 
   useKeepAwake()
   // useWatchLocation()
