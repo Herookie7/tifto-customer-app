@@ -173,31 +173,35 @@ const SearchOverlay = ({
           flexDirection: isRTL ? 'row-reverse' : 'row', 
           alignItems: 'center' 
         }}>
-          <TextDefault
-            textColor={currentTheme.fontMainColor}
-            style={{ fontSize: scale(16) }}
-            bold
-            isRTL={isRTL}
-          >
-            {configuration.currencySymbol}
-            {item.variations[0].price}
-          </TextDefault>
-          {item.variations[0].discounted > 0 && (
-            <TextDefault
-              textColor={currentTheme.fontSecondColor}
-              style={{
-                fontSize: scale(14),
-                marginLeft: isRTL ? 0 : scale(8),
-                marginRight: isRTL ? scale(8) : 0,
-                textDecorationLine: 'line-through'
-              }}
-              isRTL={isRTL}
-            >
-              {configuration.currencySymbol}
-              {(
-                item.variations[0].price + item.variations[0].discounted
-              ).toFixed(2)}
-            </TextDefault>
+          {item?.variations?.[0]?.price !== undefined && (
+            <>
+              <TextDefault
+                textColor={currentTheme.fontMainColor}
+                style={{ fontSize: scale(16) }}
+                bold
+                isRTL={isRTL}
+              >
+                {configuration.currencySymbol}
+                {item.variations[0].price}
+              </TextDefault>
+              {item.variations[0].discounted > 0 && (
+                <TextDefault
+                  textColor={currentTheme.fontSecondColor}
+                  style={{
+                    fontSize: scale(14),
+                    marginLeft: isRTL ? 0 : scale(8),
+                    marginRight: isRTL ? scale(8) : 0,
+                    textDecorationLine: 'line-through'
+                  }}
+                  isRTL={isRTL}
+                >
+                  {configuration.currencySymbol}
+                  {(
+                    item.variations[0].price + item.variations[0].discounted
+                  ).toFixed(2)}
+                </TextDefault>
+              )}
+            </>
           )}
         </View>
       </View>

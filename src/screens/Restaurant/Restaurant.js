@@ -537,13 +537,17 @@ function Restaurant(props) {
                               {wrapContentAfterWords(item?.description, 5)}
                             </TextDefault>
                             <View style={styles(currentTheme).dealPrice}>
-                              <TextDefault numberOfLines={1} textColor={currentTheme.fontMainColor} style={styles(currentTheme).priceText} bolder small isRTL>
-                                {configuration.currencySymbol} {parseFloat(item?.variations[0].price).toFixed(2)}
-                              </TextDefault>
-                              {item?.variations[0]?.discounted > 0 && (
-                                <TextDefault numberOfLines={1} textColor={currentTheme.fontSecondColor} style={styles(currentTheme).priceText} small lineOver isRTL>
-                                  {configuration.currencySymbol} {(item?.variations[0].price + item?.variations[0].discounted).toFixed(2)}
-                                </TextDefault>
+                              {item?.variations?.[0]?.price !== undefined && (
+                                <>
+                                  <TextDefault numberOfLines={1} textColor={currentTheme.fontMainColor} style={styles(currentTheme).priceText} bolder small isRTL>
+                                    {configuration.currencySymbol} {parseFloat(item?.variations[0].price).toFixed(2)}
+                                  </TextDefault>
+                                  {item?.variations[0]?.discounted > 0 && (
+                                    <TextDefault numberOfLines={1} textColor={currentTheme.fontSecondColor} style={styles(currentTheme).priceText} small lineOver isRTL>
+                                      {configuration.currencySymbol} {(item?.variations[0].price + item?.variations[0].discounted).toFixed(2)}
+                                    </TextDefault>
+                                  )}
+                                </>
                               )}
                             </View>
                           </View>
@@ -703,13 +707,17 @@ function Restaurant(props) {
                               </TextDefault>
                             )}
                             <View style={styles(currentTheme).dealPrice}>
-                              <TextDefault numberOfLines={1} textColor={currentTheme.fontMainColor} style={styles(currentTheme).priceText} bolder small isRTL>
-                                {configuration.currencySymbol} {parseFloat(item?.variations[0].price).toFixed(2)}
-                              </TextDefault>
-                              {item?.variations[0]?.discounted > 0 && (
-                                <TextDefault numberOfLines={1} textColor={currentTheme.fontSecondColor} style={styles(currentTheme).priceText} small lineOver isRTL>
-                                  {configuration.currencySymbol} {(item?.variations[0].price + item?.variations[0].discounted).toFixed(2)}
-                                </TextDefault>
+                              {item?.variations?.[0]?.price !== undefined && (
+                                <>
+                                  <TextDefault numberOfLines={1} textColor={currentTheme.fontMainColor} style={styles(currentTheme).priceText} bolder small isRTL>
+                                    {configuration.currencySymbol} {parseFloat(item?.variations[0].price).toFixed(2)}
+                                  </TextDefault>
+                                  {item?.variations[0]?.discounted > 0 && (
+                                    <TextDefault numberOfLines={1} textColor={currentTheme.fontSecondColor} style={styles(currentTheme).priceText} small lineOver isRTL>
+                                      {configuration.currencySymbol} {(item?.variations[0].price + item?.variations[0].discounted).toFixed(2)}
+                                    </TextDefault>
+                                  )}
+                                </>
                               )}
                             </View>
                           </View>

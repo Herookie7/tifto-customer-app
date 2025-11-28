@@ -69,22 +69,24 @@ const ItemCard = ({ item, onPressItem, restaurant, tagCart }) => {
               styles().popularMenuImg
             ]}
           />
-          <View style={styles().popularMenuPrice}>
-            <Text style={{ color: '#1C1C1E', fontSize: scale(12) }}>
-              {`${configuration.currencySymbol}${formatNumber(item?.variations[0].price)}`}
-            </Text>
-            {item?.variations[0]?.discounted > 0 && (
-              <Text
-                style={{
-                  color: '#9CA3AF',
-                  fontSize: scale(12),
-                  textDecorationLine: 'line-through'
-                }}
-              >
-                {`${configuration?.currencySymbol} ${formatNumber(parseFloat(item?.variations[0]?.price + item?.variations[0]?.discounted).toFixed(0))}`}
+          {item?.variations?.[0]?.price !== undefined && (
+            <View style={styles().popularMenuPrice}>
+              <Text style={{ color: '#1C1C1E', fontSize: scale(12) }}>
+                {`${configuration.currencySymbol}${formatNumber(item?.variations[0].price)}`}
               </Text>
-            )}
-          </View>
+              {item?.variations[0]?.discounted > 0 && (
+                <Text
+                  style={{
+                    color: '#9CA3AF',
+                    fontSize: scale(12),
+                    textDecorationLine: 'line-through'
+                  }}
+                >
+                  {`${configuration?.currencySymbol} ${formatNumber(parseFloat(item?.variations[0]?.price + item?.variations[0]?.discounted).toFixed(0))}`}
+                </Text>
+              )}
+            </View>
+          )}
         </View>
       </LinearGradient>
     </TouchableOpacity>
