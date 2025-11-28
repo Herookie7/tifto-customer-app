@@ -973,12 +973,12 @@ export const popularFoodItems = `query popularFoodItems($restaurantId: String!) 
   }
 }`
 
-export const chat = `query Chat($order: ID!) {
+export const chat = `query Chat($order: String!) {
   chat(order: $order) {
     id
     message
     user {
-      id
+      _id
       name
     }
     createdAt

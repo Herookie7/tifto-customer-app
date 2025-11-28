@@ -10,7 +10,7 @@ function navigate(path, props = {}) {
     return
   }
   try {
-    navObj.navigate(path, props)
+  navObj.navigate(path, props)
   } catch (error) {
     console.error('Navigation error:', error, 'Path:', path, 'Props:', props)
   }
@@ -22,7 +22,7 @@ function goBack() {
     return
   }
   try {
-    navObj.goBack()
+  navObj.goBack()
   } catch (error) {
     console.error('Navigation goBack error:', error)
   }

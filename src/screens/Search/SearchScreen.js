@@ -300,13 +300,13 @@ const SearchScreen = () => {
         activeOpacity={0.7}
         onPress={() => {
           try {
-            storeSearch(search)
+          storeSearch(search)
             if (navigation) {
-              navigation.navigate('Restaurant', {
-                _id: product.restaurant._id,
-                product: product._id,
-                category: product.category._id
-              })
+          navigation.navigate('Restaurant', {
+            _id: product.restaurant._id,
+            product: product._id,
+            category: product.category._id
+          })
             }
           } catch (error) {
             console.error('Navigation error:', error)

@@ -8,7 +8,7 @@ export const sendChatMessage = `mutation SendChatMessage($orderId: ID!, $message
         id
         message
         user {
-          id
+          _id
           name
         }
         createdAt
@@ -113,8 +113,8 @@ export const resetPassword = `mutation ResetPassword($password:String!,$email:St
     }
   }`
 
-export const getCoupon = `mutation Coupon($coupon:String!){
-    coupon(coupon:$coupon){
+export const getCoupon = `mutation GetCoupon($coupon:String!){
+    getCoupon(coupon:$coupon){
       _id
       title
       discount
@@ -197,7 +197,7 @@ export const selectAddress = `mutation SelectAddress($id:String!){
 export const reviewOrder = `mutation ReviewOrder(
     $order:String!,
     $rating:Int!,
-    $description:String,
+    $description:String
   ){
     reviewOrder(reviewInput:{
       order:$order,

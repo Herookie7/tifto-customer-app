@@ -72,12 +72,12 @@ function NewRestaurantCard(props) {
       }
       
       if (props?.shopType === 'grocery' || props?.shopType === 'store') {
-        navigation.navigate('NewRestaurantDetailDesign', { ...props })
-      } else {
-        navigation.navigate('Restaurant', { ...props })
-      }
-      if (props?.isSearch) {
-        storeSearch(props?.isSearch)
+      navigation.navigate('NewRestaurantDetailDesign', { ...props })
+    } else {
+      navigation.navigate('Restaurant', { ...props })
+    }
+    if (props?.isSearch) {
+      storeSearch(props?.isSearch)
       }
     } catch (error) {
       console.error('Navigation error:', error)
@@ -86,32 +86,32 @@ function NewRestaurantCard(props) {
 
   const handleRestaurantClick = () => {
     try {
-      // Priority: Use custom onPress if provided
-      if (props.onPress) {
-        props.onPress()
-        return
-      }
+    // Priority: Use custom onPress if provided
+    if (props.onPress) {
+      props.onPress()
+      return
+    }
 
-      // Default behavior: Show alert if closed, otherwise navigate
-      if (isRestaurantClosed) {
-        Alert.alert(
-          '',
-          t('restaurantClosed'),
-          [
-            {
-              text: t('close'),
-              onPress: () => {},
-              style: 'cancel'
-            },
-            {
-              text: t('seeMenu'),
-              onPress: navigateToRestaurant
-            }
-          ],
-          { cancelable: true }
-        )
-      } else {
-        navigateToRestaurant()
+    // Default behavior: Show alert if closed, otherwise navigate
+    if (isRestaurantClosed) {
+      Alert.alert(
+        '',
+        t('restaurantClosed'),
+        [
+          {
+            text: t('close'),
+            onPress: () => {},
+            style: 'cancel'
+          },
+          {
+            text: t('seeMenu'),
+            onPress: navigateToRestaurant
+          }
+        ],
+        { cancelable: true }
+      )
+    } else {
+      navigateToRestaurant()
       }
     } catch (error) {
       console.error('Error handling restaurant click:', error)

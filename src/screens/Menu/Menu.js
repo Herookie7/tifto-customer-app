@@ -150,9 +150,9 @@ function Menu({ route, props }) {
         onPressMap: () => {
           try {
             if (navigation) {
-              navigation.navigate('MapSection', {
-                location,
-                restaurants: restaurantData
+          navigation.navigate('MapSection', {
+            location,
+            restaurants: restaurantData
               })
             }
           } catch (error) {
@@ -380,15 +380,15 @@ function Menu({ route, props }) {
           style={styles(currentTheme).addButton}
           onPress={() => {
             try {
-              if (isLoggedIn) {
+            if (isLoggedIn) {
                 if (navigation) {
-                  navigation.navigate('AddNewAddress', { ...locationData })
+              navigation.navigate('AddNewAddress', { ...locationData })
                 }
-              } else {
-                const modal = modalRef.current
-                modal?.close()
+            } else {
+              const modal = modalRef.current
+              modal?.close()
                 if (navigation) {
-                  navigation.navigate({ name: 'CreateAccount' })
+              navigation.navigate({ name: 'CreateAccount' })
                 }
               }
             } catch (error) {
@@ -578,10 +578,10 @@ function Menu({ route, props }) {
             onPress={() => {
               try {
                 if (navigation) {
-                  navigation.navigate('Collection', {
-                    collectionType: routeData?.name,
-                    data: collectionData
-                  })
+              navigation.navigate('Collection', {
+                collectionType: routeData?.name,
+                data: collectionData
+              })
                 }
               } catch (error) {
                 console.error('Navigation error:', error)

@@ -84,7 +84,7 @@ const setupApollo = (GRAPHQL_URL, WS_GRAPHQL_URL) => {
       reconnect: true,
       connectionParams: async () => {
         const token = await AsyncStorage.getItem('token')
-        return token ? { Authorization: `Bearer ${token}` } : {}
+        return token ? { authorization: `Bearer ${token}` } : {}
       }
     }
   })

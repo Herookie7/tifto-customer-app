@@ -12,7 +12,7 @@ import FlashMessage from 'react-native-flash-message'
 import 'react-native-gesture-handler'
 // import * as Sentry from '@sentry/react-native';
 import useEnvVars, { isProduction } from './environment'
-import setupApolloClient from './src/apollo/index'
+import setupApollo from './src/apollo/index'
 import { MessageComponent } from './src/components/FlashMessage/MessageComponent'
 import ReviewModal from './src/components/Review'
 import { AuthProvider } from './src/context/Auth'
@@ -67,7 +67,7 @@ export default function App() {
   const [orderId, setOrderId] = useState()
   const [isUpdating, setIsUpdating] = useState(false)
   const { GRAPHQL_URL, WS_GRAPHQL_URL } = useEnvVars()
-  const client = setupApolloClient(GRAPHQL_URL, WS_GRAPHQL_URL)
+  const client = setupApollo(GRAPHQL_URL, WS_GRAPHQL_URL)
 
   useKeepAwake()
   // useWatchLocation()
