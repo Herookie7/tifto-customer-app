@@ -73,6 +73,46 @@ export const LocationProvider = ({ children }) => {
       const activeZones = fetchedZones.filter((zone) => zone.isActive !== false)
       console.log(`Processing ${activeZones.length} active zones from ${fetchedZones.length} total zones`)
 
+      // Function to normalize MongoDB Extended JSON format to regular numbers
+      // Handles cases where coordinates might be stored as {"$numberDouble":"74.9833"}
+      const normalizeNumber = (value) => {
+        // Handle MongoDB Extended JSON format: {"$numberDouble":"74.9833"} or {"$numberLong":"123"}
+        if (value && typeof value === 'object' && !Array.isArray(value)) {
+          if (value.$numberDouble !== undefined) {
+            return parseFloat(value.$numberDouble)
+          }
+          if (value.$numberLong !== undefined) {
+            return parseInt(value.$numberLong, 10)
+          }
+          if (value.$numberInt !== undefined) {
+            return parseInt(value.$numberInt, 10)
+          }
+        }
+        // If already a number, return as is
+        if (typeof value === 'number') {
+          return value
+        }
+        // Try to parse as number (handles string numbers)
+        if (typeof value === 'string') {
+          const parsed = parseFloat(value)
+          return isNaN(parsed) ? value : parsed
+        }
+        return value
+      }
+
+      // Function to normalize coordinate arrays (recursively handle nested arrays)
+      const normalizeCoordinates = (coords) => {
+        if (!Array.isArray(coords)) {
+          return normalizeNumber(coords)
+        }
+        return coords.map(item => {
+          if (Array.isArray(item)) {
+            return normalizeCoordinates(item)
+          }
+          return normalizeNumber(item)
+        })
+      }
+
       // Function to validate coordinates structure
       const validateCoordinates = (zone) => {
         // Check if zone has location
@@ -86,6 +126,10 @@ export const LocationProvider = ({ children }) => {
           console.warn(`Zone ${zone._id} (${zone.title}) has no coordinates`)
           return false
         }
+
+        // Normalize coordinates to handle MongoDB Extended JSON format
+        const normalizedCoords = normalizeCoordinates(zone.location.coordinates)
+        zone.location.coordinates = normalizedCoords
 
         // Check if coordinates is an array
         if (!Array.isArray(zone.location.coordinates)) {
@@ -122,6 +166,7 @@ export const LocationProvider = ({ children }) => {
           }
         } 
         // Handle Point type - coordinates should be [lng, lat]
+        // Note: coordinates are already normalized above, but ensure they're still valid
         else if (locationType === 'Point') {
           if (!Array.isArray(zone.location.coordinates) || zone.location.coordinates.length < 2) {
             console.warn(`Zone ${zone._id} (${zone.title}) point coordinates are invalid`)
@@ -129,7 +174,7 @@ export const LocationProvider = ({ children }) => {
           }
           const [lng, lat] = zone.location.coordinates
           if (typeof lng !== 'number' || typeof lat !== 'number' || isNaN(lng) || isNaN(lat)) {
-            console.warn(`Zone ${zone._id} (${zone.title}) point has invalid coordinates`)
+            console.warn(`Zone ${zone._id} (${zone.title}) point has invalid coordinates after normalization`)
             return false
           }
         }
