@@ -16,7 +16,10 @@ export const LocationProvider = ({ children }) => {
   const [cities, setCities] = useState([])
   const [permissionState, setPermissionState] = useState(null)
   const [isConnected, setIsConnected] = useState(false)
-  const { loading, error, data, refetch } = useQuery(GET_ZONES)
+  const { loading, error, data, refetch } = useQuery(GET_ZONES, {
+    errorPolicy: 'all', // Return partial results even if there are errors
+    fetchPolicy: 'cache-and-network' // Always try to fetch from network
+  })
 
 
   useEffect(() => {
@@ -54,13 +57,24 @@ export const LocationProvider = ({ children }) => {
   useEffect(() => {
     if (error) {
       console.error('Error fetching zones:', error)
-      console.error('Error details:', error.message, error.graphQLErrors, error.networkError)
+      console.error('Error message:', error.message)
+      console.error('GraphQL errors:', error.graphQLErrors)
+      console.error('Network error:', error.networkError)
+      
+      // Log network error details if available
+      if (error.networkError) {
+        console.error('Network error status:', error.networkError.statusCode)
+        console.error('Network error message:', error.networkError.message)
+        console.error('Network error result:', error.networkError.result)
+      }
+      
       // Set empty cities array on error to prevent undefined state
       setCities([])
       return
     }
 
     if (!loading && data) {
+      try {
       const fetchedZones = data.zones || []
       
       if (fetchedZones.length === 0) {
@@ -102,15 +116,21 @@ export const LocationProvider = ({ children }) => {
 
       // Function to normalize coordinate arrays (recursively handle nested arrays)
       const normalizeCoordinates = (coords) => {
-        if (!Array.isArray(coords)) {
-          return normalizeNumber(coords)
-        }
-        return coords.map(item => {
-          if (Array.isArray(item)) {
-            return normalizeCoordinates(item)
+        try {
+          if (!Array.isArray(coords)) {
+            return normalizeNumber(coords)
           }
-          return normalizeNumber(item)
-        })
+          return coords.map(item => {
+            if (Array.isArray(item)) {
+              return normalizeCoordinates(item)
+            }
+            return normalizeNumber(item)
+          })
+        } catch (err) {
+          console.error('Error normalizing coordinates:', err)
+          console.error('Coordinates that failed:', coords)
+          throw err
+        }
       }
 
       // Function to validate coordinates structure
@@ -372,12 +392,21 @@ export const LocationProvider = ({ children }) => {
       
       if (centroids.length === 0) {
         console.warn('No valid cities could be processed from zones')
+          console.warn('This might be due to invalid coordinate formats in zone data')
       }
       
       // Set this as the cities or the midpoint
       setCities(centroids)
+      } catch (processingError) {
+        console.error('Error processing zones data:', processingError)
+        console.error('Error stack:', processingError.stack)
+        console.error('Raw zones data:', data?.zones)
+        // Set empty cities array on processing error
+        setCities([])
+      }
     } else if (!loading && !data) {
       console.warn('No data received from zones query')
+      console.warn('Loading state:', loading, 'Error state:', error)
       setCities([])
     }
   }, [loading, error, data])

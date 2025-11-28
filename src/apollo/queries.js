@@ -78,7 +78,12 @@ export const restaurantFragment = gql`
     }
     addons {
       _id
-      options
+      options {
+        _id
+        title
+        description
+        price
+      }
       title
       description
       quantityMinimum
@@ -598,7 +603,12 @@ export const restaurantList = `query Restaurants($latitude:Float,$longitude:Floa
       }
       addons{
         _id
-        options
+        options {
+          _id
+          title
+          description
+          price
+        }
         title
         description
         quantityMinimum
@@ -748,7 +758,12 @@ export const restaurant = `query Restaurant($id:String){
     }
     addons{
       _id
-      options
+      options {
+        _id
+        title
+        description
+        price
+      }
       title
       description
       quantityMinimum
@@ -852,7 +867,12 @@ export const FavouriteRestaurant = `query UserFavourite ($latitude:Float,$longit
       }
       addons{
         _id
-        options
+        options {
+          _id
+          title
+          description
+          price
+        }
         title
         description
         quantityMinimum
