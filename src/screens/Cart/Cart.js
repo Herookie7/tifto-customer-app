@@ -219,7 +219,9 @@ function Cart(props) {
     cart.forEach((cartItem) => {
       const food = populateFood(cartItem)
       if (!food) return
-      itemTotal += food.price * food.quantity
+      const itemPrice = parseFloat(food.price) || 0
+      const quantity = parseInt(food.quantity) || 1
+      itemTotal += itemPrice * quantity
     })
     if (withDiscount && coupon && coupon.discount) {
       itemTotal = itemTotal - (coupon.discount / 100) * itemTotal
@@ -326,33 +328,60 @@ function Cart(props) {
   const foods = restaurant?.categories?.map((c) => c.foods.flat()).flat()
 
   function populateFood(cartItem) {
-    const food = foods?.find((food) => food._id === cartItem._id)
-    if (!food) return null
-    const variation = food.variations.find((variation) => variation._id === cartItem.variation._id)
-    if (!variation) return null
+    if (!cartItem || !cartItem._id || !cartItem.variation?._id) {
+      console.warn('Cart item missing required fields:', cartItem)
+      return null
+    }
 
-    const title = `${food.title}${variation.title ? `(${variation.title})` : ''}`
-    let price = variation.price
+    const food = foods?.find((food) => food._id === cartItem._id)
+    if (!food) {
+      console.warn('Food not found for cart item:', cartItem._id)
+      return null
+    }
+
+    const variation = food.variations?.find((variation) => variation._id === cartItem.variation._id)
+    if (!variation) {
+      console.warn('Variation not found for cart item:', cartItem.variation._id)
+      return null
+    }
+
+    const title = `${food.title || 'Unknown Item'}${variation.title ? ` (${variation.title})` : ''}`
+    
+    // Ensure price is a valid number, default to 0 if undefined
+    let price = parseFloat(variation.price) || 0
     const optionsTitle = []
-    if (cartItem.addons) {
+    
+    if (cartItem.addons && Array.isArray(cartItem.addons)) {
       cartItem.addons.forEach((addon) => {
-        const cartAddon = addons.find((add) => add._id === addon._id)
-        if (!cartAddon) return null
-        addon.options.forEach((option) => {
-          const cartOption = options.find((opt) => opt._id === option._id)
-          if (!cartOption) return null
-          price += cartOption.price
-          optionsTitle.push(cartOption.title)
-        })
+        if (!addon || !addon._id) return
+        const cartAddon = addons?.find((add) => add._id === addon._id)
+        if (!cartAddon) return
+        
+        if (addon.options && Array.isArray(addon.options)) {
+          addon.options.forEach((option) => {
+            if (!option || !option._id) return
+            const cartOption = options?.find((opt) => opt._id === option._id)
+            if (!cartOption) return
+            
+            // Ensure option price is a valid number
+            const optionPrice = parseFloat(cartOption.price) || 0
+            price += optionPrice
+            if (cartOption.title) {
+              optionsTitle.push(cartOption.title)
+            }
+          })
+        }
       })
     }
-    const populateAddons = addons.filter((addon) => food?.variations[0]?.addons?.includes(addon._id))
+    
+    const populateAddons = addons?.filter((addon) => food?.variations?.[0]?.addons?.includes(addon._id)) || []
+    
     return {
       ...cartItem,
       optionsTitle,
       title: title,
       price: price.toFixed(2),
-      image: food.image,
+      image: food.image || null,
       addons: populateAddons
     }
   }
@@ -389,16 +418,23 @@ function Cart(props) {
                   </TextDefault>
                   {cart?.map((cartItem, index) => {
                     const food = populateFood(cartItem)
-                    if (!food) return null
+                    if (!food) {
+                      console.warn('Skipping cart item that could not be populated:', cartItem)
+                      return null
+                    }
+                    const itemPrice = parseFloat(food.price) || 0
+                    const quantity = parseInt(food.quantity) || 1
+                    const totalPrice = (itemPrice * quantity).toFixed(2)
+                    
                     return (
-                      <View key={cartItem._id + index} style={[styles(currentTheme).itemContainer]}>
+                      <View key={cartItem._id + index || `cart-item-${index}`} style={[styles(currentTheme).itemContainer]}>
                         <CartItem
-                          quantity={food.quantity}
-                          dealName={food.title}
-                          optionsTitle={food.optionsTitle}
+                          quantity={quantity}
+                          dealName={food.title || 'Unknown Item'}
+                          optionsTitle={food.optionsTitle || []}
                           itemImage={food.image}
-                          itemAddons={food.addons}
-                          dealPrice={(parseFloat(food.price) * food.quantity).toFixed(2)}
+                          itemAddons={food.addons || []}
+                          dealPrice={totalPrice}
                           addQuantity={() => {
                             addQuantity(food.key)
                           }}

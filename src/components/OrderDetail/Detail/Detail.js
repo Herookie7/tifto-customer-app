@@ -40,10 +40,10 @@ export default function Detail({ theme, from, orderNo, deliveryAddress, items, c
       <View style={styles.itemsContainer}>
         {items?.map((item) => {
           // Calculate total price including addons
-          const basePrice = item.variation.price
-          const addonPrice = item.addons.reduce((total, addon) => {
-            return total + addon.options.reduce((addonTotal, option) => {
-              return addonTotal + (option.price || 0)
+          const basePrice = parseFloat(item?.variation?.price) || 0
+          const addonPrice = (item?.addons || []).reduce((total, addon) => {
+            return total + (addon?.options || []).reduce((addonTotal, option) => {
+              return addonTotal + (parseFloat(option?.price) || 0)
             }, 0)
           }, 0)
           const totalItemPrice = basePrice + addonPrice

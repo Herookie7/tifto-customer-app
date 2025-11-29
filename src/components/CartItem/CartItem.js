@@ -152,7 +152,7 @@ const CartItem = (props) => {
               isRTL
             >
               {configuration.currencySymbol}
-              {parseFloat(props?.dealPrice).toFixed(2)}
+              {parseFloat(props?.dealPrice || 0).toFixed(2)}
             </TextDefault>
             <View style={styles().divider} />
             <TouchableOpacity onPress={navigateBack}>

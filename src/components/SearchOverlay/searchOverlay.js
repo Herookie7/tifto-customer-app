@@ -173,7 +173,7 @@ const SearchOverlay = ({
           flexDirection: isRTL ? 'row-reverse' : 'row', 
           alignItems: 'center' 
         }}>
-          {item?.variations?.[0]?.price !== undefined && (
+          {item?.variations?.[0]?.price !== undefined && item?.variations?.[0]?.price !== null && (
             <>
               <TextDefault
                 textColor={currentTheme.fontMainColor}
@@ -182,7 +182,7 @@ const SearchOverlay = ({
                 isRTL={isRTL}
               >
                 {configuration.currencySymbol}
-                {item.variations[0].price}
+                {parseFloat(item.variations[0].price || 0).toFixed(2)}
               </TextDefault>
               {item.variations[0].discounted > 0 && (
                 <TextDefault
@@ -197,7 +197,7 @@ const SearchOverlay = ({
                 >
                   {configuration.currencySymbol}
                   {(
-                    item.variations[0].price + item.variations[0].discounted
+                    parseFloat(item.variations[0].price || 0) + parseFloat(item.variations[0].discounted || 0)
                   ).toFixed(2)}
                 </TextDefault>
               )}

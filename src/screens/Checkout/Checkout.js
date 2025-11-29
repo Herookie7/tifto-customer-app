@@ -437,7 +437,9 @@ function Checkout(props) {
   function calculatePrice(delivery = 0, withDiscount) {
     let itemTotal = 0
     cart.forEach((cartItem) => {
-      itemTotal += cartItem.price * cartItem.quantity
+      const itemPrice = parseFloat(cartItem.price) || 0
+      const quantity = parseInt(cartItem.quantity) || 1
+      itemTotal += itemPrice * quantity
     })
     if (withDiscount && coupon && coupon.discount) {
       itemTotal = itemTotal - (coupon.discount / 100) * itemTotal
@@ -580,22 +582,31 @@ function Checkout(props) {
         const transformCart = cart.map((cartItem) => {
           const food = foods.find((food) => food?._id === cartItem._id)
           if (!food) return null
-          const variation = food?.variations.find((variation) => variation._id === cartItem.variation._id)
+          const variation = food?.variations?.find((variation) => variation._id === cartItem.variation?._id)
           if (!variation) return null
 
-          const title = `${food?.title}${variation.title ? `(${variation.title})` : ''}`
-          let price = variation.price
+          const title = `${food?.title || 'Unknown Item'}${variation.title ? ` (${variation.title})` : ''}`
+          // Ensure price is a valid number, default to 0 if undefined
+          let price = parseFloat(variation.price) || 0
           const optionsTitle = []
-          if (cartItem.addons) {
+          if (cartItem.addons && Array.isArray(cartItem.addons)) {
             cartItem.addons.forEach((addon) => {
-              const cartAddon = addons.find((add) => add._id === addon._id)
-              if (!cartAddon) return null
-              addon.options.forEach((option) => {
-                const cartOption = options.find((opt) => opt._id === option._id)
-                if (!cartOption) return null
-                price += cartOption.price
-                optionsTitle.push(cartOption.title)
-              })
+              if (!addon || !addon._id) return
+              const cartAddon = addons?.find((add) => add._id === addon._id)
+              if (!cartAddon) return
+              if (addon.options && Array.isArray(addon.options)) {
+                addon.options.forEach((option) => {
+                  if (!option || !option._id) return
+                  const cartOption = options?.find((opt) => opt._id === option._id)
+                  if (!cartOption) return
+                  // Ensure option price is a valid number
+                  const optionPrice = parseFloat(cartOption.price) || 0
+                  price += optionPrice
+                  if (cartOption.title) {
+                    optionsTitle.push(cartOption.title)
+                  }
+                })
+              }
             })
           }
           return {

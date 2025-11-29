@@ -73,13 +73,13 @@ const Section = ({ itemId, restaurantId }) => {
             alignItems: 'flex-start',
             justifyContent: 'space-between'
           }}>
-          {food?.variations?.[0]?.price !== undefined && (
+          {food?.variations?.[0]?.price !== undefined && food?.variations?.[0]?.price !== null && (
             <TextDefault
               style={styles().suggestItemPrice}
               textColor={currentTheme.fontFourthColor}
               normal
               bolder>
-              {`${configuration.currencySymbol}${food.variations[0].price}`}
+              {`${configuration.currencySymbol}${parseFloat(food.variations[0].price || 0).toFixed(2)}`}
             </TextDefault>
           )}
           <TouchableOpacity onPress={onAdd}>
