@@ -126,11 +126,24 @@ function About(props) {
                       {t('ClosedAllDay')}
                     </TextDefault>
                   ) : (
-                    todayOpeningTimes?.times?.map((timing, index) => (
-                      <TextDefault isRTL key={index} textColor={currentTheme.fontThirdColor} H5 bold>
-                        {timing.startTime[0]}:{timing.startTime[1]} - {timing.endTime[0]}:{timing.endTime[1]}
-                      </TextDefault>
-                    ))
+                    todayOpeningTimes?.times?.map((timing, index) => {
+                      // Handle both string ("08:00") and array (["08", "00"]) formats
+                      const startTimeStr = Array.isArray(timing.startTime)
+                        ? timing.startTime.join(":")
+                        : timing.startTime || "00:00"
+                      const endTimeStr = Array.isArray(timing.endTime)
+                        ? timing.endTime.join(":")
+                        : timing.endTime || "00:00"
+                      
+                      const [startHours = "00", startMinutes = "00"] = typeof startTimeStr === "string" ? startTimeStr.split(":") : ["00", "00"]
+                      const [endHours = "00", endMinutes = "00"] = typeof endTimeStr === "string" ? endTimeStr.split(":") : ["00", "00"]
+                      
+                      return (
+                        <TextDefault isRTL key={index} textColor={currentTheme.fontThirdColor} H5 bold>
+                          {startHours}:{startMinutes} - {endHours}:{endMinutes}
+                        </TextDefault>
+                      )
+                    })
                   )}
                 </View>
               )}
@@ -194,13 +207,26 @@ function About(props) {
                       {t('ClosedAllDay')}
                     </TextDefault>
                   ) : (
-                    v?.times?.map((t) => (
-                      <TextDefault isRTL key={index + 8} textColor={currentTheme.fontThirdColor} large>
-                        {t.startTime[0]}:{t.startTime[1]}
-                        {' - '}
-                        {t.endTime[0]}:{t.endTime[1]}
-                      </TextDefault>
-                    ))
+                    v?.times?.map((t) => {
+                      // Handle both string ("08:00") and array (["08", "00"]) formats
+                      const startTimeStr = Array.isArray(t.startTime)
+                        ? t.startTime.join(":")
+                        : t.startTime || "00:00"
+                      const endTimeStr = Array.isArray(t.endTime)
+                        ? t.endTime.join(":")
+                        : t.endTime || "00:00"
+                      
+                      const [startHours = "00", startMinutes = "00"] = typeof startTimeStr === "string" ? startTimeStr.split(":") : ["00", "00"]
+                      const [endHours = "00", endMinutes = "00"] = typeof endTimeStr === "string" ? endTimeStr.split(":") : ["00", "00"]
+                      
+                      return (
+                        <TextDefault isRTL key={index + 8} textColor={currentTheme.fontThirdColor} large>
+                          {startHours}:{startMinutes}
+                          {' - '}
+                          {endHours}:{endMinutes}
+                        </TextDefault>
+                      )
+                    })
                   )}
                 </View>
               ))}

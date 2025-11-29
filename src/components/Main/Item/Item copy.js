@@ -49,13 +49,29 @@ function Item(props) {
     const minutes = date.getMinutes()
     const todaysTimings = openingTimes.find(o => o.day === DAYS[day])
     if (todaysTimings === undefined) return false
-    const times = todaysTimings.times.filter(
-      t =>
-        hours >= Number(t.startTime[0]) &&
-        minutes >= Number(t.startTime[1]) &&
-        hours <= Number(t.endTime[0]) &&
-        minutes <= Number(t.endTime[1])
-    )
+    const times = todaysTimings.times.filter((t) => {
+      // Handle both string ("08:00") and array (["08", "00"]) formats
+      const startTimeStr = Array.isArray(t.startTime)
+        ? t.startTime.join(":")
+        : t.startTime || "00:00"
+      const endTimeStr = Array.isArray(t.endTime)
+        ? t.endTime.join(":")
+        : t.endTime || "00:00"
+
+      const [startHours = "0", startMinutes = "0"] = typeof startTimeStr === "string" ? startTimeStr.split(":") : ["0", "0"]
+      const [endHours = "0", endMinutes = "0"] = typeof endTimeStr === "string" ? endTimeStr.split(":") : ["0", "0"]
+
+      const startHour = Number(startHours)
+      const startMinute = Number(startMinutes)
+      const endHour = Number(endHours)
+      const endMinute = Number(endMinutes)
+
+      const startTime = startHour * 60 + startMinute
+      const endTime = endHour * 60 + endMinute
+      const currentTime = hours * 60 + minutes
+
+      return currentTime >= startTime && currentTime <= endTime
+    })
     return times.length > 0
   }
 

@@ -204,16 +204,29 @@ function RestaurantDetailHeader({
                     {t('ClosedAllDay')}
                   </TextDefault>
                 ) : (
-                  todayOpeningTimes?.times?.map((timing, index) => (
-                    <TextDefault
-                      key={index}
-                      textColor={currentTheme.fontThirdColor}
-                      bold
-                    >
-                      {timing.startTime[0]}:{timing.startTime[1]} -{' '}
-                      {timing.endTime[0]}:{timing.endTime[1]}
-                    </TextDefault>
-                  ))
+                  todayOpeningTimes?.times?.map((timing, index) => {
+                    // Handle both string ("08:00") and array (["08", "00"]) formats
+                    const startTimeStr = Array.isArray(timing.startTime)
+                      ? timing.startTime.join(":")
+                      : timing.startTime || "00:00"
+                    const endTimeStr = Array.isArray(timing.endTime)
+                      ? timing.endTime.join(":")
+                      : timing.endTime || "00:00"
+                    
+                    const [startHours = "00", startMinutes = "00"] = typeof startTimeStr === "string" ? startTimeStr.split(":") : ["00", "00"]
+                    const [endHours = "00", endMinutes = "00"] = typeof endTimeStr === "string" ? endTimeStr.split(":") : ["00", "00"]
+                    
+                    return (
+                      <TextDefault
+                        key={index}
+                        textColor={currentTheme.fontThirdColor}
+                        bold
+                      >
+                        {startHours}:{startMinutes} -{' '}
+                        {endHours}:{endMinutes}
+                      </TextDefault>
+                    )
+                  })
                 )}
               </View>
             )}

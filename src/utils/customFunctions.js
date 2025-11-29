@@ -115,10 +115,28 @@ const isOpen = (restaurant) => {
 
   // Check all time slots for today's timings
   return todaysTimings.times.some((t) => {
-    const startHour = Number(t.startTime[0])
-    const startMinute = Number(t.startTime[1])
-    const endHour = Number(t.endTime[0])
-    const endMinute = Number(t.endTime[1])
+    // Handle both string ("08:00") and array (["08", "00"]) formats
+    const startTimeStr = Array.isArray(t.startTime)
+      ? t.startTime.join(":")
+      : t.startTime || "00:00"
+    const endTimeStr = Array.isArray(t.endTime)
+      ? t.endTime.join(":")
+      : t.endTime || "00:00"
+
+    // Split the string properly to get hours and minutes
+    const [startHours = "0", startMinutes = "0"] =
+      typeof startTimeStr === "string"
+        ? startTimeStr.split(":")
+        : ["0", "0"]
+    const [endHours = "0", endMinutes = "0"] =
+      typeof endTimeStr === "string"
+        ? endTimeStr.split(":")
+        : ["0", "0"]
+
+    const startHour = Number(startHours)
+    const startMinute = Number(startMinutes)
+    const endHour = Number(endHours)
+    const endMinute = Number(endMinutes)
 
     const startTime = startHour * 60 + startMinute // Convert to minutes
     const endTime = endHour * 60 + endMinute // Convert to minutes
