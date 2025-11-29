@@ -5,7 +5,7 @@ export const sendChatMessage = `mutation SendChatMessage($orderId: ID!, $message
       success
       message
       data {
-        id
+        _id
         message
         user {
           _id
@@ -32,7 +32,7 @@ export const placeOrder = `
       deliveryAddress{
         location{coordinates}
         deliveryAddress
-        id
+        _id
       }
       items{
         _id
@@ -216,7 +216,7 @@ export const reviewOrder = `mutation ReviewOrder(
       deliveryAddress{
         location{coordinates}
         deliveryAddress
-        id
+        _id
       }
       items{
         _id

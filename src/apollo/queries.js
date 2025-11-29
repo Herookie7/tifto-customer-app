@@ -373,7 +373,7 @@ export const order = `query Order($id:String!){
       deliveryAddress
       details
       label
-      id
+      _id
     }
     restaurant{
       _id
@@ -383,19 +383,23 @@ export const order = `query Order($id:String!){
       location{coordinates}
     }
     items{
+      _id
       title
       food
       description
       image
       quantity
       variation{
+        _id
         title
         price
         discounted
       }
       addons{
+        _id
         title
         options{
+          _id
           title
           description
           price
@@ -426,7 +430,6 @@ export const myOrders = `query Orders($offset:Int){
   orders(offset:$offset){
     _id
     orderId
-      id
     restaurant{
       _id
       name
@@ -437,11 +440,10 @@ export const myOrders = `query Orders($offset:Int){
     deliveryAddress{
       location{coordinates}
       deliveryAddress
-      id
+      _id
     }
     items{
       _id
-      id
       title
       food
       description
@@ -449,17 +451,14 @@ export const myOrders = `query Orders($offset:Int){
       image
       variation{
         _id
-        id
         title
         price
         discounted
       }
       addons{
         _id
-        id
         options{
           _id
-          id
           title
           description
           price
@@ -902,7 +901,7 @@ export const orderFragment = `fragment NewOrder on Order {
   deliveryAddress{
     location{coordinates}
     deliveryAddress
-    id
+    _id
   }
   items{
     _id
@@ -995,7 +994,7 @@ export const popularFoodItems = `query popularFoodItems($restaurantId: String!) 
 
 export const chat = `query Chat($order: String!) {
   chat(order: $order) {
-    id
+    _id
     message
     user {
       _id

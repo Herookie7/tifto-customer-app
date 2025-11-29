@@ -34,7 +34,7 @@ export const orderStatusChanged = `subscription OrderStatusChanged($userId:Strin
       deliveryAddress{
         location{coordinates}
         deliveryAddress
-        id
+        _id
       }
       items{
         _id
@@ -99,10 +99,10 @@ export const orderStatusChanged = `subscription OrderStatusChanged($userId:Strin
 
 export const subscriptionNewMessage = `subscription SubscriptionNewMessage($order:ID!){
   subscriptionNewMessage(order:$order){
-    id
+    _id
     message
     user {
-      id
+      _id
       name
     }
     createdAt
