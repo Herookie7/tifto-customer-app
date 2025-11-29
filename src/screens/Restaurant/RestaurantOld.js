@@ -185,7 +185,7 @@ function Restaurant(props) {
   }
 
   const addToCart = async (food, clearFlag) => {
-    if (food.variations.length === 1 && food.variations[0].addons.length === 0) {
+    if (food.variations.length === 1 && (food.variations[0].addons || []).length === 0) {
       await setCartRestaurant(food.restaurant)
       const result = checkItemCart(food._id)
       if (result.exist) await addQuantity(result.key)

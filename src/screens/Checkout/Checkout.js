@@ -511,7 +511,7 @@ function Checkout(props) {
         addons: food?.addons
           ? food?.addons.map(({ _id, options }) => ({
               _id,
-              options: options.map(({ _id }) => _id)
+              options: (options || []).map(({ _id }) => _id)
             }))
           : [],
         specialInstructions: food?.specialInstructions

@@ -45,16 +45,17 @@ function ItemDetail(props) {
   const [isDescriptionVisible, setIsDescriptionVisible] = useState(false)
   const [selectedVariation, setSelectedVariation] = useState({
     ...food?.variations[0],
-    addons: food?.variations[0].addons?.map((fa) => {
+    addons: (food?.variations[0]?.addons || []).map((fa) => {
       const addon = addons?.find((a) => a._id === fa)
-      const addonOptions = addon?.options?.map((ao) => {
+      if (!addon) return null
+      const addonOptions = (addon?.options || []).map((ao) => {
         return options?.find((o) => o._id === ao)
       })
       return {
         ...addon,
         options: addonOptions
       }
-    })
+    }).filter(Boolean)
   })
   const [selectedAddons, setSelectedAddons] = useState([])
   const [specialInstructions, setSpecialInstructions] = useState('')
@@ -249,16 +250,17 @@ function ItemDetail(props) {
     if (variation?._id) {
       setSelectedVariation({
         ...variation,
-        addons: variation?.addons?.map((fa) => {
+        addons: (variation?.addons || []).map((fa) => {
           const addon = addons?.find((a) => a._id === fa)
-          const addonOptions = addon?.options?.map((ao) => {
+          if (!addon) return null
+          const addonOptions = (addon?.options || []).map((ao) => {
             return options?.find((o) => o._id === ao)
           })
           return {
             ...addon,
             options: addonOptions
           }
-        })
+        }).filter(Boolean)
       })
     }
   }

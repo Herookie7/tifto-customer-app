@@ -107,9 +107,9 @@ function Reorder(props) {
     await setCartRestaurant(order.restaurant._id)
     selectedItems.forEach(async (index) => {
       const item = order.items[index]
-      const addons = item.addons.map((addon) => ({
+      const addons = (item.addons || []).map((addon) => ({
         _id: addon._id,
-        options: addon.options.map(({ _id }) => ({
+        options: (addon.options || []).map(({ _id }) => ({
           _id
         }))
       }))

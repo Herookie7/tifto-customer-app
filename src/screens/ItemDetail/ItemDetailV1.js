@@ -36,16 +36,17 @@ function ItemDetail(props) {
 
   const [selectedVariation, setSelectedVariation] = useState({
     ...food.variations[0],
-    addons: food.variations[0].addons.map(fa => {
+    addons: (food.variations[0]?.addons || []).map(fa => {
       const addon = addons.find(a => a._id === fa)
-      const addonOptions = addon.options.map(ao => {
+      if (!addon) return null
+      const addonOptions = (addon.options || []).map(ao => {
         return options.find(o => o._id === ao)
       })
       return {
         ...addon,
         options: addonOptions
       }
-    })
+    }).filter(Boolean)
   })
 
   const [selectedAddons, setSelectedAddons] = useState([])
@@ -162,9 +163,9 @@ function ItemDetail(props) {
   }
 
   const addToCart = async (quantity, clearFlag) => {
-    const addons = selectedAddons.map(addon => ({
+    const addons = (selectedAddons || []).map(addon => ({
       ...addon,
-      options: addon.options.map(({ _id }) => ({
+      options: (addon.options || []).map(({ _id }) => ({
         _id
       }))
     }))
@@ -176,16 +177,16 @@ function ItemDetail(props) {
             cartItem._id === food._id &&
             cartItem.variation._id === selectedVariation._id
           ) {
-            if (cartItem.addons.length === addons.length) {
+            if ((cartItem.addons || []).length === addons.length) {
               if (addons.length === 0) return true
               const addonsResult = addons.every(newAddon => {
-                const cartAddon = cartItem.addons.find(
+                const cartAddon = (cartItem.addons || []).find(
                   ad => ad._id === newAddon._id
                 )
 
                 if (!cartAddon) return false
-                const optionsResult = newAddon.options.every(newOption => {
-                  const cartOption = cartAddon.options.find(
+                const optionsResult = (newAddon.options || []).every(newOption => {
+                  const cartOption = (cartAddon.options || []).find(
                     op => op._id === newOption._id
                   )
 
@@ -221,16 +222,17 @@ function ItemDetail(props) {
   function onSelectVariation(variation) {
     setSelectedVariation({
       ...variation,
-      addons: variation.addons.map(fa => {
+      addons: (variation.addons || []).map(fa => {
         const addon = addons.find(a => a._id === fa)
-        const addonOptions = addon.options.map(ao => {
+        if (!addon) return null
+        const addonOptions = (addon.options || []).map(ao => {
           return options.find(o => o._id === ao)
         })
         return {
           ...addon,
           options: addonOptions
         }
-      })
+      }).filter(Boolean)
     })
   }
 
@@ -272,7 +274,7 @@ function ItemDetail(props) {
   }
 
   function validateOrderItem() {
-    const validatedAddons = selectedVariation.addons.map(addon => {
+    const validatedAddons = (selectedVariation.addons || []).map(addon => {
       const selected = selectedAddons.find(ad => ad._id === addon._id)
 
       if (!selected && addon.quantityMinimum === 0) {
@@ -337,7 +339,7 @@ function ItemDetail(props) {
                   </View>
                 </>
               )}
-              {selectedVariation.addons.map(addon => (
+              {(selectedVariation.addons || []).map(addon => (
                 <View key={addon._id}>
                   <TitleComponent
                     title={addon.title}
