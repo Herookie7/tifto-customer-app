@@ -346,8 +346,13 @@ function NewAddress(props) {
                   mutate({
                     variables: {
                       addressInput: {
-                        latitude: `${region.latitude}`,
-                        longitude: `${region.longitude}`,
+                        location: {
+                          type: 'Point',
+                          coordinates: [
+                            parseFloat(region.longitude),
+                            parseFloat(region.latitude)
+                          ]
+                        },
                         deliveryAddress: deliveryAddress.trim(),
                         details: deliveryDetails.trim(),
                         label: selectedLabel

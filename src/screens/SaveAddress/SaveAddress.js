@@ -139,8 +139,13 @@ function SaveAddress(props) {
     }
 
     const addressInput = {
-      longitude: `${locationData.longitude}`,
-      latitude: `${locationData.latitude}`,
+      location: {
+        type: 'Point',
+        coordinates: [
+          parseFloat(locationData.longitude),
+          parseFloat(locationData.latitude)
+        ]
+      },
       deliveryAddress: locationData.deliveryAddress,
       details: locationData.deliveryAddress,
       label: selectedLabel
