@@ -34,19 +34,30 @@ function ItemDetail(props) {
   const navigation = useNavigation()
   const { t } = useTranslation()
 
-  const [selectedVariation, setSelectedVariation] = useState({
-    ...food.variations[0],
-    addons: (food.variations[0]?.addons || []).map(fa => {
-      const addon = addons.find(a => a._id === fa)
-      if (!addon) return null
-      const addonOptions = (addon.options || []).map(ao => {
-        return options.find(o => o._id === ao)
-      })
-      return {
-        ...addon,
-        options: addonOptions
-      }
-    }).filter(Boolean)
+  const [selectedVariation, setSelectedVariation] = useState(() => {
+    // Handle case when variations array is empty
+    const defaultVariation = {
+      _id: null,
+      title: null,
+      price: 0,
+      discounted: 0,
+      addons: []
+    }
+    const variation = food?.variations?.[0] || defaultVariation
+    return {
+      ...variation,
+      addons: (variation?.addons || []).map(fa => {
+        const addon = addons.find(a => a._id === fa)
+        if (!addon) return null
+        const addonOptions = (addon.options || []).map(ao => {
+          return options.find(o => o._id === ao)
+        })
+        return {
+          ...addon,
+          options: addonOptions
+        }
+      }).filter(Boolean)
+    }
   })
 
   const [selectedAddons, setSelectedAddons] = useState([])
