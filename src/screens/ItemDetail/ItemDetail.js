@@ -288,26 +288,28 @@ function ItemDetail(props) {
   }
 
   const calculatePrice = useCallback(() => {
-    const variation = selectedVariation.price
+    const variation = parseFloat(selectedVariation?.price || 0)
     let addons = 0
     selectedAddons.forEach((addon) => {
-      addons += addon?.options?.reduce((acc, option) => {
-        return acc + option?.price
+      addons += (addon?.options || []).reduce((acc, option) => {
+        return acc + parseFloat(option?.price || 0)
       }, 0)
     })
-    return (variation + addons).toFixed(2)
-  }, [selectedVariation, addons,selectedAddons])
+    const total = variation + addons
+    return isNaN(total) ? '0.00' : total.toFixed(2)
+  }, [selectedVariation, selectedAddons])
 
   const calculateDiscountedPrice = useCallback(() => {
-    const variation = selectedVariation.discounted
+    const variation = parseFloat(selectedVariation?.discounted || 0)
     let addons = 0
     selectedAddons.forEach((addon) => {
-      addons += addon?.options?.reduce((acc, option) => {
-        return acc + option?.price
+      addons += (addon?.options || []).reduce((acc, option) => {
+        return acc + parseFloat(option?.price || 0)
       }, 0)
     })
-    return (variation + addons).toFixed(2)
-  }, [selectedVariation, addons])
+    const total = variation + addons
+    return isNaN(total) ? '0.00' : total.toFixed(2)
+  }, [selectedVariation, selectedAddons])
 
   function validateOrderItem() {
     let hasError = false
