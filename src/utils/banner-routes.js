@@ -4,6 +4,11 @@ const BANNER_PARAMETERS = {
     selectedType: '',
     queryType: 'restaurant'
   },
+  'RestaurantList': {
+    name: 'Restaurants',
+    selectedType: '',
+    queryType: 'restaurant'
+  },
   'Grocery List': {
     name: 'Store',
     selectedType: 'grocery',

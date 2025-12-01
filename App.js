@@ -26,10 +26,8 @@ import ThemeReducer from './src/ui/ThemeReducer/ThemeReducer'
 import { exitAlert } from './src/utils/androidBackButton'
 import { NOTIFICATION_TYPES } from './src/utils/enums'
 import { theme as Theme } from './src/utils/themeColors'
-import { requestTrackingPermissions } from './src/utils/useAppTrackingTrasparency'
 import { useKeepAwake } from 'expo-keep-awake'
 import AnimatedSplashScreen from './src/components/Splash/AnimatedSplashScreen'
-import useWatchLocation from './src/ui/hooks/useWatchLocation'
 import './i18next'
 import * as SplashScreen from 'expo-splash-screen'
 import TextDefault from './src/components/Text/TextDefault/TextDefault'
@@ -70,7 +68,6 @@ export default function App() {
   const client = setupApollo(GRAPHQL_URL, WS_GRAPHQL_URL)
 
   useKeepAwake()
-  // useWatchLocation()
 
   // Use system theme
   const systemTheme = useColorScheme()
@@ -100,8 +97,6 @@ export default function App() {
       })
       // await permissionForPushNotificationsAsync()
       await getActiveLocation()
-      // get stored theme
-      // await getStoredTheme()
       setAppIsReady(true)
     }
 
@@ -132,11 +127,6 @@ export default function App() {
     }
     saveLocation()
   }, [location])
-
-  // For Permission
-/*   useEffect(() => {
-    requestTrackingPermissions()
-  }, []) */
 
   // For Sentry
   // useEffect(() => {
@@ -217,31 +207,6 @@ export default function App() {
     }
   }
 
-  // get stored theme
-  // const getStoredTheme = async () => {
-  //   try {
-  //     const storedTheme = await AsyncStorage.getItem('appTheme')
-  //     if (storedTheme) {
-  //       console.log('Retrieved theme from storage:', storedTheme)
-  //       themeSetter({ type: storedTheme })
-  //     } else {
-  //       console.log('No theme found in storage, using default.')
-  //       await AsyncStorage.setItem('appTheme', 'Dark') // Set default theme to Pink
-  //     }
-  //   } catch (error) {
-  //     console.log('Error retrieving theme from storage:', error)
-  //   }
-  // }
-
-  // set stored theme
-  const setStoredTheme = async (newTheme) => {
-    try {
-      await AsyncStorage.setItem('appTheme', newTheme)
-    } catch (error) {
-      console.log('Error storing theme in AsyncStorage:', error)
-    }
-  }
-
   // set modal close
   const onOverlayPress = () => {
     reviewModalRef?.current?.close()
@@ -263,16 +228,7 @@ export default function App() {
     <AnimatedSplashScreen>
       <ApolloProvider client={client}>
         <ThemeContext.Provider
-          // use default theme
           value={{ ThemeValue: theme, dispatch: themeSetter }}
-          // use stored theme
-          // value={{
-          //   ThemeValue: theme,
-          //   dispatch: (action) => {
-          //     themeSetter(action)
-          //     setStoredTheme(action.type) // Save the theme in AsyncStorage when it changes
-          //   }
-          // }}
         >
           <StatusBar backgroundColor={Theme[theme].menuBar} barStyle={theme === 'Dark' ? 'light-content' : 'dark-content'} />
           <LocationProvider>

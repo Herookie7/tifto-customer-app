@@ -60,7 +60,6 @@ function Checkout(props) {
   const Analytics = analytics()
   useFocusEffect(
     useCallback(() => {
-      // Alert.alert( "Server is currently unavailable. Please try again later.");
       console.log('Server is currently unavailable. Please try again later.')
     }, [])
   )

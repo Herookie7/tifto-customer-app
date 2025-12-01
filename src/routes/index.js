@@ -60,7 +60,6 @@ import SearchScreen from '../screens/Search/SearchScreen'
 import UserContext from '../context/User'
 import { Easing, Platform } from 'react-native'
 import CategoryPage from '../components/SubCategoryPage/SubCategoryPage'
-// import HypCheckout from '../screens/Hyp/HypCheckout'
 import NewRestaurantDetailDesign from '../components/NewRestaurantDetailDesign/RestaurantDetailDesign'
 import { SLIDE_RIGHT_WITH_CURVE_ANIM, SLIDE_UP_RIGHT_ANIMATION, AIMATE_FROM_CENTER, SLIDE_UP_RIGHT_ANIMATION_FIXED_HEADER } from '../utils/constants'
 import * as LocationImport from 'expo-location'
@@ -173,7 +172,6 @@ function MainNavigator() {
       <NavigationStack.Screen name='Account' component={Account} options={SLIDE_RIGHT_WITH_CURVE_ANIM} />
       <NavigationStack.Screen name='EditName' component={EditName} />
       <NavigationStack.Screen name='SearchScreen' component={SearchScreen} />
-      {/* <NavigationStack.Screen name='HypCheckout' component={HypCheckout} /> */}
     </NavigationStack.Navigator>
   )
 }

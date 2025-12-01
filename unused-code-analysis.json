@@ -1,0 +1,184 @@
+{
+  "unused_files": [
+    "e initialization with env-based config",
+    "google-service-account copy.json",
+    "src/screens/Hyp/HypCheckout.js",
+    "src/screens/Paypal/",
+    "src/screens/Stripe/",
+    "src/screens/Home/Home.js",
+    "src/components/NewRestaurantDetail/double-category.js",
+    "src/screens/Main/OldMain.js",
+    "src/screens/Account/Account copy.js",
+    "src/screens/Restaurant/RestaurantOld.js",
+    "src/screens/EditAddress/EditAddressOld.js",
+    "src/screens/Addresses/AddressesV2.js",
+    "src/screens/Login/Login copy.js",
+    "i18n.js",
+    "src/screens/ItemDetail/.ItemDetail.js.swp",
+    "src/screens/CartAddress/.CartAddress.js.swp",
+    "src/screens/CartAddress/CartAddr.swp",
+    "assets/splash-old.png",
+    "Issue.md",
+    ".watchman-cookie-Ninjass-MacBook-Air-3.local-702-3968",
+    ".watchmanconfig"
+  ],
+  "dead_code": [
+    {
+      "file": "App.js",
+      "type": "unused_function",
+      "item": "registerForPushNotificationsAsync",
+      "line": 307,
+      "description": "Function is defined but never called (commented out at line 180)"
+    },
+    {
+      "file": "App.js",
+      "type": "unused_function",
+      "item": "schedulePushNotification",
+      "line": 333,
+      "description": "Function is completely commented out"
+    },
+    {
+      "file": "App.js",
+      "type": "unused_function",
+      "item": "setStoredTheme",
+      "line": 237,
+      "description": "Function is defined but only referenced in commented code (line 273)"
+    },
+    {
+      "file": "App.js",
+      "type": "unused_import",
+      "item": "useWatchLocation",
+      "line": 32,
+      "description": "Imported but commented out at line 73"
+    },
+    {
+      "file": "App.js",
+      "type": "unused_import",
+      "item": "requestTrackingPermissions",
+      "line": 29,
+      "description": "Imported but the call is commented out at line 138"
+    },
+    {
+      "file": "src/routes/index.js",
+      "type": "commented_import",
+      "item": "HypCheckout",
+      "line": 63,
+      "description": "Import is commented out, screen not used"
+    },
+    {
+      "file": "src/routes/index.js",
+      "type": "commented_screen",
+      "item": "HypCheckout screen registration",
+      "line": 176,
+      "description": "Screen registration is commented out"
+    },
+    {
+      "file": "src/screens/Menu/Menu.js",
+      "type": "commented_code",
+      "item": "searchRestaurants function",
+      "line": 436,
+      "description": "Large commented out function block (lines 436-447)"
+    },
+    {
+      "file": "src/screens/Menu/Menu.js",
+      "type": "commented_code",
+      "item": "restaurantSections flattening",
+      "line": 450,
+      "description": "Commented out code block (lines 450-456)"
+    },
+    {
+      "file": "src/screens/Menu/Menu.js",
+      "type": "commented_code",
+      "item": "onPressCollection function",
+      "line": 460,
+      "description": "Commented out function block (lines 460-474)"
+    },
+    {
+      "file": "src/screens/Account/Account copy.js",
+      "type": "commented_code",
+      "item": "Multiple commented functions",
+      "line": 216,
+      "description": "Extensive commented out code blocks throughout the file (viewHideAndShowName, validateName, updateName, etc.)"
+    },
+    {
+      "file": "src/screens/Main/Main.js",
+      "type": "commented_code",
+      "item": "setCurrentLocation alternative implementation",
+      "line": 165,
+      "description": "Commented out alternative implementation using OpenStreetMap (lines 165-198)"
+    },
+    {
+      "file": "src/screens/Main/Main.js",
+      "type": "commented_code",
+      "item": "Animated.FlatList",
+      "line": 399,
+      "description": "Commented out FlatList implementation (lines 399-429)"
+    },
+    {
+      "file": "src/screens/Main/Main.js",
+      "type": "commented_code",
+      "item": "CollapsibleSubHeaderAnimator",
+      "line": 430,
+      "description": "Commented out component (lines 430-433)"
+    },
+    {
+      "file": "src/screens/Checkout/Checkout.js",
+      "type": "commented_code",
+      "item": "Alert.alert",
+      "line": 63,
+      "description": "Commented out alert (line 63)"
+    },
+    {
+      "file": "App.js",
+      "type": "commented_code",
+      "item": "Sentry initialization",
+      "line": 142,
+      "description": "Commented out Sentry setup (lines 142-154)"
+    },
+    {
+      "file": "App.js",
+      "type": "commented_code",
+      "item": "getStoredTheme function",
+      "line": 221,
+      "description": "Commented out function (lines 221-234)"
+    },
+    {
+      "file": "App.js",
+      "type": "commented_code",
+      "item": "Theme storage in ThemeContext",
+      "line": 269,
+      "description": "Commented out theme storage logic (lines 269-275)"
+    },
+    {
+      "file": "i18n.js",
+      "type": "unused_file",
+      "item": "i18n.js",
+      "line": 1,
+      "description": "File exists but is not imported anywhere. The app uses i18next.js instead."
+    }
+  ],
+  "safe_to_delete": [
+    "e initialization with env-based config",
+    "google-service-account copy.json",
+    "src/screens/Hyp/HypCheckout.js",
+    "src/screens/Paypal/",
+    "src/screens/Stripe/",
+    "src/screens/Home/Home.js",
+    "src/components/NewRestaurantDetail/double-category.js",
+    "src/screens/Main/OldMain.js",
+    "src/screens/Account/Account copy.js",
+    "src/screens/Restaurant/RestaurantOld.js",
+    "src/screens/EditAddress/EditAddressOld.js",
+    "src/screens/Addresses/AddressesV2.js",
+    "src/screens/Login/Login copy.js",
+    "i18n.js",
+    "src/screens/ItemDetail/.ItemDetail.js.swp",
+    "src/screens/CartAddress/.CartAddress.js.swp",
+    "src/screens/CartAddress/CartAddr.swp",
+    "assets/splash-old.png",
+    "Issue.md",
+    ".watchman-cookie-Ninjass-MacBook-Air-3.local-702-3968",
+    ".watchmanconfig"
+  ]
+}
+

@@ -358,27 +358,6 @@ function Main(props) {
 
   const restaurantorders = data?.nearByRestaurantsPreview?.restaurants?.filter((restaurant) => restaurant.shopType === 'restaurant')
 
-  // const filterCusinies = () => {
-  //   if (data !== undefined) {
-  //     const cuisineShopTypeMap = new Map()
-
-  //     for (let restaurant of data?.nearByRestaurantsPreview?.restaurants) {
-  //       for (let cuisine of restaurant.cuisines) {
-  //         const key = `${cuisine.name}-${restaurant.shopType}`
-  //         if (!cuisineShopTypeMap.has(key)) {
-  //           cuisineShopTypeMap.set(key, {
-  //             ...cuisine,
-  //             shopType: restaurant.shopType
-  //           })
-  //         }
-  //       }
-  //     }
-
-  //     return Array.from(cuisineShopTypeMap.values())
-  //   }
-  //   return []
-  // }
-
   const useCuisinesData = (shopType, allCuisines) => {
     const cuisinesData = useMemo(() => {
       if (!allCuisines?.cuisines) return []

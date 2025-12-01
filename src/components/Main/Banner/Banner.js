@@ -30,14 +30,17 @@ const Banner = ({ banners }) => {
   const { width } = Dimensions.get('window')
 
   const onPressBanner = (banner) => {
-    let _selectedType = ''
-    let _queryType = ''
     let parameters = null
     const action = banner.action
+    
+    // Parse parameters if they exist
     if (banner?.parameters) {
-      parameters = JSON.parse(banner.parameters)
-      _selectedType = parameters[0]?.value
-      _queryType = parameters[1]?.value
+      try {
+        parameters = JSON.parse(banner.parameters)
+      } catch (e) {
+        console.warn('Failed to parse banner parameters:', e)
+        parameters = null
+      }
     }
 
     if (action === 'Navigate Specific Restaurant') {
@@ -45,20 +48,28 @@ const Banner = ({ banners }) => {
         _id: banner.screen
       })
     } else {
-      /* 
+      // Check if screen exists in BANNER_PARAMETERS
+      const bannerConfig = BANNER_PARAMETERS[banner?.screen]
       
-         navigation?.getState()?.routeNames?.includes(banner.screen)
-          ? banner.screen
-          : name,
-          
-      */
+      if (!bannerConfig) {
+        console.warn(`Banner screen "${banner?.screen}" not found in BANNER_PARAMETERS`)
+        return
+      }
 
-      const { name, selectedType, queryType } = BANNER_PARAMETERS[banner?.screen]
-      navigation.navigate(name, {
-        // Pass navigation parameters
-        selectedType: selectedType ?? 'restaurant', // Use selectedType if provided, otherwise default to 'restaurant'
-        queryType: queryType ?? 'restaurant' // Use queryType if provided, otherwise default to 'restaurant'
-      })
+      const { name, selectedType, queryType } = bannerConfig
+      
+      // Prepare navigation params
+      const navParams = {
+        selectedType: selectedType ?? 'restaurant',
+        queryType: queryType ?? 'restaurant'
+      }
+      
+      // If parameters exist and are an object, merge them into nav params
+      if (parameters && typeof parameters === 'object' && !Array.isArray(parameters)) {
+        Object.assign(navParams, parameters)
+      }
+      
+      navigation.navigate(name, navParams)
     }
   }
 

@@ -433,45 +433,8 @@ function Menu({ route, props }) {
 
   if (loading || mutationLoading || loadingOrders) return loadingScreen()
 
-  // const searchRestaurants = (searchText) => {
-  //   const data = []
-  //   const regex = new RegExp(searchText, 'i')
-  //   restaurantData?.forEach((restaurant) => {
-  //     const resultCatFoods = restaurant.keywords.some((keyword) => {
-  //       const result = keyword.search(regex)
-  //       return result > -1
-  //     })
-  //     if (resultCatFoods) data.push(restaurant)
-  //   })
-  //   return data
-  // }
-
-  // commented sections for now
-  // Flatten the array. That is important for data sequence
-  // const restaurantSections = sectionData?.map((sec) => ({
-  //   ...sec,
-  //   restaurants: sec?.restaurants
-  //     ?.map((id) => restaurantData?.filter((res) => res._id === id))
-  //     .flat()
-  // }))
-
   const extractRating = (ratingString) => parseInt(ratingString)
 
-  // const onPressCollection = (collection) => {
-  //   if (activeCollection === collection.name) {
-  //     // If the same collection is clicked again, deselect it
-  //     setActiveCollection(null)
-  //     setRestaurantData(allData) // Reset to show all data
-  //   } else {
-  //     // Select the new collection
-  //     setActiveCollection(collection.name)
-  //     const tempData = [...allData]
-  //     const filteredData = tempData?.filter((item) =>
-  //       item?.cuisines?.includes(collection.name)
-  //     )
-  //     setRestaurantData(filteredData)
-  //   }
-  // }
   const onPressCollection = (collection, index) => {
     flatListRef.current.scrollToIndex({
       index: index,
